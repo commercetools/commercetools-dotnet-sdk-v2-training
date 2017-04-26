@@ -1,0 +1,13 @@
+/Users/housseinbenamor/Projects/commercetools-dotnet-hello/commercetools-dotnet-hello/obj/x86/Debug/commercetools-dotnet-hello.csproj.CoreCompileInputs.cache
+/Users/housseinbenamor/Projects/commercetools-dotnet-hello/commercetools-dotnet-hello/bin/Debug/commercetools-dotnet-hello.exe.config
+/Users/housseinbenamor/Projects/commercetools-dotnet-hello/commercetools-dotnet-hello/bin/Debug/commercetools-dotnet-hello.exe
+/Users/housseinbenamor/Projects/commercetools-dotnet-hello/commercetools-dotnet-hello/bin/Debug/commercetools-dotnet-hello.pdb
+/Users/housseinbenamor/Projects/commercetools-dotnet-hello/commercetools-dotnet-hello/bin/Debug/commercetools.NET.dll
+/Users/housseinbenamor/Projects/commercetools-dotnet-hello/commercetools-dotnet-hello/bin/Debug/log4net.dll
+/Users/housseinbenamor/Projects/commercetools-dotnet-hello/commercetools-dotnet-hello/bin/Debug/Newtonsoft.Json.dll
+/Users/housseinbenamor/Projects/commercetools-dotnet-hello/commercetools-dotnet-hello/bin/Debug/commercetools.NET.xml
+/Users/housseinbenamor/Projects/commercetools-dotnet-hello/commercetools-dotnet-hello/bin/Debug/log4net.xml
+/Users/housseinbenamor/Projects/commercetools-dotnet-hello/commercetools-dotnet-hello/bin/Debug/Newtonsoft.Json.xml
+/Users/housseinbenamor/Projects/commercetools-dotnet-hello/commercetools-dotnet-hello/obj/x86/Debug/commercetools-dotnet-hello.exe
+/Users/housseinbenamor/Projects/commercetools-dotnet-hello/commercetools-dotnet-hello/obj/x86/Debug/commercetools-dotnet-hello.pdb
+/Users/housseinbenamor/Projects/commercetools-dotnet-hello/commercetools-dotnet-hello/obj/x86/Debug/commercetools-dotnet-hello.csprojResolveAssemblyReference.cache
