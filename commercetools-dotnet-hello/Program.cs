@@ -38,9 +38,9 @@ namespace commercetools
             Configuration config = new Configuration(
                 "https://auth.sphere.io/oauth/token",
                 "https://api.sphere.io",
-                "tutorial-10",
-                "fDA5lRyEyU9MN5BGeBpPbo7t",
-                "IjzF-qL43_foq-W7OH9x2T5UpTkGeKL2",
+                "{project_key}",
+                "{client_id}",
+                "{client_secret}",
                 ProjectScope.ManageProject);
 
             _client = new Client(config);
