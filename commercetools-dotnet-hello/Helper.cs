@@ -24,7 +24,7 @@ namespace commercetools
 	/// <summary>
 	/// Common definitions and methods used for tests.
 	/// </summary>
-	public class Helper
+	static public class Helper
 	{
 		private static Random _random = new Random();
 
@@ -49,6 +49,7 @@ namespace commercetools
 			cartDraft.InventoryMode = InventoryMode.None;
 			cartDraft.ShippingAddress = shippingAddress;
 			cartDraft.BillingAddress = billingAddress;
+            cartDraft.DeleteDaysAfterLastModification = 100;
 
 			if (!string.IsNullOrWhiteSpace(customerId))
 			{
