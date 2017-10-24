@@ -50,8 +50,8 @@ namespace commercetools
                 "https://auth.sphere.io/oauth/token",
                 "https://api.sphere.io",
                 "hou-test",
-                "5tVIpBBS-xVBnKsgX2Jy2axd",
-                "efU1-99XcYks2kYJJnYUzA9gFGLRr2dB",
+                "",
+                "",
                 ProjectScope.ManageProject);
 
             _client = new Client(config);
