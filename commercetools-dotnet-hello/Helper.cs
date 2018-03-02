@@ -44,14 +44,16 @@ namespace commercetools
 			string currency = project.Currencies[0];
 			string country = project.Countries[0];
 
-			CartDraft cartDraft = new CartDraft(currency);
-			cartDraft.Country = country;
-			cartDraft.InventoryMode = InventoryMode.None;
-			cartDraft.ShippingAddress = shippingAddress;
-			cartDraft.BillingAddress = billingAddress;
-            cartDraft.DeleteDaysAfterLastModification = 100;
+            CartDraft cartDraft = new CartDraft(currency)
+            {
+                Country = country,
+                InventoryMode = InventoryMode.None,
+                ShippingAddress = shippingAddress,
+                BillingAddress = billingAddress
+            };
+            //cartDraft.DeleteDaysAfterLastModification = 100;
 
-			if (!string.IsNullOrWhiteSpace(customerId))
+            if (!string.IsNullOrWhiteSpace(customerId))
 			{
 				cartDraft.CustomerId = customerId;
 			}
@@ -87,13 +89,14 @@ namespace commercetools
 				metaKeywords.SetValue(language, string.Concat("Category Meta Keywords ", language));
 			}
 
-			CategoryDraft categoryDraft = new CategoryDraft(name, slug);
-			categoryDraft.Description = description;
-			categoryDraft.MetaTitle = metaTitle;
-			categoryDraft.MetaDescription = metaDescription;
-			categoryDraft.MetaKeywords = metaKeywords;
-
-			return categoryDraft;
+            CategoryDraft categoryDraft = new CategoryDraft(name, slug)
+            {
+                Description = description,
+                MetaTitle = metaTitle,
+                MetaDescription = metaDescription,
+                MetaKeywords = metaKeywords
+            };
+            return categoryDraft;
 		}
 
 		#endregion
@@ -106,402 +109,403 @@ namespace commercetools
 		/// <returns>Address</returns>
 		public static Address GetTestAddress(Project.Project project)
 		{
-			Address address = new Address();
-
-			address.Title = "Title";
-			address.Salutation = "Salutation";
-			address.FirstName = "First Name";
-			address.LastName = "Last Name";
-			address.StreetName = "Main St.";
-			address.StreetNumber = "123";
-			address.AdditionalStreetInfo = "Additional street info";
-			address.PostalCode = "90210";
-			address.City = "Los Angeles";
-			address.Country = project.Countries.Count > 0 ? project.Countries[0] : "US";
-			address.Department = "Dept.";
-			address.Building = "Bldg.";
-			address.Apartment = "Apt.";
-			address.POBox = "P.O. Box";
-			address.Phone = "222-333-4444";
-			address.Mobile = "222-333-5555";
-			address.Email = string.Concat(Helper.GetRandomString(20), "@example.com");
-			address.AdditionalAddressInfo = "Additional address info";
-
-			return address;
-		}
-
-		/// <summary>
-		/// Gets a test money object.
-		/// </summary>
-		/// <returns>Money</returns>
-		public static Money GetTestMoney(Project.Project project)
-		{
-			Money money = new Money();
-			money.CentAmount = Helper.GetRandomNumber(100, 999999);
-			money.CurrencyCode = project.Currencies[0];
-
-			return money;
-		}
-
-		#endregion
-
-		#region Customers
-
-		/// <summary>
-		/// Gets a test customer draft.
-		/// </summary>
-		/// <returns>CustomerDraft</returns>
-		public static CustomerDraft GetTestCustomerDraft()
-		{
-			string email = string.Concat(Helper.GetRandomString(20), "@example.com");
-			string password = Helper.GetRandomString(20);
-
-			CustomerDraft customerDraft = new CustomerDraft(email, password);
-			customerDraft.ExternalId = Helper.GetRandomNumber(10000, 99999).ToString();
-			customerDraft.Title = "API";
-			customerDraft.FirstName = "Test";
-			customerDraft.LastName = "Customer";
-
-			return customerDraft;
-		}
-
-		#endregion
-
-		#region Orders
-
-		/// <summary>
-		/// Gets a test OrderFromCartDraft.
-		/// </summary>
-		/// <param name="cart">Cart</param>
-		/// <returns>OrderFromCartDraft</returns>
-		public static OrderFromCartDraft GetTestOrderFromCartDraft(Cart cart)
-		{
-			OrderFromCartDraft orderFromCartDraft = new OrderFromCartDraft(cart.Id, cart.Version);
-			return orderFromCartDraft;
-		}
-
-		#endregion
-
-		#region Payments
-
-		/// <summary>
-		/// Gets a test payment draft.
-		/// </summary>
-		/// <param name="project">Project</param>
-		/// <param name="customerId">Customer ID</param>
-		/// <returns>PaymentDraft</returns>
-		public static PaymentDraft GetTestPaymentDraft(Project.Project project, string customerId)
-		{
-			Reference customerReference = new Reference();
-			customerReference.Id = customerId;
-			customerReference.ReferenceType = Common.ReferenceType.Customer;
-
-			Money amountPlanned = Helper.GetTestMoney(project);
-
-			PaymentDraft paymentDraft = new PaymentDraft();
-			paymentDraft.Customer = customerReference;
-			paymentDraft.AmountPlanned = amountPlanned;
-
-			return paymentDraft;
-		}
-
-		#endregion
-
-		#region Products
-
-		/// <summary>
-		/// Gets a test product draft.
-		/// </summary>
-		/// <param name="project">Project</param>
-		/// <param name="productTypeId">Product type ID</param>
-		/// <param name="taxCategoryId">Tax category ID</param>
-		/// <returns></returns>
-		public static ProductDraft GetTestProductDraft(Project.Project project, string productTypeId, string taxCategoryId)
-		{
-			List<PriceDraft> priceDrafts = new List<PriceDraft>();
-
-			foreach (string currency in project.Currencies)
-			{
-				Money value = new Money();
-				value.CurrencyCode = currency;
-				value.CentAmount = Helper.GetRandomNumber(10, 999999);
-
-				priceDrafts.Add(new PriceDraft(value));
-			}
-
-			ProductVariantDraft productVariantDraft = new ProductVariantDraft();
-			productVariantDraft.Sku = Helper.GetRandomString(10);
-			productVariantDraft.Prices = priceDrafts;
-
-			ResourceIdentifier productType = new ResourceIdentifier();
-			productType.Id = productTypeId;
-			productType.TypeId = Common.ReferenceType.ProductType;
-
-			LocalizedString name = new LocalizedString();
-			LocalizedString slug = new LocalizedString();
-			LocalizedString description = new LocalizedString();
-			LocalizedString metaTitle = new LocalizedString();
-			LocalizedString metaDescription = new LocalizedString();
-			LocalizedString metaKeywords = new LocalizedString();
-
-			foreach (string language in project.Languages)
-			{
-				name.SetValue(language, string.Concat("Test Product ", language, " ", Helper.GetRandomString(10)));
-				slug.SetValue(language, string.Concat("test-product-", language, "-", Helper.GetRandomString(10)));
-				description.SetValue(language, string.Concat("Created by commercetools.NET ", language));
-				metaTitle.SetValue(language, string.Concat("Product Meta Title ", language));
-				metaDescription.SetValue(language, string.Concat("Product Meta Description ", language));
-				metaKeywords.SetValue(language, string.Concat("Product Meta Keywords ", language));
-			}
-
-			Reference taxCategory = new Reference();
-			taxCategory.Id = taxCategoryId;
-			taxCategory.ReferenceType = Common.ReferenceType.TaxCategory;
-
-			ProductDraft productDraft = new ProductDraft(name, productType, slug);
-			productDraft.Key = Helper.GetRandomString(15);
-			productDraft.Description = description;
-			productDraft.MetaTitle = metaTitle;
-			productDraft.MetaDescription = metaDescription;
-			productDraft.MetaKeywords = metaKeywords;
-			productDraft.TaxCategory = taxCategory;
-			productDraft.MasterVariant = productVariantDraft;
-
-			return productDraft;
-		}
-
-		#endregion
-
-		#region Product Types
-
-		/// <summary>
-		/// Gets a test product type draft.
-		/// </summary>
-		/// <returns>ProductTypeDraft</returns>
-		public static ProductTypeDraft GetTestProductTypeDraft()
-		{
-			string name = string.Concat("Test Product Type ", Helper.GetRandomString(10));
-
-			ProductTypeDraft draft = new ProductTypeDraft(name, "Created by commercetools.NET");
-			draft.Key = Helper.GetRandomString(6);
-
-			return draft;
-		}
-
-		#endregion
-
-		#region Shipping Methods
-
-		/// <summary>
-		/// Creates a test shipping method draft.
-		/// </summary>
-		/// <returns>ShippingMethodDraft</returns>
-		public static ShippingMethodDraft GetTestShippingMethodDraft(Project.Project project, TaxCategory taxCategory, Zone zone)
-		{
-			Reference taxCategoryReference = new Reference();
-			taxCategoryReference.Id = taxCategory.Id;
-			taxCategoryReference.ReferenceType = Common.ReferenceType.TaxCategory;
-
-			string name = string.Concat("Test Shipping Method ", Helper.GetRandomString(10));
-
-			ZoneRate zoneRate = Helper.GetTestZoneRate(project, zone);
-
-			ShippingMethodDraft shippingMethodDraft = new ShippingMethodDraft(name, taxCategoryReference, new List<ZoneRate>() { zoneRate });
-			shippingMethodDraft.Description = "Created by commercetools.NET";
-
-			return shippingMethodDraft;
-		}
-
-		/// <summary>
-		/// Gets a test zone rate.
-		/// </summary>
-		/// <param name="project">Zone to include</param>
-		/// <param name="zone">Zone</param>
-		/// <returns>ZoneRate</returns>
-		public static ZoneRate GetTestZoneRate(Project.Project project, Zone zone)
-		{
-			List<ShippingRate> shippingRates = new List<ShippingRate>();
-
-			foreach (string currency in project.Currencies)
-			{
-				Money money = new Money();
-				money.CentAmount = Helper.GetRandomNumber(99, 9999);
-				money.CurrencyCode = currency;
-
-				ShippingRate shippingRate = new ShippingRate();
-				shippingRate.Price = money;
-
-				shippingRates.Add(shippingRate);
-			}
-
-			Reference zoneReference = new Reference();
-			zoneReference.Id = zone.Id;
-			zoneReference.ReferenceType = Common.ReferenceType.Zone;
-
-			ZoneRate zoneRate = new ZoneRate();
-			zoneRate.Zone = zoneReference;
-			zoneRate.ShippingRates = shippingRates;
-
-			return zoneRate;
-		}
-
-		/// <summary>
-		/// Gets a shipping method that has a zone for a specific country.
-		/// </summary>
-		/// <param name="client">Client</param>
-		/// <param name="country">Country</param>
-		/// <returns>Shipping method that has a zone for the specified country, or null if one was not found</returns>
-		public static async Task<ShippingMethod> GetShippingMethodForCountry(Client client, string country)
-		{
-			Response<ShippingMethodQueryResult> shippingMethodQueryResponse = await client.ShippingMethods().QueryShippingMethodsAsync();
-
-			if (!shippingMethodQueryResponse.Success || shippingMethodQueryResponse.Result.Count < 1)
-			{
-				return null;
-			}
-
-			ShippingMethod shippingMethod = null;
-			var shippingMethods = shippingMethodQueryResponse.Result.Results.Where(s => s.ZoneRates != null && s.ZoneRates.Count > 0);
-
-			foreach (ShippingMethod s in shippingMethods)
-			{
-				foreach (ZoneRate zoneRate in s.ZoneRates)
-				{
-					Response<Zone> zoneResponse = await client.Zones().GetZoneByIdAsync(zoneRate.Zone.Id);
-
-					if (zoneResponse.Success && zoneResponse.Result.Locations != null)
-					{
-						foreach (Location location in zoneResponse.Result.Locations)
-						{
-							if (location.Country.Equals(country, StringComparison.OrdinalIgnoreCase))
-							{
-								shippingMethod = s;
-								break;
-							}
-						}
-					}
-
-					if (shippingMethod != null)
-					{
-						break;
-					}
-				}
-			}
-
-			return shippingMethod;
-		}
-
-		#endregion
-
-		#region Tax Categories
-
-		/// <summary>
-		/// Creates a test tax category draft.
-		/// </summary>
-		/// <returns>TaxCategoryDraft</returns>
-		public static TaxCategoryDraft GetTestTaxCategoryDraft(Project.Project project)
-		{
-			List<TaxRateDraft> taxRateDrafts = new List<TaxRateDraft>();
-
-			foreach (string country in project.Countries)
-			{
-				string taxRateName = string.Concat("Rate ", country);
-				TaxRateDraft taxRateDraft = new TaxRateDraft(taxRateName, true, country);
-				taxRateDraft.Amount = ((decimal)Helper.GetRandomNumber(1, 20)) / 100;
-				taxRateDrafts.Add(taxRateDraft);
-			}
-
-			string name = string.Concat("Test Tax Category ", Helper.GetRandomString(10));
-
-			TaxCategoryDraft taxCategoryDraft = new TaxCategoryDraft(name, taxRateDrafts);
-			taxCategoryDraft.Description = "Created by commercetools.NET";
-
-			return taxCategoryDraft;
-		}
-
-		#endregion
-
-		#region Types
-
-		/// <summary>
-		/// Gets a test type draft.
-		/// </summary>
-		/// <param name="project">Project</param>
-		/// <returns>TypeDraft</returns>
-		public static TypeDraft GetTypeDraft(Project.Project project)
-		{
-			LocalizedString typeName = new LocalizedString();
-			typeName.SetValue(project.Languages[0], string.Concat("Test Type", Helper.GetRandomString(10)));
-
-			List<string> resourceTypeIds = new List<string> { "order" };
-
-			TypeDraft typeDraft =
-				new TypeDraft(string.Concat("test-type-", Helper.GetRandomString(10)), typeName, resourceTypeIds);
-
-			typeDraft.FieldDefinitions = new List<FieldDefinition> {
-				Helper.GetFieldDefinition(project, "field1", "Field 1", new commercetools.Types.StringType()),
-				Helper.GetFieldDefinition(project, "field2", "Field 2", new commercetools.Types.StringType()),
-				Helper.GetFieldDefinition(project, "field3", "Field 3", new commercetools.Types.StringType())
-			};
-
-			return typeDraft;
-		}
-
-		/// <summary>
-		/// Gets a FieldDefinition.
-		/// </summary>
-		/// <param name="project">Project</param>
-		/// <param name="name">Field name</param>
-		/// <param name="label">Field label</param>
-		/// <param name="type">Field type</param>
-		/// <returns>FieldDefinition</returns>
-		public static FieldDefinition GetFieldDefinition(Project.Project project, string name, string label, FieldType type)
-		{
-			FieldDefinition fieldDefinition = new FieldDefinition
-			{
-				Type = type,
-				Name = name,
-				Required = false
-			};
-
-			fieldDefinition.Label = new LocalizedString();
-			fieldDefinition.Label.SetValue(project.Languages[0], label);
-
-			return fieldDefinition;
-		}
-
-		#endregion
-
-		#region Zones
-
-		/// <summary>
-		/// Creates a test shipping method draft.
-		/// </summary>
-		/// <returns>ShippingMethodDraft</returns>
-		public static ZoneDraft GetTestZoneDraft(List<Location> locations = null)
-		{
-			string name = string.Concat("Test Zone ", Helper.GetRandomString(10));
-
-			ZoneDraft zoneDraft = new ZoneDraft(name);
-
-			if (locations != null)
-			{
-				zoneDraft.Locations = locations;
-			}
-
-			return zoneDraft;
-		}
-
-		#endregion
-
-		#region Utility
-
-		/// <summary>
-		/// Gets a random string.
-		/// </summary>
-		/// <param name="length">Length of string</param>
-		/// <returns>Random string</returns>
-		public static string GetRandomString(int length)
+            Address address = new Address
+            {
+                Title = "Title",
+                Salutation = "Salutation",
+                FirstName = "First Name",
+                LastName = "Last Name",
+                StreetName = "Main St.",
+                StreetNumber = "123",
+                AdditionalStreetInfo = "Additional street info",
+                PostalCode = "90210",
+                City = "Los Angeles",
+                Country = project.Countries.Count > 0 ? project.Countries[0] : "US",
+                Department = "Dept.",
+                Building = "Bldg.",
+                Apartment = "Apt.",
+                POBox = "P.O. Box",
+                Phone = "222-333-4444",
+                Mobile = "222-333-5555",
+                Email = string.Concat(Helper.GetRandomString(20), "@example.com"),
+                AdditionalAddressInfo = "Additional address info"
+            };
+            return address;
+        }
+
+        /// <summary>
+        /// Gets a test money object.
+        /// </summary>
+        /// <returns>Money</returns>
+        public static Money GetTestMoney(Project.Project project)
+        {
+            Money money = new Money
+            {
+                CentAmount = Helper.GetRandomNumber(100, 999999),
+                CurrencyCode = project.Currencies[0]
+            };
+            return money;
+        }
+
+        #endregion
+
+        #region Customers
+
+        /// <summary>
+        /// Gets a test customer draft.
+        /// </summary>
+        /// <returns>CustomerDraft</returns>
+        public static CustomerDraft GetTestCustomerDraft()
+        {
+            string email = string.Concat(Helper.GetRandomString(20), "@example.com");
+            string password = Helper.GetRandomString(20);
+
+            CustomerDraft customerDraft = new CustomerDraft(email, password);
+            customerDraft.ExternalId = Helper.GetRandomNumber(10000, 99999).ToString();
+            customerDraft.Title = "API";
+            customerDraft.FirstName = "Test";
+            customerDraft.LastName = "Customer";
+
+            return customerDraft;
+        }
+
+        #endregion
+
+        #region Orders
+
+        /// <summary>
+        /// Gets a test OrderFromCartDraft.
+        /// </summary>
+        /// <param name="cart">Cart</param>
+        /// <returns>OrderFromCartDraft</returns>
+        public static OrderFromCartDraft GetTestOrderFromCartDraft(Cart cart)
+        {
+            OrderFromCartDraft orderFromCartDraft = new OrderFromCartDraft(cart.Id, cart.Version);
+            return orderFromCartDraft;
+        }
+
+        #endregion
+
+        #region Payments
+
+        /// <summary>
+        /// Gets a test payment draft.
+        /// </summary>
+        /// <param name="project">Project</param>
+        /// <param name="customerId">Customer ID</param>
+        /// <returns>PaymentDraft</returns>
+        public static PaymentDraft GetTestPaymentDraft(Project.Project project, string customerId)
+        {
+            Reference customerReference = new Reference();
+            customerReference.Id = customerId;
+            customerReference.ReferenceType = Common.ReferenceType.Customer;
+
+            Money amountPlanned = Helper.GetTestMoney(project);
+
+            PaymentDraft paymentDraft = new PaymentDraft();
+            paymentDraft.Customer = customerReference;
+            paymentDraft.AmountPlanned = amountPlanned;
+
+            return paymentDraft;
+        }
+
+        #endregion
+
+        #region Products
+
+        /// <summary>
+        /// Gets a test product draft.
+        /// </summary>
+        /// <param name="project">Project</param>
+        /// <param name="productTypeId">Product type ID</param>
+        /// <param name="taxCategoryId">Tax category ID</param>
+        /// <returns></returns>
+        public static ProductDraft GetTestProductDraft(Project.Project project, string productTypeId, string taxCategoryId)
+        {
+            List<PriceDraft> priceDrafts = new List<PriceDraft>();
+
+            foreach (string currency in project.Currencies)
+            {
+                Money value = new Money();
+                value.CurrencyCode = currency;
+                value.CentAmount = Helper.GetRandomNumber(10, 999999);
+
+                priceDrafts.Add(new PriceDraft(value));
+            }
+
+            ProductVariantDraft productVariantDraft = new ProductVariantDraft();
+            productVariantDraft.Sku = Helper.GetRandomString(10);
+            productVariantDraft.Prices = priceDrafts;
+
+            ResourceIdentifier productType = new ResourceIdentifier();
+            productType.Id = productTypeId;
+            productType.TypeId = Common.ReferenceType.ProductType;
+
+            LocalizedString name = new LocalizedString();
+            LocalizedString slug = new LocalizedString();
+            LocalizedString description = new LocalizedString();
+            LocalizedString metaTitle = new LocalizedString();
+            LocalizedString metaDescription = new LocalizedString();
+            LocalizedString metaKeywords = new LocalizedString();
+
+            foreach (string language in project.Languages)
+            {
+                name.SetValue(language, string.Concat("Test Product ", language, " ", Helper.GetRandomString(10)));
+                slug.SetValue(language, string.Concat("test-product-", language, "-", Helper.GetRandomString(10)));
+                description.SetValue(language, string.Concat("Created by commercetools.NET ", language));
+                metaTitle.SetValue(language, string.Concat("Product Meta Title ", language));
+                metaDescription.SetValue(language, string.Concat("Product Meta Description ", language));
+                metaKeywords.SetValue(language, string.Concat("Product Meta Keywords ", language));
+            }
+
+            Reference taxCategory = new Reference();
+            taxCategory.Id = taxCategoryId;
+            taxCategory.ReferenceType = Common.ReferenceType.TaxCategory;
+
+            ProductDraft productDraft = new ProductDraft(name, productType, slug);
+            productDraft.Key = Helper.GetRandomString(15);
+            productDraft.Description = description;
+            productDraft.MetaTitle = metaTitle;
+            productDraft.MetaDescription = metaDescription;
+            productDraft.MetaKeywords = metaKeywords;
+            productDraft.TaxCategory = taxCategory;
+            productDraft.MasterVariant = productVariantDraft;
+
+            return productDraft;
+        }
+
+        #endregion
+
+        #region Product Types
+
+        /// <summary>
+        /// Gets a test product type draft.
+        /// </summary>
+        /// <returns>ProductTypeDraft</returns>
+        public static ProductTypeDraft GetTestProductTypeDraft()
+        {
+            string name = string.Concat("Test Product Type ", Helper.GetRandomString(10));
+
+            ProductTypeDraft draft = new ProductTypeDraft(name, "Created by commercetools.NET");
+            draft.Key = Helper.GetRandomString(6);
+
+            return draft;
+        }
+
+        #endregion
+
+        #region Shipping Methods
+
+        /// <summary>
+        /// Creates a test shipping method draft.
+        /// </summary>
+        /// <returns>ShippingMethodDraft</returns>
+        public static ShippingMethodDraft GetTestShippingMethodDraft(Project.Project project, TaxCategory taxCategory, Zone zone)
+        {
+            Reference taxCategoryReference = new Reference();
+            taxCategoryReference.Id = taxCategory.Id;
+            taxCategoryReference.ReferenceType = Common.ReferenceType.TaxCategory;
+
+            string name = string.Concat("Test Shipping Method ", Helper.GetRandomString(10));
+
+            ZoneRate zoneRate = Helper.GetTestZoneRate(project, zone);
+
+            ShippingMethodDraft shippingMethodDraft = new ShippingMethodDraft(name, taxCategoryReference, new List<ZoneRate>() { zoneRate });
+            shippingMethodDraft.Description = "Created by commercetools.NET";
+
+            return shippingMethodDraft;
+        }
+
+        /// <summary>
+        /// Gets a test zone rate.
+        /// </summary>
+        /// <param name="project">Zone to include</param>
+        /// <param name="zone">Zone</param>
+        /// <returns>ZoneRate</returns>
+        public static ZoneRate GetTestZoneRate(Project.Project project, Zone zone)
+        {
+            List<ShippingRate> shippingRates = new List<ShippingRate>();
+
+            foreach (string currency in project.Currencies)
+            {
+                Money money = new Money();
+                money.CentAmount = Helper.GetRandomNumber(99, 9999);
+                money.CurrencyCode = currency;
+
+                ShippingRate shippingRate = new ShippingRate();
+                shippingRate.Price = money;
+
+                shippingRates.Add(shippingRate);
+            }
+
+            Reference zoneReference = new Reference();
+            zoneReference.Id = zone.Id;
+            zoneReference.ReferenceType = Common.ReferenceType.Zone;
+
+            ZoneRate zoneRate = new ZoneRate();
+            zoneRate.Zone = zoneReference;
+            zoneRate.ShippingRates = shippingRates;
+
+            return zoneRate;
+        }
+
+        /// <summary>
+        /// Gets a shipping method that has a zone for a specific country.
+        /// </summary>
+        /// <param name="client">Client</param>
+        /// <param name="country">Country</param>
+        /// <returns>Shipping method that has a zone for the specified country, or null if one was not found</returns>
+        public static async Task<ShippingMethod> GetShippingMethodForCountry(Client client, string country)
+        {
+            Response<ShippingMethodQueryResult> shippingMethodQueryResponse = await client.ShippingMethods().QueryShippingMethodsAsync();
+
+            if (!shippingMethodQueryResponse.Success || shippingMethodQueryResponse.Result.Count < 1)
+            {
+                return null;
+            }
+
+            ShippingMethod shippingMethod = null;
+            var shippingMethods = shippingMethodQueryResponse.Result.Results.Where(s => s.ZoneRates != null && s.ZoneRates.Count > 0);
+
+            foreach (ShippingMethod s in shippingMethods)
+            {
+                foreach (ZoneRate zoneRate in s.ZoneRates)
+                {
+                    Response<Zone> zoneResponse = await client.Zones().GetZoneByIdAsync(zoneRate.Zone.Id);
+
+                    if (zoneResponse.Success && zoneResponse.Result.Locations != null)
+                    {
+                        foreach (Location location in zoneResponse.Result.Locations)
+                        {
+                            if (location.Country.Equals(country, StringComparison.OrdinalIgnoreCase))
+                            {
+                                shippingMethod = s;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (shippingMethod != null)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return shippingMethod;
+        }
+
+        #endregion
+
+        #region Tax Categories
+
+        /// <summary>
+        /// Creates a test tax category draft.
+        /// </summary>
+        /// <returns>TaxCategoryDraft</returns>
+        public static TaxCategoryDraft GetTestTaxCategoryDraft(Project.Project project)
+        {
+            List<TaxRateDraft> taxRateDrafts = new List<TaxRateDraft>();
+
+            foreach (string country in project.Countries)
+            {
+                string taxRateName = string.Concat("Rate ", country);
+                TaxRateDraft taxRateDraft = new TaxRateDraft(taxRateName, true, country);
+                taxRateDraft.Amount = ((decimal)Helper.GetRandomNumber(1, 20)) / 100;
+                taxRateDrafts.Add(taxRateDraft);
+            }
+
+            string name = string.Concat("Test Tax Category ", Helper.GetRandomString(10));
+
+            TaxCategoryDraft taxCategoryDraft = new TaxCategoryDraft(name, taxRateDrafts);
+            taxCategoryDraft.Description = "Created by commercetools.NET";
+
+            return taxCategoryDraft;
+        }
+
+        #endregion
+
+        #region Types
+
+        /// <summary>
+        /// Gets a test type draft.
+        /// </summary>
+        /// <param name="project">Project</param>
+        /// <returns>TypeDraft</returns>
+        public static TypeDraft GetTypeDraft(Project.Project project)
+        {
+            LocalizedString typeName = new LocalizedString();
+            typeName.SetValue(project.Languages[0], string.Concat("Test Type", Helper.GetRandomString(10)));
+
+            List<string> resourceTypeIds = new List<string> { "order" };
+
+            TypeDraft typeDraft =
+                new TypeDraft(string.Concat("test-type-", Helper.GetRandomString(10)), typeName, resourceTypeIds);
+
+            typeDraft.FieldDefinitions = new List<FieldDefinition> {
+                Helper.GetFieldDefinition(project, "field1", "Field 1", new commercetools.Types.StringType()),
+                Helper.GetFieldDefinition(project, "field2", "Field 2", new commercetools.Types.StringType()),
+                Helper.GetFieldDefinition(project, "field3", "Field 3", new commercetools.Types.StringType())
+            };
+
+            return typeDraft;
+        }
+
+        /// <summary>
+        /// Gets a FieldDefinition.
+        /// </summary>
+        /// <param name="project">Project</param>
+        /// <param name="name">Field name</param>
+        /// <param name="label">Field label</param>
+        /// <param name="type">Field type</param>
+        /// <returns>FieldDefinition</returns>
+        public static FieldDefinition GetFieldDefinition(Project.Project project, string name, string label, FieldType type)
+        {
+            FieldDefinition fieldDefinition = new FieldDefinition
+            {
+                Type = type,
+                Name = name,
+                Required = false
+            };
+
+            fieldDefinition.Label = new LocalizedString();
+            fieldDefinition.Label.SetValue(project.Languages[0], label);
+
+            return fieldDefinition;
+        }
+
+        #endregion
+
+        #region Zones
+
+        /// <summary>
+        /// Creates a test shipping method draft.
+        /// </summary>
+        /// <returns>ShippingMethodDraft</returns>
+        public static ZoneDraft GetTestZoneDraft(List<Location> locations = null)
+        {
+            string name = string.Concat("Test Zone ", Helper.GetRandomString(10));
+
+            ZoneDraft zoneDraft = new ZoneDraft(name);
+
+            if (locations != null)
+            {
+                zoneDraft.Locations = locations;
+            }
+
+            return zoneDraft;
+        }
+
+        #endregion
+
+        #region Utility
+
+        /// <summary>
+        /// Gets a random string.
+        /// </summary>
+        /// <param name="length">Length of string</param>
+        /// <returns>Random string</returns>
+        public static string GetRandomString(int length)
 		{
 			const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 			return new string(Enumerable.Repeat(chars, length).Select(s => s[_random.Next(s.Length)]).ToArray());

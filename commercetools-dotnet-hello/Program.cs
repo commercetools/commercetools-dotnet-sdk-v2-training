@@ -27,7 +27,6 @@ namespace commercetools
 		private Project.Project _project; // contains the project settings
 
         private ProductType _productType;
-        private ProductDraft _productDraft;
         private TaxCategory _taxCategory;
         private Product _product;
         private Category _category;
@@ -45,13 +44,13 @@ namespace commercetools
         private async Task Run()
         {
             //// PROJECT SIDE ////
-            //TODO Configure the client.
+            //TODO 1.1. Configure the client.
             Configuration config = new Configuration(
                 "https://auth.sphere.io/oauth/token",
                 "https://api.sphere.io",
-                "hou-test",
-                "",
-                "",
+                "training-test", // projectKey
+                "", // clientID
+                "", // clientSecret
                 ProjectScope.ManageProject);
 
             _client = new Client(config);
@@ -59,14 +58,13 @@ namespace commercetools
 
             _productType = CreateProductType(_client);
             _taxCategory = CreateTaxCategory(_client);
-			_productDraft = Helper.GetTestProductDraft(_project, _productType.Id, _taxCategory.Id);
-            _product = CreateProductAsync(_productDraft);
+            _product = CreateProductAsync(_client);
             _category = CreateCategory(_client);
-            _product = AddProductToCategory(_client, _category);
+            _product = AddProductToCategory(_client);
 
             UdpateProductAsync(_client);
 
-            //// SHOP SIDE ////
+            // SHOP SIDE ////
             await QueryAllProducts(_client);
             _cart = CreateCart(_client);
             _cart = AddLineItemToCart(_product, _cart);
@@ -77,7 +75,7 @@ namespace commercetools
             DeleteCart(_cart);
             DeleteProduct(_client, _product);
 
-            GetMessages(_client);
+            //GetMessages(_client);
         }
 
         // GET PROJECT
@@ -92,7 +90,7 @@ namespace commercetools
 			return projectTask.Result.Result;
         }
 
-        //TODO
+        //TODO 2.1. Create a product type
         /// <summary>
         /// Creates the type of the product.
         /// </summary>
@@ -109,7 +107,7 @@ namespace commercetools
             return _productType;
         }
 
-        //TODO
+        //TODO 2.2. Create a Tax Category
         /// <summary>
         /// Creates the tax category.
         /// </summary>
@@ -126,70 +124,26 @@ namespace commercetools
             return _taxCategory;
         }
 
-        // TODO
+        // TODO 2.3. Create a Product
 		/// <summary>
 		/// Creates a new Product.
 		/// </summary>
 		/// <param name="productDraft">ProductDraft</param>
 		/// <returns>Product</returns>
 		/// <see href="http://dev.commercetools.com/http-api-projects-products.html#create-product"/>
-        public Product CreateProductAsync(ProductDraft productDraft)
+        public Product CreateProductAsync(Client client)
 		{
-			if (productDraft.Name == null || productDraft.Name.IsEmpty())
-			{
-				throw new ArgumentException("name is required");
-			}
+            ProductDraft productDraft = Helper.GetTestProductDraft(_project, _productType.Id, _taxCategory.Id);
+            Task<Response<Product>> productTask = client.Products().CreateProductAsync(productDraft);
+            productTask.Wait();
 
-			if (productDraft.ProductType == null)
-			{
-				throw new ArgumentException("productType is required");
-			}
+            _product = productTask.Result.Result;
+            Console.WriteLine("A new product with id '{0}' is created.", _product.Id);
 
-			if (productDraft.Slug == null || productDraft.Slug.IsEmpty())
-			{
-				throw new ArgumentException("slug is required");
-			}
-
-			string payload = JsonConvert.SerializeObject(productDraft, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-
-            Product product = _client.PostAsync<Product>("/products", payload).Result.Result;
-            Console.WriteLine("A new product with id '{0}' is created.", product.Id);
-
-			return product;
+            return _product;
 		}
 
-        //TODO (optional)
-        /// <summary>
-        /// Udpates the product async: sets a key and changes the slug.
-        /// </summary>
-        /// <returns>The product async.</returns>
-        /// <param name="client">Client.</param>
-        private Product UdpateProductAsync(Client client)
-        {
-            SetKeyAction setKeyAction = new SetKeyAction();
-            setKeyAction.Key = Helper.GetRandomString(15);
-
-            LocalizedString newSlug = new LocalizedString();
-            foreach (string language in _project.Languages)
-            {
-                newSlug.SetValue(language, string.Concat("updated-product-", language, "-", Helper.GetRandomString(10)));
-            }
-            GenericAction changeSlugAction = new GenericAction("changeSlug");
-            changeSlugAction.SetProperty("slug", newSlug);
-            changeSlugAction.SetProperty("staged", true);
-
-            List<UpdateAction> actions = new List<UpdateAction>();
-            actions.Add(setKeyAction);
-            actions.Add(changeSlugAction);
-
-            Response<Product> response = client.Products().UpdateProductAsync(_product, actions).Result;
-            _product = response.Result;
-            Console.WriteLine("Product with id '{0}' has been updated.", _product.Id);
-            return _product;
-
-        }
-
-        //TODO
+        //TODO 2.4. Create a Catgeory (Optional)
         /// <summary>
         /// Creates the category.
         /// </summary>
@@ -205,18 +159,52 @@ namespace commercetools
             return _category;
         }
 
-        //TODO (optional)
+        //TODO 2.5. Update a Product
+        /// <summary>
+        /// Udpates the product async: sets a key and changes the slug.
+        /// </summary>
+        /// <returns>The product async.</returns>
+        /// <param name="client">Client.</param>
+        private Product UdpateProductAsync(Client client)
+        {
+            SetKeyAction setKeyAction = new SetKeyAction();
+            setKeyAction.Key = Helper.GetRandomString(15);
+
+            GenericAction changeSlugAction = new GenericAction("changeSlug");
+            LocalizedString newSlug = new LocalizedString();
+            foreach (string language in _project.Languages)
+            {
+                newSlug.SetValue(language, string.Concat("updated-product-", language, "-", Helper.GetRandomString(10)));
+            }
+            changeSlugAction.SetProperty("slug", newSlug);
+            //changeSlugAction.SetProperty("staged", true);
+
+            List<UpdateAction> actions = new List<UpdateAction>();
+            actions.Add(setKeyAction);
+            actions.Add(changeSlugAction);
+
+            Response<Product> response = client.Products()
+                                               .UpdateProductAsync(
+                                                   _product, 
+                                                   actions
+                                                  ).Result;
+            _product = response.Result;
+            Console.WriteLine("Product with id '{0}' has been updated.", _product.Id);
+            return _product;
+        }
+
+        //TODO 2.6. Add a category to a product (optional)
         /// <summary>
         /// Adds the product to category.
         /// </summary>
         /// <returns>The product.</returns>
         /// <param name="client">Client.</param>
         /// <param name="category">Category.</param>
-        private Product AddProductToCategory(Client client, Category category){
+        private Product AddProductToCategory(Client client){
             
             Reference categoryReference = new Reference();
             categoryReference.ReferenceType = Common.ReferenceType.Category;
-            categoryReference.Id = category.Id;
+            categoryReference.Id = _category.Id;
 
             AddToCategoryAction addToCategoryAction = new AddToCategoryAction(categoryReference);
 
@@ -225,44 +213,11 @@ namespace commercetools
             _product = productResponse.Result;
             Console.WriteLine("Product with ID {0} added to category with ID {1}.",
                               _product.Id,
-                              category.Id);
+                              _category.Id);
             return _product;
         }
 
-        //TODO (optional)
-        /// <summary>
-        /// Deletes the product.
-        /// </summary>
-        /// <param name="client">Client.</param>
-        /// <param name="product">Product.</param>
-        private void DeleteProduct(Client client, Product product)
-        {
-            Response<Product> response = client.Products().DeleteProductAsync(product.Id, product.Version).Result;
-            if (response.Success)
-            {
-                Console.WriteLine("Product with id '{0}' has been deleted successfully", product.Id);
-            }
-        }
-
-        //TODO
-        /// <summary>
-        /// Creates the cart.
-        /// </summary>
-        /// <returns>The cart.</returns>
-        /// <param name="client">Client.</param>
-        private Cart CreateCart(Client client)
-        {
-            CartDraft cartDraft = Helper.GetTestCartDraft(_project);
-            Task<Response<Cart>> cartTask = client.Carts().CreateCartAsync(cartDraft);
-            //cartTask.Wait();
-
-            _cart = cartTask.Result.Result;
-            Console.WriteLine("Created new cart with ID {0}.", _cart.Id);
-
-            return _cart;
-        }
-
-        //TODO
+        //TODO 2.7. Query all products
         /// <summary>
         /// Queries all products.
         /// </summary>
@@ -270,13 +225,13 @@ namespace commercetools
         /// <param name="client">Client.</param>
         private async Task QueryAllProducts(Client client)
         {
-            Response<ProductQueryResult> response = await client.Products().QueryProductsAsync();
+            Response<ProductQueryResult> response = await client.Products().QueryProductsAsync(limit:500);
 
             if (response.Success)
             {
                 ProductQueryResult productQueryResult = response.Result;
-                Console.WriteLine("Product count: {0}", productQueryResult.Results.Count);
-
+                Console.WriteLine("Product count: {0}", productQueryResult.Count);
+                Console.WriteLine("Product total: {0}", productQueryResult.Total);
                 Console.WriteLine("Queried products: ");
                 foreach (Product product in productQueryResult.Results)
                 {
@@ -294,7 +249,25 @@ namespace commercetools
             }
         }
 
-        //TODO
+        //TODO 3.1. Create a Cart
+        /// <summary>
+        /// Creates the cart.
+        /// </summary>
+        /// <returns>The cart.</returns>
+        /// <param name="client">Client.</param>
+        private Cart CreateCart(Client client)
+        {
+            CartDraft cartDraft = Helper.GetTestCartDraft(_project);
+            Task<Response<Cart>> cartTask = client.Carts().CreateCartAsync(cartDraft);
+            //cartTask.Wait();
+
+            _cart = cartTask.Result.Result;
+            Console.WriteLine("Created new cart with ID {0}.", _cart.Id);
+
+            return _cart;
+        }
+
+        //TODO 3.2. Add a line item to a cart
         /// <summary>
         /// Adds the line item to cart.
         /// </summary>
@@ -313,7 +286,7 @@ namespace commercetools
             return cartResponse.Result;
         }
 
-        //TODO (optional)
+        //TODO 3.3. Remove a line item from a cart (optional)
         /// <summary>
         /// Removes the line item from cart.
         /// </summary>
@@ -332,7 +305,7 @@ namespace commercetools
             return cartResponse.Result;
         }
 
-        //TODO
+        //TODO 3.4. Create an Order from a Cart
         /// <summary>
         /// Creates the order from cart.
         /// </summary>
@@ -348,7 +321,7 @@ namespace commercetools
             return _order;
         }
 
-        //TODO
+        //TODO 3.5. Finilize an order.
         /// <summary>
         /// Finalizes the order.
         /// </summary>
@@ -357,8 +330,10 @@ namespace commercetools
         private Order FinalizeOrder(Order order)
         {
             ChangeOrderStateAction changeOrderStateAction = new ChangeOrderStateAction(OrderState.Confirmed);
+
+            String newOrderNumber = DateTime.Now.ToString();
             GenericAction setOrderNumberAction = new GenericAction("setOrderNumber");
-            setOrderNumberAction["orderNumber"] = DateTime.Now.ToString();
+            setOrderNumberAction.SetProperty("orderNumber", newOrderNumber);
 
             List<UpdateAction> actions = new List<UpdateAction>(){
                 changeOrderStateAction, setOrderNumberAction
@@ -371,38 +346,57 @@ namespace commercetools
             return _order;
         }
 
-        //TODO
+        //TODO 3.6. Delete a cart
         /// <summary>
         /// Deletes the cart.
         /// </summary>
         /// <param name="cart">Cart.</param>
         private void DeleteCart(Cart cart)
         {
-            Response<Cart> responseCart = _client.Carts().DeleteCartAsync(cart).Result;
+            Response<Cart> responseCart = _client.Carts().DeleteCartAsync(cart.Id, cart.Version).Result;
             Console.WriteLine("Cart with ID {0} is deleted.", cart.Id);
         }
 
-        //TODO (optional)
+        //TODO 3.7. Delete a product(optional)
+        /// <summary>
+        /// Deletes the product.
+        /// </summary>
+        /// <param name="client">Client.</param>
+        /// <param name="product">Product.</param>
+        private void DeleteProduct(Client client, Product product)
+        {
+            Response<Product> response = client.Products().DeleteProductAsync(product.Id, product.Version).Result;
+            if (response.Success)
+            {
+                Console.WriteLine("Product with id '{0}' has been deleted successfully", product.Id);
+            }
+        }
+
+        //TODO Get Messages (optional)
         /// <summary>
         /// Gets the messages.
         /// </summary>
         /// <param name="client">Client.</param>
         private List<Message> GetMessages(Client client){
             Response<MessageQueryResult> response = client.Messages().QueryMessagesAsync().Result;
-            int? messageCount = response.Result.Count;
-
+            MessageQueryResult messageQueryResult = response.Result;
+            int? messageCount = messageQueryResult.Count;
             Console.WriteLine("Message count: {0}", messageCount);
 
             if (messageCount > 0)
             {
-                Console.WriteLine("Messages:");
+                Console.WriteLine("Messages: ");
                 int x = 0;
+
                 foreach (Message message in response.Result.Results)
                 {
                     if (message != null)
                     {
                         x++;
-                        Console.WriteLine("{0}: {1}", x, message.Type);
+                        Console.WriteLine("{0}: {1} \t {2}", x, message.Type, message.CreatedAt);
+                    }
+                    else{
+                        Console.WriteLine("null");
                     }
                 }
             }

@@ -1,10 +1,8 @@
 ﻿<Properties StartupConfiguration="{92F46B7C-334C-4ACF-893D-42CA98E1696E}|Default" NuGet.AddPackagesDialog.IncludePrerelease="True">
   <MonoDevelop.Ide.Workbench ActiveDocument="commercetools-dotnet-hello/Program.cs">
     <Files>
-      <File FileName="commercetools-dotnet-hello/Properties/AssemblyInfo.cs" Line="29" Column="1" />
-      <File FileName="commercetools-dotnet-hello/app.config" Line="6" Column="2" />
-      <File FileName="commercetools-dotnet-hello/Helper.cs" Line="30" Column="1" />
-      <File FileName="commercetools-dotnet-hello/Program.cs" Line="69" Column="10" />
+      <File FileName="commercetools-dotnet-hello/Helper.cs" Line="1" Column="1" />
+      <File FileName="commercetools-dotnet-hello/Program.cs" Line="401" Column="18" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />

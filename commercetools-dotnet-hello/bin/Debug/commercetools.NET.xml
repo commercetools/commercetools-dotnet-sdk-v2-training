@@ -4,6 +4,271 @@
         <name>commercetools.NET</name>
     </assembly>
     <members>
+        <member name="P:commercetools.CartDiscounts.CartDiscount.Id">
+            <summary>
+            The unique ID of the cart discount.
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscount.Version">
+            <summary>
+            The current version of the cart discount.
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscount.CreatedAt">
+            <summary>
+            Created At
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscount.LastModifiedAt">
+            <summary>
+            Last Modified At
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscount.Name">
+            <summary>
+            Name
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscount.Description">
+            <summary>
+            Description
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscount.Value">
+            <summary>
+            Value
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscount.CartPredicate">
+            <summary>
+            Cart Discount Predicate
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscount.Target">
+            <summary>
+            Cart Discount Target
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscount.SortOrder">
+            <summary>
+            Sort Order
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscount.IsActive">
+            <summary>
+            Only active discount can be applied to the cart.
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscount.ValidFrom">
+            <summary>
+            Valid from
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscount.ValidUntil">
+            <summary>
+            Valid until
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscount.RequiresDiscountCode">
+            <summary>
+            States whether the discount can only be used in a connection with a DiscountCode.
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscount.References">
+            <summary>
+            The platform will generate this array from the predicate. It contains the references of all the resources that are addressed in the predicate.
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscount.StackingMode">
+            <summary>
+            Specifies whether the application of this discount causes the following discounts to be ignored. Defaults to Stacking.
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscountDraft.Name">
+            <summary>
+            Name
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscountDraft.Description">
+            <summary>
+            Description
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscountDraft.Value">
+            <summary>
+            Value
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscountDraft.CartPredicate">
+            <summary>
+            Cart Discount Predicate
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscountDraft.Target">
+            <summary>
+            Cart Discount Target
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscountDraft.SortOrder">
+            <summary>
+            Sort Order
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscountDraft.IsActive">
+            <summary>
+            Only active discount can be applied to the cart. Defaults to true.
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscountDraft.ValidFrom">
+            <summary>
+            Valid from
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscountDraft.ValidUntil">
+            <summary>
+            Valid until
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscountDraft.RequiresDiscountCode">
+            <summary>
+            States whether the discount can only be used in a connection with a DiscountCode.
+            </summary>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscountDraft.StackingMode">
+            <summary>
+            Specifies whether the application of this discount causes the following discounts to be ignored. Defaults to Stacking.
+            </summary>
+        </member>
+        <member name="M:commercetools.CartDiscounts.CartDiscountManager.#ctor(commercetools.Common.Client)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="client">Client</param>
+        </member>
+        <member name="M:commercetools.CartDiscounts.CartDiscountManager.GetCartDiscountByIdAsync(System.String)">
+            <summary>
+            Gets a Cart Discount by its ID.
+            </summary>
+            <param name="cartDiscountId">CartDiscountId ID</param>
+            <see href="https://dev.commercetools.com/http-api-projects-cartDiscounts.html#get-cartdiscount-by-id"/>
+            <returns>CartDiscount</returns>
+        </member>
+        <member name="M:commercetools.CartDiscounts.CartDiscountManager.QueryCartDiscountsAsync(System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            Queries for CartDiscount.
+            </summary>
+            <param name="where">Where</param>
+            <param name="sort">Sort</param>
+            <param name="limit">Limit</param>
+            <param name="offset">Offset</param>
+            <returns>CartDiscountQueryResult</returns>
+            <see href="https://dev.commercetools.com/http-api-projects-cartDiscounts.html#query-cartdiscounts"/>
+        </member>
+        <member name="M:commercetools.CartDiscounts.CartDiscountManager.CreateCartDiscountAsync(commercetools.CartDiscounts.CartDiscountDraft)">
+            <summary>
+            Creates a new CartDiscount.
+            </summary>
+            <param name="cartDiscountDraft">CartDiscountDraft</param>
+            <returns>CartDiscount</returns>
+            <see href="https://dev.commercetools.com/http-api-projects-cartDiscounts.html#create-a-cartdiscount"/>
+        </member>
+        <member name="M:commercetools.CartDiscounts.CartDiscountManager.DeleteCartDiscountAsync(commercetools.CartDiscounts.CartDiscount)">
+            <summary>
+            Removes a CartDiscount.
+            </summary>
+            <param name="cartDiscount">CartDiscount</param>
+            <returns>CartDiscount</returns>
+            <see href="https://dev.commercetools.com/http-api-projects-cartDiscounts.html#delete-cartdiscount"/>
+        </member>
+        <member name="M:commercetools.CartDiscounts.CartDiscountManager.DeleteCartDiscountAsync(System.String,System.Int32)">
+            <summary>
+            Removes a CartDiscount.
+            </summary>
+            <param name="cartDiscountId">CartDiscount ID</param>
+            <param name="version">CartDiscount version</param>
+            <returns>CartDiscount</returns>
+            <see href="https://dev.commercetools.com/http-api-projects-cartDiscounts.html#delete-cartdiscount"/>
+        </member>
+        <member name="M:commercetools.CartDiscounts.CartDiscountManager.UpdateCartDiscountAsync(commercetools.CartDiscounts.CartDiscount,commercetools.Common.UpdateAction)">
+            <summary>
+            Updates a cart discount.
+            </summary>
+            <param name="cartDiscount">CartDiscount</param>
+            <param name="action">The update action to be performed on the cart discount.</param>
+            <returns>CartDiscount</returns>
+            <see href="https://dev.commercetools.com/http-api-projects-cartDiscounts.html#update-cartdiscount"/>
+        </member>
+        <member name="M:commercetools.CartDiscounts.CartDiscountManager.UpdateCartDiscountAsync(commercetools.CartDiscounts.CartDiscount,System.Collections.Generic.List{commercetools.Common.UpdateAction})">
+            <summary>
+            Updates a cart discount.
+            </summary>
+            <param name="cartDiscount">CartDiscount</param>
+            <param name="actions">The list of update actions to be performed on the cart discount.</param>
+            <returns>CartDiscount</returns>
+            <see href="https://dev.commercetools.com/http-api-projects-cartDiscounts.html#update-cartdiscount"/>
+        </member>
+        <member name="M:commercetools.CartDiscounts.CartDiscountManager.UpdateCartDiscountAsync(System.String,System.Int32,System.Collections.Generic.List{commercetools.Common.UpdateAction})">
+            <summary>
+            Updates a cart discount.
+            </summary>
+            <param name="cartDiscountId">ID of the cart discount</param>
+            <param name="version">The expected version of the cart discount on which the changes should be applied.</param>
+            <param name="actions">The list of update actions to be performed on the cart discount.</param>
+            <returns>CartDiscount</returns>
+            <see href="https://dev.commercetools.com/http-api-projects-cartDiscounts.html#update-cartdiscount"/>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscountQueryResult.Results">
+            <summary>
+            Results
+            </summary>
+        </member>
+        <member name="M:commercetools.CartDiscounts.CartDiscountQueryResult.#ctor(System.Object)">
+            <summary>
+            Initializes this instance with JSON data from an API response.
+            </summary>
+            <param name="data">JSON object</param>
+        </member>
+        <member name="P:commercetools.CartDiscounts.CartDiscountTarget.Predicate">
+            <summary>
+            A valid lineitem/CustomLineItem target predicate.
+            The discount will be applied to lineitems/customlineitems that are matched by the predicate.
+            </summary>
+        </member>
+        <member name="M:commercetools.CartDiscounts.CartDiscountValueFactory.Create(System.Object)">
+            <summary>
+            Creates a CartDiscountValue using JSON data from an API response.
+            </summary>
+            <param name="data">JSON object</param>
+            <returns>A object derived from CartDiscountValue, or null</returns>
+        </member>
+        <member name="T:commercetools.CartDiscounts.StackingMode">
+            <summary>
+            Describes how this discount interacts with other discounts.
+            </summary>
+        </member>
+        <member name="M:commercetools.CartDiscounts.Extensions.CartDiscounts(commercetools.Common.Client)">
+            <summary>
+            Creates an instance of the CartDiscountManager.
+            </summary>
+            <returns>CartDiscountManager</returns>
+        </member>
+        <member name="T:commercetools.CartDiscounts.UpdateActions.ChangeStackingModeAction">
+            <summary>
+            ChangeStackingModeAction
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-cartDiscounts.html#change-stacking-mode"/>
+        </member>
+        <member name="P:commercetools.CartDiscounts.UpdateActions.ChangeStackingModeAction.StackingMode">
+            <summary>
+            StackingMode
+            </summary>
+        </member>
+        <member name="M:commercetools.CartDiscounts.UpdateActions.ChangeStackingModeAction.#ctor(commercetools.CartDiscounts.StackingMode)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="stackingMode">StackingMode</param>
+        </member>
         <member name="T:commercetools.Carts.ExternalLineItemTotalPrice">
             <summary>
             ExternalLineItemTotalPrice
@@ -129,6 +394,16 @@
             An external tax rate can be set if the cart has the External TaxMode.
             </summary>
         </member>
+        <member name="P:commercetools.Carts.UpdateActions.AddLineItemAction.ExternalPrice">
+            <summary>
+            Sets the line item price to the given value and sets the line item priceMode to ExternalPrice LineItemPriceMode
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.UpdateActions.AddLineItemAction.ExternalTotalPrice">
+            <summary>
+            Sets the line item price and totalPrice to the given values and sets the line item priceMode to ExternalPrice LineItemPriceMode
+            </summary>
+        </member>
         <member name="P:commercetools.Carts.UpdateActions.AddLineItemAction.Custom">
             <summary>
             The custom fields.
@@ -139,7 +414,7 @@
             Constructor.
             </summary>
             <param name="productId">Id of an existing Product.</param>
-            <param name="quantity">Number</param>
+            <param name="variantId">Id of an existing ProductVariant in the product</param>
         </member>
         <member name="T:commercetools.Carts.UpdateActions.AddPaymentAction">
             <summary>
@@ -161,6 +436,39 @@
             </summary>
             <param name="payment">Reference to a Payment.</param>
         </member>
+        <member name="T:commercetools.Carts.UpdateActions.AddShoppingListAction">
+            <summary>
+            Adds all LineItems of a ShoppingList to the cart.
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-carts.html#add-shopping-list"/>
+        </member>
+        <member name="P:commercetools.Carts.UpdateActions.AddShoppingListAction.ShoppingList">
+            <summary>
+            ResourceIdentifier of a ShoppingList
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.UpdateActions.AddShoppingListAction.SupplyChannel">
+            <summary>
+            ResourceIdentifier of a Channel 
+            </summary>
+            <remarks>
+            If present a Reference to the channel will be set for all LineItems that are added to the cart. The channel must have the InventorySupply role.
+            </remarks>
+        </member>
+        <member name="P:commercetools.Carts.UpdateActions.AddShoppingListAction.DistributionChannel">
+            <summary>
+            ResourceIdentifier of a Channel 
+            </summary>
+            <remarks>
+            If present a Reference to the channel will be set for all LineItems that are added to the cart. The channel must have the role ProductDistribution.
+            </remarks>
+        </member>
+        <member name="M:commercetools.Carts.UpdateActions.AddShoppingListAction.#ctor(commercetools.Common.ResourceIdentifier)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="shoppingList">ResourceIdentifier of a ShoppingList</param>
+        </member>
         <member name="T:commercetools.Carts.UpdateActions.ChangeCustomLineItemMoneyAction">
             <summary>
             Sets the money of the given CustomLineItem.
@@ -181,7 +489,7 @@
             <summary>
             Constructor.
             </summary>
-            <param name="lineItemId">ID of an existing CustomLineItem in the cart.</param>
+            <param name="customLineItemId">ID of an existing CustomLineItem in the cart.</param>
             <param name="money">The new money.</param>
         </member>
         <member name="T:commercetools.Carts.UpdateActions.ChangeCustomLineItemQuantityAction">
@@ -227,6 +535,16 @@
         <member name="P:commercetools.Carts.UpdateActions.ChangeLineItemQuantityAction.Quantity">
             <summary>
             Number
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.UpdateActions.ChangeLineItemQuantityAction.ExternalPrice">
+            <summary>
+            Sets the line item price to the given value and sets the line item priceMode to ExternalPrice LineItemPriceMode.
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.UpdateActions.ChangeLineItemQuantityAction.ExternalTotalPrice">
+            <summary>
+            Sets the line item price and totalPrice to the given values and sets the line item priceMode to ExternalTotal LineItemPriceMode.
             </summary>
         </member>
         <member name="M:commercetools.Carts.UpdateActions.ChangeLineItemQuantityAction.#ctor(System.String,System.Int32)">
@@ -583,6 +901,31 @@
             Constructor.
             </summary>
         </member>
+        <member name="T:commercetools.Carts.UpdateActions.SetDeleteDaysAfterLastModificationAction">
+            <summary>
+            Sets deleteDaysAfterLastModification. 
+            </summary>
+            <remarks>
+            The cart will be deleted automatically if it hasn’t been modified for the specified amount of days and it is in the Active CartState. If a ChangeSubscription for carts exists, a ResourceDeleted notification will be sent.
+            </remarks>
+            <see href="https://dev.commercetools.com/http-api-projects-carts.html#set-deletedaysafterlastmodification-beta"/>
+        </member>
+        <member name="P:commercetools.Carts.UpdateActions.SetDeleteDaysAfterLastModificationAction.DeleteDaysAfterLastModification">
+            <summary>
+            Delete days after last modification
+            </summary>
+        </member>
+        <member name="M:commercetools.Carts.UpdateActions.SetDeleteDaysAfterLastModificationAction.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:commercetools.Carts.UpdateActions.SetDeleteDaysAfterLastModificationAction.#ctor(System.Nullable{System.Int32})">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="deleteDaysAfterLastModification">The cart will be deleted automatically if it hasn’t been modified for the specified amount of days and it is in the Active CartState. If a ChangeSubscription for carts exists, a ResourceDeleted notification will be sent.</param>
+        </member>
         <member name="T:commercetools.Carts.UpdateActions.SetLineItemCustomFieldAction">
             <summary>
             This action sets, overwrites or removes any existing custom field for an existing LineItem.
@@ -643,6 +986,31 @@
             Constructor.
             </summary>
             <param name="lineItemId">Line item ID</param>
+        </member>
+        <member name="T:commercetools.Carts.UpdateActions.SetLineItemPriceAction">
+            <summary>
+            Sets the price of a line item and changes the priceMode of the line item to ExternalPrice LineItemPriceMode.
+            </summary>
+            <remarks>
+            If the price mode of the line item is ExternalPrice and no externalPrice is given, the external price is unset and the priceMode is set to Platform.
+            </remarks>
+            <see href="https://dev.commercetools.com/http-api-projects-carts.html#set-lineitem-price"/>
+        </member>
+        <member name="P:commercetools.Carts.UpdateActions.SetLineItemPriceAction.LineItemId">
+            <summary>
+            ID of the LineItem.
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.UpdateActions.SetLineItemPriceAction.ExternalPrice">
+            <summary>
+            External Price
+            </summary>
+        </member>
+        <member name="M:commercetools.Carts.UpdateActions.SetLineItemPriceAction.#ctor(System.String)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="lineItemId">Id of an existing line item.</param>
         </member>
         <member name="T:commercetools.Carts.UpdateActions.SetLineItemTaxRateAction">
             <summary>
@@ -807,16 +1175,6 @@
             The current version of the cart.
             </summary>
         </member>
-        <member name="P:commercetools.Carts.Cart.CreatedAt">
-            <summary>
-            Created At
-            </summary>
-        </member>
-        <member name="P:commercetools.Carts.Cart.LastModifiedAt">
-            <summary>
-            Last Modified At
-            </summary>
-        </member>
         <member name="P:commercetools.Carts.Cart.CustomerId">
             <summary>
             Customer Id
@@ -911,6 +1269,11 @@
             List of DiscountCodeInfo
             </summary>
         </member>
+        <member name="P:commercetools.Carts.Cart.RefusedGifts">
+            <summary>
+            Automatically filled when a line item with LineItemMode GiftLineItem is removed from the cart.
+            </summary>
+        </member>
         <member name="P:commercetools.Carts.Cart.Custom">
             <summary>
             The custom fields.
@@ -924,6 +1287,22 @@
         <member name="P:commercetools.Carts.Cart.Locale">
             <summary>
             String conforming to IETF language tag.
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.Cart.DeleteDaysAfterLastModification">
+            <summary>
+            The cart will be deleted automatically if it hasn’t been modified 
+            for the specified amount of days and it is in the Active CartState.
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.Cart.CreatedAt">
+            <summary>
+            Created At
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.Cart.LastModifiedAt">
+            <summary>
+            Last Modified At
             </summary>
         </member>
         <member name="M:commercetools.Carts.Cart.#ctor(System.Object)">
@@ -965,6 +1344,14 @@
             <summary>
             Customer email
             </summary>
+        </member>
+        <member name="P:commercetools.Carts.CartDraft.CustomerGroup">
+            <summary>
+            Reference to a CustomerGroup
+            </summary>
+            <remarks>
+            Will be set automatically when the customerId is set and the customer is a member of a customer group. Can be set explicitly when no customerId is present.
+            </remarks>
         </member>
         <member name="P:commercetools.Carts.CartDraft.AnonymousId">
             <summary>
@@ -1029,6 +1416,12 @@
         <member name="P:commercetools.Carts.CartDraft.Locale">
             <summary>
             Must be one of the languages supported for this project.
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.CartDraft.DeleteDaysAfterLastModification">
+            <summary>
+            The cart will be deleted automatically if it hasn’t been modified for the specified amount of days 
+            and it is in the Active CartState. If a ChangeSubscription for carts exists, a ResourceDeleted notification will be sent.
             </summary>
         </member>
         <member name="M:commercetools.Carts.CartDraft.#ctor(System.String)">
@@ -1160,6 +1553,72 @@
             </summary>
             <see href="http://dev.commercetools.com/http-api-projects-carts.html#customlineitem"/>
         </member>
+        <member name="P:commercetools.Carts.CustomLineItem.Id">
+            <summary>
+            The unique ID of this CustomLineItem.
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.CustomLineItem.Name">
+            <summary>
+            The name of this CustomLineItem.
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.CustomLineItem.Money">
+            <summary>
+            The cost to add to the cart. The amount can be negative.
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.CustomLineItem.TaxedPrice">
+            <summary>
+            Set once the taxRate is set.
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.CustomLineItem.TotalPrice">
+            <summary>
+            The total price of this custom line item.
+            </summary>
+            <remarks>
+            If custom line item is discounted, then the totalPrice would be the discounted custom line item price multiplied by quantity. Otherwise a total price is just a money multiplied by the quantity. totalPrice may or may not include the taxes: it depends on the taxRate.includedInPrice property.
+            </remarks>
+        </member>
+        <member name="P:commercetools.Carts.CustomLineItem.Slug">
+            <summary>
+            A unique String in the cart to identify this CustomLineItem.
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.CustomLineItem.Quantity">
+            <summary>
+            Quantity
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.CustomLineItem.State">
+            <summary>
+            Item states
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.CustomLineItem.TaxCategory">
+            <summary>
+            Reference to a TaxCategory
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.CustomLineItem.TaxRate">
+            <summary>
+            Will be set automatically in the Platform TaxMode once the shipping address is set is set. 
+            </summary>
+            <remarks>
+            For the External tax mode the tax rate has to be set explicitly with the ExternalTaxRateDraft.
+            </remarks>
+        </member>
+        <member name="P:commercetools.Carts.CustomLineItem.DiscountedPricePerQuantity">
+            <summary>
+            List of of DiscountedLineItemPriceForQuantity
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.CustomLineItem.Custom">
+            <summary>
+            Custom fields
+            </summary>
+        </member>
         <member name="M:commercetools.Carts.CustomLineItem.#ctor(System.Object)">
             <summary>
             Initializes this instance with JSON data from an API response.
@@ -1184,6 +1643,41 @@
             API representation for creating a new CustomLineItem.
             </summary>
             <see href="http://dev.commercetools.com/http-api-projects-carts.html#customlineitemdraft"/>
+        </member>
+        <member name="P:commercetools.Carts.CustomLineItemDraft.Name">
+            <summary>
+            Name
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.CustomLineItemDraft.Quantity">
+            <summary>
+            Quantity
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.CustomLineItemDraft.Money">
+            <summary>
+            Money
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.CustomLineItemDraft.Slug">
+            <summary>
+            Slug
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.CustomLineItemDraft.TaxCategory">
+            <summary>
+            The given tax category will be used to select a tax rate when a cart has the TaxMode Platform.
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.CustomLineItemDraft.ExternalTaxRate">
+            <summary>
+            An external tax rate can be set if the cart has the External TaxMode.
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.CustomLineItemDraft.Custom">
+            <summary>
+            The custom fields.
+            </summary>
         </member>
         <member name="M:commercetools.Carts.CustomLineItemDraft.#ctor(commercetools.Common.LocalizedString)">
             <summary>
@@ -1255,6 +1749,12 @@
             InventoryMode enumeration.
             </summary>
             <see href="http://dev.commercetools.com/http-api-projects-carts.html#inventorymode"/>
+        </member>
+        <member name="T:commercetools.Carts.LineItemMode">
+            <summary>
+            LineItemMode enumeration.
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-carts.html#lineitemmode"/>
         </member>
         <member name="T:commercetools.Carts.LineItemPriceMode">
             <summary>
@@ -1337,6 +1837,11 @@
             Id of an existing ProductVariant in the product.
             </summary>
         </member>
+        <member name="P:commercetools.Carts.LineItemDraft.Sku">
+            <summary>
+            SKU of an existing ProductVariant.
+            </summary>
+        </member>
         <member name="P:commercetools.Carts.LineItemDraft.Quantity">
             <summary>
             Quantity - Defaults to 1
@@ -1361,6 +1866,16 @@
         <member name="P:commercetools.Carts.LineItemDraft.ExternalTaxRate">
             <summary>
             An external tax rate can be set if the cart has the External TaxMode.
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.LineItemDraft.ExternalPrice">
+            <summary>
+            Sets the line item price to the given value and sets the line item priceMode to ExternalPrice LineItemPriceMode.
+            </summary>
+        </member>
+        <member name="P:commercetools.Carts.LineItemDraft.ExternalTotalPrice">
+            <summary>
+            Sets the line item price and totalPrice to the given values and sets the line item priceMode to ExternalTotal LineItemPriceMode.
             </summary>
         </member>
         <member name="P:commercetools.Carts.LineItemDraft.Custom">
@@ -1992,7 +2507,7 @@
             A set of configuration variables needed for making requests with the client.
             </summary>
         </member>
-        <member name="M:commercetools.Common.Configuration.#ctor(System.String,System.String,System.String,System.String,System.String,commercetools.Common.ProjectScope)">
+        <member name="M:commercetools.Common.Configuration.#ctor(System.String,System.String,System.String,System.String,System.String,commercetools.Common.ProjectScope,System.Int32,System.Int32)">
             <summary>
             Constructor
             </summary>
@@ -2002,6 +2517,8 @@
             <param name="clientID"></param>
             <param name="clientSecret"></param>
             <param name="scope"></param>
+            <param name="internalServerErrorRetries">Used to specify amount of retries when an internal server error occurs</param>
+            <param name="internalServerErrorRetryInterval">Used to specify the amount of time in milliseconds to wait between retries when an internal server error occurs</param>
         </member>
         <member name="T:commercetools.Common.UpdateActions.GenericAction">
             <summary>
@@ -2012,6 +2529,12 @@
             <summary>
             List of properties.
             </summary>
+        </member>
+        <member name="P:commercetools.Common.UpdateActions.GenericAction.Item(System.String)">
+            <summary>
+            Gets or sets the value for a property.
+            </summary>
+            <param name="propertyName">Property name</param>
         </member>
         <member name="M:commercetools.Common.UpdateActions.GenericAction.#ctor(System.String)">
             <summary>
@@ -2497,6 +3020,17 @@
             </summary>
             <see href="http://dev.commercetools.com/http-api-types.html#localizedstring"/>
         </member>
+        <member name="P:commercetools.Common.LocalizedString.Values">
+            <summary>
+            Values
+            </summary>
+        </member>
+        <member name="P:commercetools.Common.LocalizedString.Item(System.String)">
+            <summary>
+            Gets or sets the value for a language.
+            </summary>
+            <param name="language">Language in the format of an IETF language tag</param>
+        </member>
         <member name="M:commercetools.Common.LocalizedString.#ctor">
             <summary>
             Constructor.
@@ -2513,14 +3047,14 @@
             Sets a value for a particular language.
             </summary>
             <remarks>If a previous value has been set for the language, it will be overwritten</remarks>
-            <param name="language">Language</param>
+            <param name="language">Language in the format of an IETF language tag</param>
             <param name="value">Value</param>
         </member>
         <member name="M:commercetools.Common.LocalizedString.GetValue(System.String)">
             <summary>
             Gets the value for a language.
             </summary>
-            <param name="language">Language</param>
+            <param name="language">Language in the format of an IETF language tag</param>
             <returns>Value, or an empty string if not set</returns>
         </member>
         <member name="M:commercetools.Common.LocalizedString.IsEmpty">
@@ -3306,6 +3840,241 @@
             Constructor.
             </summary>
         </member>
+        <member name="P:commercetools.DiscountCodes.DiscountCode.Id">
+            <summary>
+            The unique ID of the discount code.
+            </summary>
+        </member>
+        <member name="P:commercetools.DiscountCodes.DiscountCode.Version">
+            <summary>
+            The current version of the discount code.
+            </summary>
+        </member>
+        <member name="P:commercetools.DiscountCodes.DiscountCode.CreatedAt">
+            <summary>
+            Created At
+            </summary>
+        </member>
+        <member name="P:commercetools.DiscountCodes.DiscountCode.LastModifiedAt">
+            <summary>
+            Last Modified At
+            </summary>
+        </member>
+        <member name="P:commercetools.DiscountCodes.DiscountCode.Name">
+            <summary>
+            Name
+            </summary>
+        </member>
+        <member name="P:commercetools.DiscountCodes.DiscountCode.Description">
+            <summary>
+            Description
+            </summary>
+        </member>
+        <member name="P:commercetools.DiscountCodes.DiscountCode.CartPredicate">
+            <summary>
+            Discount code Predicate.The discount code can only be applied to carts that match this predicate.
+            </summary>
+        </member>
+        <member name="P:commercetools.DiscountCodes.DiscountCode.CartDiscounts">
+            <summary>
+            Array of Reference to a CartDiscount.
+            </summary>
+        </member>
+        <member name="P:commercetools.DiscountCodes.DiscountCode.Code">
+            <summary>
+            Unique identifier of this discount code. 
+            This value is added to the cart to enable the related cart discounts in the cart.
+            </summary>
+        </member>
+        <member name="P:commercetools.DiscountCodes.DiscountCode.References">
+            <summary>
+            The platform will generate this array from the cartPredicate. 
+            It contains the references of all the resources that are addressed in the predicate.
+            </summary>
+        </member>
+        <member name="P:commercetools.DiscountCodes.DiscountCode.Custom">
+            <summary>
+            The custom fields.
+            </summary>
+        </member>
+        <member name="P:commercetools.DiscountCodes.DiscountCodeDraft.Name">
+            <summary>
+            Name
+            </summary>
+        </member>
+        <member name="P:commercetools.DiscountCodes.DiscountCodeDraft.Description">
+            <summary>
+            Description
+            </summary>
+        </member>
+        <member name="P:commercetools.DiscountCodes.DiscountCodeDraft.CartPredicate">
+            <summary>
+            Cart Discount Predicate
+            </summary>
+        </member>
+        <member name="P:commercetools.DiscountCodes.DiscountCodeDraft.CartDiscounts">
+            <summary>
+            Array of Reference to a CartDiscount.
+            </summary>
+        </member>
+        <member name="P:commercetools.DiscountCodes.DiscountCodeDraft.Code">
+            <summary>
+            Unique identifier of this discount code. 
+            This value is added to the cart to enable the related cart discounts in the cart.
+            </summary>
+        </member>
+        <member name="P:commercetools.DiscountCodes.DiscountCodeDraft.Custom">
+            <summary>
+            The custom fields.
+            </summary>
+        </member>
+        <member name="M:commercetools.DiscountCodes.DiscountCodeManager.#ctor(commercetools.Common.Client)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="client">Client</param>
+        </member>
+        <member name="M:commercetools.DiscountCodes.DiscountCodeManager.GetDiscountCodeByIdAsync(System.String)">
+            <summary>
+            Gets a Discount Code by its ID.
+            </summary>
+            <param name="discountCodeId">Discount Code ID</param>
+            <see href="https://dev.commercetools.com/http-api-projects-discountCodes.html#get-discountcode-by-id"/>
+            <returns>DiscountCode</returns>
+        </member>
+        <member name="M:commercetools.DiscountCodes.DiscountCodeManager.QueryDiscountCodesAsync(System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            Queries for DiscountCode.
+            </summary>
+            <param name="where">Where</param>
+            <param name="sort">Sort</param>
+            <param name="limit">Limit</param>
+            <param name="offset">Offset</param>
+            <returns>DiscountCodeQueryResult</returns>
+            <see href="https://dev.commercetools.com/http-api-projects-discountCodes.html#query-discountcodes"/>
+        </member>
+        <member name="M:commercetools.DiscountCodes.DiscountCodeManager.CreateDiscountCodeAsync(commercetools.DiscountCodes.DiscountCodeDraft)">
+            <summary>
+            Creates a new Discount Code.
+            </summary>
+            <param name="discountCodeDraft">DiscountCodeDraft</param>
+            <returns>DiscountCode</returns>
+            <see href="https://dev.commercetools.com/http-api-projects-discountCodes.html#create-a-discountcode"/>
+        </member>
+        <member name="M:commercetools.DiscountCodes.DiscountCodeManager.DeleteDiscountCodeAsync(commercetools.DiscountCodes.DiscountCode)">
+            <summary>
+            Removes a Discount Code.
+            </summary>
+            <param name="discountCode">DiscountCode</param>
+            <returns>DiscountCode</returns>
+            <see href="https://dev.commercetools.com/http-api-projects-discountCodes.html#delete-discountcode"/>
+        </member>
+        <member name="M:commercetools.DiscountCodes.DiscountCodeManager.DeleteDiscountCodeAsync(System.String,System.Int32)">
+            <summary>
+            Removes a DiscountCode.
+            </summary>
+            <param name="discountCartId">DiscountCode ID</param>
+            <param name="version">DiscountCode version</param>
+            <returns>DiscountCode</returns>
+            <see href="https://dev.commercetools.com/http-api-projects-discountCodes.html#delete-discountcode"/>
+        </member>
+        <member name="M:commercetools.DiscountCodes.DiscountCodeManager.UpdateDiscountCodeAsync(commercetools.DiscountCodes.DiscountCode,commercetools.Common.UpdateAction)">
+            <summary>
+            Updates a Discount Code.
+            </summary>
+            <param name="discountCode">DiscountCode</param>
+            <param name="action">The update action to be performed on the discount code.</param>
+            <returns>DiscountCode</returns>
+            <see href="https://dev.commercetools.com/http-api-projects-discountCodes.html#update-discountcode"/>
+        </member>
+        <member name="M:commercetools.DiscountCodes.DiscountCodeManager.UpdateDiscountCodeAsync(commercetools.DiscountCodes.DiscountCode,System.Collections.Generic.List{commercetools.Common.UpdateAction})">
+            <summary>
+            Updates a Discount Code.
+            </summary>
+            <param name="discountCode">DiscountCode</param>
+            <param name="actions">The list of update actions to be performed on the cart discount.</param>
+            <returns>DiscountCode</returns>
+            <see href="https://dev.commercetools.com/http-api-projects-discountCodes.html#update-discountcode"/>
+        </member>
+        <member name="M:commercetools.DiscountCodes.DiscountCodeManager.UpdateDiscountCodeAsync(System.String,System.Int32,System.Collections.Generic.List{commercetools.Common.UpdateAction})">
+            <summary>
+            Updates a DiscountCode.
+            </summary>
+            <param name="discountCodeId">ID of the DiscountCode</param>
+            <param name="version">The expected version of the discount code on which the changes should be applied.</param>
+            <param name="actions">The list of update actions to be performed on the discount code.</param>
+            <returns>DiscountCode</returns>
+            <see href="https://dev.commercetools.com/http-api-projects-discountCodes.html#update-discountcode"/>
+        </member>
+        <member name="P:commercetools.DiscountCodes.DiscountCodeQueryResult.Results">
+            <summary>
+            Results
+            </summary>
+        </member>
+        <member name="M:commercetools.DiscountCodes.DiscountCodeQueryResult.#ctor(System.Object)">
+            <summary>
+            Initializes this instance with JSON data from an API response.
+            </summary>
+            <param name="data">JSON object</param>
+        </member>
+        <member name="M:commercetools.DiscountCodes.Extensions.DiscountCodes(commercetools.Common.Client)">
+            <summary>
+            Creates an instance of the CartDiscountManager.
+            </summary>
+            <returns>CartDiscountManager</returns>
+        </member>
+        <member name="T:commercetools.DiscountCodes.UpdateActions.SetCustomFieldAction">
+            <summary>
+            SetCustomFieldAction
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-discountCodes.html#set-custom-field"/>
+        </member>
+        <member name="P:commercetools.DiscountCodes.UpdateActions.SetCustomFieldAction.Name">
+            <summary>
+            Field name
+            </summary>
+        </member>
+        <member name="P:commercetools.DiscountCodes.UpdateActions.SetCustomFieldAction.Value">
+            <summary>
+            Field value
+            </summary>
+            <remarks>
+            If absent or null, this field is removed if it exists.
+            </remarks>
+        </member>
+        <member name="M:commercetools.DiscountCodes.UpdateActions.SetCustomFieldAction.#ctor(System.String)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="name">Field name</param>
+        </member>
+        <member name="T:commercetools.DiscountCodes.UpdateActions.SetCustomTypeAction">
+            <summary>
+            This action sets or removes the custom type for an existing discount code.
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-discountCodes.html#set-custom-type"/>
+        </member>
+        <member name="P:commercetools.DiscountCodes.UpdateActions.SetCustomTypeAction.Type">
+            <summary>
+            ResourceIdentifier to a Type
+            </summary>
+            <remarks>
+            If set, the custom type is set to this new value. If absent, the custom type and any existing custom fields are removed.
+            </remarks>
+        </member>
+        <member name="P:commercetools.DiscountCodes.UpdateActions.SetCustomTypeAction.Fields">
+            <summary>
+            A valid JSON object, based on the FieldDefinitions of the Type 
+            </summary>
+            <remarks>
+            If set, the custom fields are set to this new value.
+            </remarks>
+        </member>
+        <member name="M:commercetools.DiscountCodes.UpdateActions.SetCustomTypeAction.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
         <member name="T:commercetools.Messages.CategoryCreatedMessage">
             <summary>
             This message is the result of the create category request. 
@@ -3463,10 +4232,10 @@
         </member>
         <member name="M:commercetools.Messages.MessageFactory.Create(System.Object)">
             <summary>
-            Creates an AttributeType using JSON data from an API response.
+            Creates a Message using JSON data from an API response.
             </summary>
             <param name="data">JSON object</param>
-            <returns>A object derived from AttributeType, or null</returns>
+            <returns>A object derived from Message, or null</returns>
         </member>
         <member name="T:commercetools.Messages.MessageManager">
             <summary>
@@ -3779,6 +4548,55 @@
             </summary>
             <param name="data">JSON object</param>
         </member>
+        <member name="T:commercetools.Messages.ProductDeletedMessage">
+            <summary>
+            This message is the result of the delete Product command.
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-messages.html#productdeleted-message"/>
+        </member>
+        <member name="P:commercetools.Messages.ProductDeletedMessage.RemovedImageUrls">
+            <summary>
+            List of images which were removed with this action.
+            </summary>
+        </member>
+        <member name="P:commercetools.Messages.ProductDeletedMessage.CurrentProjection">
+            <summary>
+            The current projection of the deleted product.
+            </summary>
+        </member>
+        <member name="M:commercetools.Messages.ProductDeletedMessage.#ctor(System.Object)">
+            <summary>
+            Initializes this instance with JSON data from an API response.
+            </summary>
+            <param name="data">JSON object</param>
+        </member>
+        <member name="T:commercetools.Messages.ProductImageAddedMessage">
+            <summary>
+            This message is the result of the addExternalImage update action and the upload of an image.
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-messages.html#productimageadded-message"/>
+        </member>
+        <member name="P:commercetools.Messages.ProductImageAddedMessage.VariantId">
+            <summary>
+            The variantId to identify the variant for which the image was added.
+            </summary>
+        </member>
+        <member name="P:commercetools.Messages.ProductImageAddedMessage.Image">
+            <summary>
+            The image that was added.
+            </summary>
+        </member>
+        <member name="P:commercetools.Messages.ProductImageAddedMessage.Staged">
+            <summary>
+            True if it was applied only to staged.
+            </summary>
+        </member>
+        <member name="M:commercetools.Messages.ProductImageAddedMessage.#ctor(System.Object)">
+            <summary>
+            Initializes this instance with JSON data from an API response.
+            </summary>
+            <param name="data">JSON object</param>
+        </member>
         <member name="T:commercetools.Messages.ProductPublishedMessage">
             <summary>
             This message is the result of the publish update action. 
@@ -3791,6 +4609,23 @@
             </summary>
         </member>
         <member name="M:commercetools.Messages.ProductPublishedMessage.#ctor(System.Object)">
+            <summary>
+            Initializes this instance with JSON data from an API response.
+            </summary>
+            <param name="data">JSON object</param>
+        </member>
+        <member name="T:commercetools.Messages.ProductRevertedStagedChangesMessage">
+            <summary>
+            This message is the result of the revertStagedChanges update action. 
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-messages.html#productrevertedstagedchanges-message"/>
+        </member>
+        <member name="P:commercetools.Messages.ProductRevertedStagedChangesMessage.RemovedImageUrls">
+            <summary>
+            List of images which were removed with this action.
+            </summary>
+        </member>
+        <member name="M:commercetools.Messages.ProductRevertedStagedChangesMessage.#ctor(System.Object)">
             <summary>
             Initializes this instance with JSON data from an API response.
             </summary>
@@ -3842,6 +4677,28 @@
             <see href="http://dev.commercetools.com/http-api-projects-messages.html#productunpublished-message"/>
         </member>
         <member name="M:commercetools.Messages.ProductUnpublishedMessage.#ctor(System.Object)">
+            <summary>
+            Initializes this instance with JSON data from an API response.
+            </summary>
+            <param name="data">JSON object</param>
+        </member>
+        <member name="T:commercetools.Messages.ProductVariantDeletedMessage">
+            <summary>
+            This message is the result of the removeProductvariant update action.
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-messages.html#productvariantdeleted-message"/>
+        </member>
+        <member name="P:commercetools.Messages.ProductVariantDeletedMessage.RemovedImageUrls">
+            <summary>
+            List of images which were removed with this action.
+            </summary>
+        </member>
+        <member name="P:commercetools.Messages.ProductVariantDeletedMessage.Variant">
+            <summary>
+            The variant which was deleted.
+            </summary>
+        </member>
+        <member name="M:commercetools.Messages.ProductVariantDeletedMessage.#ctor(System.Object)">
             <summary>
             Initializes this instance with JSON data from an API response.
             </summary>
@@ -4631,6 +5488,12 @@
             </summary>
             <see href="http://dev.commercetools.com/http-api-projects-orders.html#orderfromcartdraft"/>
         </member>
+        <member name="M:commercetools.Orders.OrderFromCartDraft.#ctor(commercetools.Carts.Cart)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="cart">Cart from which an order is created.</param>
+        </member>
         <member name="M:commercetools.Orders.OrderFromCartDraft.#ctor(System.String,System.Int32)">
             <summary>
             Constructor.
@@ -5345,6 +6208,51 @@
             Constructor
             </summary>
         </member>
+        <member name="T:commercetools.Payments.UpdateActions.AddInterfaceInteractionAction">
+            <summary>
+            Adds a new interaction with the interface.
+            </summary>
+            <remarks>
+            These can be notifications received from the PSP or requests send to the PSP. Some interactions may result in a transaction. If so, the interactionId in the transaction should be set to match the ID of the PSP for the interaction.
+            </remarks>
+            <see href="https://dev.commercetools.com/http-api-projects-payments.html#add-interfaceinteraction"/>
+        </member>
+        <member name="P:commercetools.Payments.UpdateActions.AddInterfaceInteractionAction.Type">
+            <summary>
+            ResourceIdentifier to a Type
+            </summary>
+        </member>
+        <member name="P:commercetools.Payments.UpdateActions.AddInterfaceInteractionAction.Fields">
+            <summary>
+            CustomFields
+            </summary>
+        </member>
+        <member name="M:commercetools.Payments.UpdateActions.AddInterfaceInteractionAction.#ctor(commercetools.Common.ResourceIdentifier)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="type">ResourceIdentifier to a Type</param>
+        </member>
+        <member name="T:commercetools.Payments.UpdateActions.AddTransactionAction">
+            <summary>
+            Adds a new financial transaction.
+            </summary>
+            <remarks>
+            It can be used for asynchronous communication, e.g. one process could add a transaction of type Refund in state Pending and a PSP integration could asynchronously take care of executing the refund.
+            </remarks>
+            <see href="https://dev.commercetools.com/http-api-projects-payments.html#add-transaction"/>
+        </member>
+        <member name="P:commercetools.Payments.UpdateActions.AddTransactionAction.Transaction">
+            <summary>
+            TransactionDraft
+            </summary>
+        </member>
+        <member name="M:commercetools.Payments.UpdateActions.AddTransactionAction.#ctor(commercetools.Payments.TransactionDraft)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="transaction">TransactionDraft</param>
+        </member>
         <member name="T:commercetools.Payments.UpdateActions.ChangeAmountPlannedAction">
             <summary>
             Changes how much money this payment intends to receive from the customer.
@@ -5364,6 +6272,84 @@
             Constructor.
             </summary>
             <param name="amount">The new amountPlanned</param>
+        </member>
+        <member name="T:commercetools.Payments.UpdateActions.ChangeTransactionInteractionIdAction">
+            <summary>
+            Changes the interactionId of a transaction.
+            </summary>
+            <remarks>
+             It should correspond to an Id of an interface interaction.
+            </remarks>
+            <see href="https://dev.commercetools.com/http-api-projects-payments.html#change-transactioninteractionid"/>
+        </member>
+        <member name="P:commercetools.Payments.UpdateActions.ChangeTransactionInteractionIdAction.TransactionId">
+            <summary>
+            UUID of the transaction to be updated
+            </summary>
+        </member>
+        <member name="P:commercetools.Payments.UpdateActions.ChangeTransactionInteractionIdAction.InteractionId">
+            <summary>
+            The new interactionId.
+            </summary>
+        </member>
+        <member name="M:commercetools.Payments.UpdateActions.ChangeTransactionInteractionIdAction.#ctor(System.String,System.String)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="transactionId">UUID of the transaction to be updated</param>
+            <param name="interactionId">The new interactionId.</param>
+        </member>
+        <member name="T:commercetools.Payments.UpdateActions.ChangeTransactionStateAction">
+            <summary>
+            Changes state of a transaction.
+            </summary>
+            <remarks>
+            If a transaction has been executed asynchronously, it's state can be updated. E.g. if a Refund was executed, the state can be set to Success.
+            </remarks>
+            <see href="https://dev.commercetools.com/http-api-projects-payments.html#change-transactionstate"/>
+        </member>
+        <member name="P:commercetools.Payments.UpdateActions.ChangeTransactionStateAction.TransactionId">
+            <summary>
+            UUID of the transaction to be updated
+            </summary>
+        </member>
+        <member name="P:commercetools.Payments.UpdateActions.ChangeTransactionStateAction.State">
+            <summary>
+            The new state of this transaction.
+            </summary>
+        </member>
+        <member name="M:commercetools.Payments.UpdateActions.ChangeTransactionStateAction.#ctor(System.String,commercetools.Payments.TransactionState)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="transactionId">UUID of the transaction to be updated</param>
+            <param name="state">The new state of this transaction.</param>
+        </member>
+        <member name="T:commercetools.Payments.UpdateActions.ChangeTransactionTimestampAction">
+            <summary>
+            Changes timestamp of a transaction. 
+            </summary>
+            <remarks>
+            If this transaction represents an action at the PSP, the time returned by the PSP should be used.
+            </remarks>
+            <see href="https://dev.commercetools.com/http-api-projects-payments.html#change-transactiontimestamp"/>
+        </member>
+        <member name="P:commercetools.Payments.UpdateActions.ChangeTransactionTimestampAction.TransactionId">
+            <summary>
+            UUID of the transaction to be updated
+            </summary>
+        </member>
+        <member name="P:commercetools.Payments.UpdateActions.ChangeTransactionTimestampAction.Timestamp">
+            <summary>
+            The new timestamp
+            </summary>
+        </member>
+        <member name="M:commercetools.Payments.UpdateActions.ChangeTransactionTimestampAction.#ctor(System.String,System.DateTime)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="transactionId">UUID of the transaction to be updated</param>
+            <param name="timestamp">The new timestamp</param>
         </member>
         <member name="T:commercetools.Payments.UpdateActions.SetAmountPaidAction">
             <summary>
@@ -5434,6 +6420,55 @@
             Constructor.
             </summary>
         </member>
+        <member name="T:commercetools.Payments.UpdateActions.SetCustomFieldAction">
+            <summary>
+            This action sets, overwrites or removes any existing custom field for an existing payment.
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-payments.html#set-customfield"/>
+        </member>
+        <member name="P:commercetools.Payments.UpdateActions.SetCustomFieldAction.Name">
+            <summary>
+            Field name
+            </summary>
+        </member>
+        <member name="P:commercetools.Payments.UpdateActions.SetCustomFieldAction.Value">
+            <summary>
+            Field value
+            </summary>
+            <remarks>
+            If absent or null, this field is removed if it exists. If value is provided, set the value of the field defined by the name.
+            </remarks>
+        </member>
+        <member name="M:commercetools.Payments.UpdateActions.SetCustomFieldAction.#ctor(System.String)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="name">Field name</param>
+        </member>
+        <member name="T:commercetools.Payments.UpdateActions.SetCustomTypeAction">
+            <summary>
+            This action sets, overwrites or removes any existing custom type and fields for an existing payment.
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-payments.html#set-custom-type"/>
+        </member>
+        <member name="P:commercetools.Payments.UpdateActions.SetCustomTypeAction.Type">
+            <summary>
+            ResourceIdentifier to a Type
+            </summary>
+            <remarks>
+            If set, the custom type is set to this new value. If absent, the custom type and any existing custom fields are removed.
+            </remarks>
+        </member>
+        <member name="P:commercetools.Payments.UpdateActions.SetCustomTypeAction.Fields">
+            <summary>
+            A valid JSON object, based on the FieldDefinitions of the Type 
+            </summary>
+        </member>
+        <member name="M:commercetools.Payments.UpdateActions.SetCustomTypeAction.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
         <member name="T:commercetools.Payments.UpdateActions.SetExternalIdAction">
             <summary>
             Sets a user-defined ID which can be used as additional identifier for external systems, like the systems involved in order or receivables management. 
@@ -5477,7 +6512,7 @@
             <remarks>
             Cannot be changed once it has been set. The combination of Payment interfaceId and PaymentMethodInfo paymentInterface must be unique.
             </remarks>
-            <see href="http://dev.commercetools.com/http-api-projects-payments.html#change-amountplanned"/>
+            <see href="https://dev.commercetools.com/http-api-projects-payments.html#set-methodinfointerface"/>
         </member>
         <member name="P:commercetools.Payments.UpdateActions.SetMethodInfoInterfaceAction.Interface">
             <summary>
@@ -5489,6 +6524,106 @@
             Constructor.
             </summary>
             <param name="methodInfoInterface">Interface</param>
+        </member>
+        <member name="T:commercetools.Payments.UpdateActions.SetMethodInfoMethodAction">
+            <summary>
+            Sets the method used, e.g. a conventional string representing Credit Card or Cash Advance.
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-payments.html#set-methodinfomethod"/>
+        </member>
+        <member name="P:commercetools.Payments.UpdateActions.SetMethodInfoMethodAction.Method">
+            <summary>
+            Method
+            </summary>
+            <remarks>
+            If not provided, the method is unset.
+            </remarks>
+        </member>
+        <member name="M:commercetools.Payments.UpdateActions.SetMethodInfoMethodAction.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="T:commercetools.Payments.UpdateActions.SetMethodInfoNameAction">
+            <summary>
+            Sets a human-readable, localizable name for the payment method, e.g. 'Credit Card'.
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-payments.html#set-methodinfoname"/>
+        </member>
+        <member name="P:commercetools.Payments.UpdateActions.SetMethodInfoNameAction.Name">
+            <summary>
+            Name
+            </summary>
+            <remarks>
+            If not provided, the name is unset.
+            </remarks>
+        </member>
+        <member name="M:commercetools.Payments.UpdateActions.SetMethodInfoNameAction.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="T:commercetools.Payments.UpdateActions.SetStatusInterfaceCodeAction">
+            <summary>
+            Sets the code, given by the PSP, that describes the current status.
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-payments.html#set-statusinterfacecode"/>
+        </member>
+        <member name="P:commercetools.Payments.UpdateActions.SetStatusInterfaceCodeAction.InterfaceCode">
+            <summary>
+            Interface Code
+            </summary>
+        </member>
+        <member name="M:commercetools.Payments.UpdateActions.SetStatusInterfaceCodeAction.#ctor(System.String)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="interfaceCode">Interface Code</param>
+        </member>
+        <member name="T:commercetools.Payments.UpdateActions.SetStatusInterfaceTextAction">
+            <summary>
+            Sets a text, given by the PSP, that describes the current status.
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-payments.html#set-statusinterfacetext"/>
+        </member>
+        <member name="P:commercetools.Payments.UpdateActions.SetStatusInterfaceTextAction.InterfaceText">
+            <summary>
+            Interface Text
+            </summary>
+        </member>
+        <member name="M:commercetools.Payments.UpdateActions.SetStatusInterfaceTextAction.#ctor(System.String)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="interfaceText">Interface Text</param>
+        </member>
+        <member name="T:commercetools.Payments.UpdateActions.TransitionStateAction">
+            <summary>
+            Transition to a new state.
+            </summary>
+            <remarks>
+            If there is no state yet, the new state must be an initial state. If the existing state has transitions set, there must be a direct transition to the new state. If transitions is not set, no validation is performed. These validations can be turned off by setting the force parameter to true.
+            </remarks>
+            <see href="https://dev.commercetools.com/http-api-projects-payments.html#transition-state"/>
+        </member>
+        <member name="P:commercetools.Payments.UpdateActions.TransitionStateAction.State">
+            <summary>
+            Reference to a State
+            </summary>
+        </member>
+        <member name="P:commercetools.Payments.UpdateActions.TransitionStateAction.Force">
+            <summary>
+            Force
+            </summary>
+            <remarks>
+            Defaults to false
+            </remarks>
+        </member>
+        <member name="M:commercetools.Payments.UpdateActions.TransitionStateAction.#ctor(commercetools.Common.Reference)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="state">Reference to a State</param>
         </member>
         <member name="T:commercetools.ProductProjectionSearch.FacetType">
             <summary>
@@ -6355,7 +7490,7 @@
             <summary>
             Constructor.
             </summary>
-            <param name="The URL of the imageURLoftheimage">Name</param>
+            <param name="imageUrl">The URL of the image</param>
             <param name="position">Position</param>
             <param name="variantId">Variant ID</param>
             <param name="sku">Sku</param>
@@ -7718,7 +8853,14 @@
             Only relevant for text-based attribute types like TextType and LocalizableTextType.
             </remarks>
         </member>
-        <!-- Badly formed XML comment ignored for member "P:commercetools.ProductTypes.AttributeDefinitionDraft.IsSearchable" -->
+        <member name="P:commercetools.ProductTypes.AttributeDefinitionDraft.IsSearchable">
+            <summary>
+            Whether the attribute’s values should generally be enabled in product search.
+            </summary>
+            <remarks>
+            This determines whether the value is stored in products for matching terms in the context of full-text search queries and can be used in facets &amp; filters as part of product search queries. The exact features that are enabled/disabled with this flag depend on the concrete attribute type and are described there.
+            </remarks>
+        </member>
         <member name="M:commercetools.ProductTypes.AttributeDefinitionDraft.#ctor(commercetools.ProductTypes.AttributeType,System.String,commercetools.Common.LocalizedString,System.Boolean)">
             <summary>
             Constructor
@@ -7848,6 +8990,14 @@
             <returns>ProductType</returns>
             <see href="http://dev.commercetools.com/http-api-projects-productTypes.html#create-a-producttype"/>
         </member>
+        <member name="M:commercetools.ProductTypes.ProductTypeManager.UpdateProductTypeAsync(commercetools.ProductTypes.ProductType,commercetools.Common.UpdateAction)">
+            <summary>
+            Updates a product type.
+            </summary>
+            <param name="productType">Product type</param>
+            <param name="action">The update action to apply to the product type.</param>
+            <returns>ProductType</returns>
+        </member>
         <member name="M:commercetools.ProductTypes.ProductTypeManager.UpdateProductTypeAsync(commercetools.ProductTypes.ProductType,System.Collections.Generic.List{commercetools.Common.UpdateAction})">
             <summary>
             Updates a product type.
@@ -7855,6 +9005,16 @@
             <param name="productType">Product type</param>
             <param name="actions">The list of update actions to apply to the product type.</param>
             <returns>ProductType</returns>
+        </member>
+        <member name="M:commercetools.ProductTypes.ProductTypeManager.UpdateProductTypeByIdAsync(System.String,System.Int32,commercetools.Common.UpdateAction)">
+            <summary>
+            Updates a product type by ID.
+            </summary>
+            <param name="productTypeId">ID of the product type</param>
+            <param name="version">The expected version of the product type on which the changes should be applied.</param>
+            <param name="action">The update action to apply to the product type.</param>
+            <returns>ProductType</returns>
+            <see href="http://dev.commercetools.com/http-api-projects-productTypes.html#update-producttype-by-id"/>
         </member>
         <member name="M:commercetools.ProductTypes.ProductTypeManager.UpdateProductTypeByIdAsync(System.String,System.Int32,System.Collections.Generic.List{commercetools.Common.UpdateAction})">
             <summary>
@@ -7865,6 +9025,16 @@
             <param name="actions">The list of update actions to apply to the product type.</param>
             <returns>ProductType</returns>
             <see href="http://dev.commercetools.com/http-api-projects-productTypes.html#update-producttype-by-id"/>
+        </member>
+        <member name="M:commercetools.ProductTypes.ProductTypeManager.UpdateProductTypeByKeyAsync(System.String,System.Int32,commercetools.Common.UpdateAction)">
+            <summary>
+            Update a product type found by its Key.
+            </summary>
+            <param name="key">Product type key</param>
+            <param name="version">The expected version of the product type on which the changes should be applied.</param>
+            <param name="action">The action to apply to the product type.</param>
+            <returns>ProductType</returns>
+            <see href="http://dev.commercetools.com/http-api-projects-productTypes.html#update-producttype-by-key"/>
         </member>
         <member name="M:commercetools.ProductTypes.ProductTypeManager.UpdateProductTypeByKeyAsync(System.String,System.Int32,System.Collections.Generic.List{commercetools.Common.UpdateAction})">
             <summary>
@@ -8159,6 +9329,343 @@
             </summary>
             <returns>JObject</returns>
         </member>
+        <member name="T:commercetools.ProductTypes.UpdateActions.AddAttributeDefinitionAction">
+            <summary>
+            Add Attribute Definition
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-productTypes.html#add-attributedefinition"/>
+        </member>
+        <member name="P:commercetools.ProductTypes.UpdateActions.AddAttributeDefinitionAction.Attribute">
+            <summary>
+            AttributeDefinitionDraft
+            </summary>
+        </member>
+        <member name="M:commercetools.ProductTypes.UpdateActions.AddAttributeDefinitionAction.#ctor(commercetools.ProductTypes.AttributeDefinitionDraft)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="attribute">AttributeDefinitionDraft</param>
+        </member>
+        <member name="T:commercetools.ProductTypes.UpdateActions.AddLocalizedEnumValueAction">
+            <summary>
+            Adds an localizable enum to the values of LocalizableEnumType. It can update a LocalizableEnum attribute definition or a Set of LocalizableEnumType attribute definition.
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-productTypes.html#add-localizableenumvalue-to-attributedefinition"/>
+        </member>
+        <member name="P:commercetools.ProductTypes.UpdateActions.AddLocalizedEnumValueAction.AttributeName">
+            <summary>
+            The name of the attribute definition to update.
+            </summary>
+        </member>
+        <member name="P:commercetools.ProductTypes.UpdateActions.AddLocalizedEnumValueAction.Value">
+            <summary>
+            Value
+            </summary>
+        </member>
+        <member name="M:commercetools.ProductTypes.UpdateActions.AddLocalizedEnumValueAction.#ctor(System.String,commercetools.Common.LocalizedEnumValue)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="attributeName">The name of the attribute definition to update.</param>
+            <param name="value">Value</param>
+        </member>
+        <member name="T:commercetools.ProductTypes.UpdateActions.AddPlainEnumValueAction">
+            <summary>
+            Adds an enum to the values of EnumType. It can update an EnumType attribute definition or a Set of EnumType attribute definition.
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-productTypes.html#add-plainenumvalue-to-attributedefinition"/>
+        </member>
+        <member name="P:commercetools.ProductTypes.UpdateActions.AddPlainEnumValueAction.AttributeName">
+            <summary>
+            The name of the attribute definition to update.
+            </summary>
+        </member>
+        <member name="P:commercetools.ProductTypes.UpdateActions.AddPlainEnumValueAction.Value">
+            <summary>
+            Value
+            </summary>
+        </member>
+        <member name="M:commercetools.ProductTypes.UpdateActions.AddPlainEnumValueAction.#ctor(System.String,commercetools.Common.PlainEnumValue)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="attributeName">The name of the attribute definition to update.</param>
+            <param name="value">Value</param>
+        </member>
+        <member name="T:commercetools.ProductTypes.UpdateActions.ChangeAttributeDefinitionLabelAction">
+            <summary>
+            Change Attribute Definition Label
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-productTypes.html#change-attributedefinition-label"/>
+        </member>
+        <member name="P:commercetools.ProductTypes.UpdateActions.ChangeAttributeDefinitionLabelAction.AttributeName">
+            <summary>
+            The name of the attribute definition to update.
+            </summary>
+        </member>
+        <member name="P:commercetools.ProductTypes.UpdateActions.ChangeAttributeDefinitionLabelAction.Label">
+            <summary>
+            Label
+            </summary>
+        </member>
+        <member name="M:commercetools.ProductTypes.UpdateActions.ChangeAttributeDefinitionLabelAction.#ctor(System.String,commercetools.Common.LocalizedString)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="attributeName">The name of the attribute definition to update.</param>
+            <param name="label">Label</param>
+        </member>
+        <member name="T:commercetools.ProductTypes.UpdateActions.ChangeAttributeOrderAction">
+            <summary>
+            Changes the order of AttributeDefinitions.
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-productTypes.html#change-the-order-of-attributedefinitions"/>
+        </member>
+        <member name="P:commercetools.ProductTypes.UpdateActions.ChangeAttributeOrderAction.Attributes">
+            <summary>
+            Attributes
+            </summary>
+            <remarks>
+            The attributes must be equal to the product type attributes (except for the order).
+            </remarks>
+        </member>
+        <member name="M:commercetools.ProductTypes.UpdateActions.ChangeAttributeOrderAction.#ctor(System.Collections.Generic.List{commercetools.ProductTypes.AttributeDefinition})">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="attributes">Attributes</param>
+        </member>
+        <member name="T:commercetools.ProductTypes.UpdateActions.ChangeDescriptionAction">
+            <summary>
+            Change Description
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-productTypes.html#change-description"/>
+        </member>
+        <member name="P:commercetools.ProductTypes.UpdateActions.ChangeDescriptionAction.Description">
+            <summary>
+            Description
+            </summary>
+        </member>
+        <member name="M:commercetools.ProductTypes.UpdateActions.ChangeDescriptionAction.#ctor(System.String)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="description">Description</param>
+        </member>
+        <member name="T:commercetools.ProductTypes.UpdateActions.ChangeIsSearchableAction">
+            <summary>
+            Change IsSearchable
+            </summary>
+            <remarks>
+            Following this update the products are reindexed asynchronously to reflect this change on the search endpoint. When enabling search on an existing attribute type definition, the constraint regarding the maximum size of a searchable attribute will not be enforced. Instead, product attribute definitions exceeding this limit will be treated as not searchable and will not be available for full-text search.
+            </remarks>
+            <see href="https://dev.commercetools.com/http-api-projects-productTypes.html#change-attributedefinition-issearchable"/>
+        </member>
+        <member name="P:commercetools.ProductTypes.UpdateActions.ChangeIsSearchableAction.AttributeName">
+            <summary>
+            The name of the attribute definition to update.
+            </summary>
+        </member>
+        <member name="P:commercetools.ProductTypes.UpdateActions.ChangeIsSearchableAction.IsSearchable">
+            <summary>
+            Is Searchable
+            </summary>
+        </member>
+        <member name="M:commercetools.ProductTypes.UpdateActions.ChangeIsSearchableAction.#ctor(System.String,System.Boolean)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="attributeName">The name of the attribute definition to update.</param>
+            <param name="isSearchable">Is Searchable</param>
+        </member>
+        <member name="T:commercetools.ProductTypes.UpdateActions.ChangeLocalizedEnumValueLabelAction">
+            <summary>
+            This action changes the label of a single enum value in a LocalizableEnumType attribute definition. It can update a LocalizableEnumType attribute definition or a Set of LocalizableEnumType attribute definition.
+            </summary>
+            <remarks>
+            All products will be updated to the new label in an eventually consistent way.
+            </remarks>
+            <see href="https://dev.commercetools.com/http-api-projects-productTypes.html#change-the-label-of-a-localizedenumvalue"/>
+        </member>
+        <member name="P:commercetools.ProductTypes.UpdateActions.ChangeLocalizedEnumValueLabelAction.AttributeName">
+            <summary>
+            The name of the attribute definition to update.
+            </summary>
+        </member>
+        <member name="P:commercetools.ProductTypes.UpdateActions.ChangeLocalizedEnumValueLabelAction.NewValue">
+            <summary>
+            New Value
+            </summary>
+            <remarks>
+            The new value must be different from the existing value.
+            </remarks>
+        </member>
+        <member name="M:commercetools.ProductTypes.UpdateActions.ChangeLocalizedEnumValueLabelAction.#ctor(System.String,commercetools.Common.LocalizedEnumValue)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="attributeName">The name of the attribute definition to update.</param>
+            <param name="newValue">New Value</param>
+        </member>
+        <member name="T:commercetools.ProductTypes.UpdateActions.ChangeLocalizedEnumValueOrderAction">
+            <summary>
+            This action changes the order of localized enum values in a LocalizableEnumType attribute definition. It can update a LocalizableEnumType attribute definition or a Set of LocalizableEnumType attribute definition.
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-productTypes.html#change-the-order-of-localizedenumvalues"/>
+        </member>
+        <member name="P:commercetools.ProductTypes.UpdateActions.ChangeLocalizedEnumValueOrderAction.AttributeName">
+            <summary>
+            Attribute Name
+            </summary>
+        </member>
+        <member name="P:commercetools.ProductTypes.UpdateActions.ChangeLocalizedEnumValueOrderAction.Values">
+            <summary>
+            Values
+            </summary>
+            <remarks>
+            The values must be equal to the values of the attribute enum values (except for the order).
+            </remarks>
+        </member>
+        <member name="M:commercetools.ProductTypes.UpdateActions.ChangeLocalizedEnumValueOrderAction.#ctor(System.String,System.Collections.Generic.List{commercetools.Common.LocalizedEnumValue})">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="attributeName">Attribute Name</param>
+            <param name="values">Values</param>
+        </member>
+        <member name="T:commercetools.ProductTypes.UpdateActions.ChangeNameAction">
+            <summary>
+            Change Name
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-productTypes.html#change-name"/>
+        </member>
+        <member name="P:commercetools.ProductTypes.UpdateActions.ChangeNameAction.Name">
+            <summary>
+            Name
+            </summary>
+        </member>
+        <member name="M:commercetools.ProductTypes.UpdateActions.ChangeNameAction.#ctor(System.String)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="name">Name</param>
+        </member>
+        <member name="T:commercetools.ProductTypes.UpdateActions.ChangePlainEnumValueLabelAction">
+            <summary>
+            This action changes the label of a single enum value in an EnumType attribute definition. It can update an EnumType attribute definition or a Set of EnumType attribute definition.
+            </summary>
+            <remarks>
+            All products will be updated to the new label in an eventually consistent way.
+            </remarks>
+            <see href="https://dev.commercetools.com/http-api-projects-productTypes.html#change-the-label-of-an-enumvalue"/>
+        </member>
+        <member name="P:commercetools.ProductTypes.UpdateActions.ChangePlainEnumValueLabelAction.AttributeName">
+            <summary>
+            The name of the attribute definition to update.
+            </summary>
+        </member>
+        <member name="P:commercetools.ProductTypes.UpdateActions.ChangePlainEnumValueLabelAction.NewValue">
+            <summary>
+            New Value
+            </summary>
+            <remarks>
+            The new value must be different from the existing value.
+            </remarks>
+        </member>
+        <member name="M:commercetools.ProductTypes.UpdateActions.ChangePlainEnumValueLabelAction.#ctor(System.String,commercetools.Common.PlainEnumValue)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="attributeName">The name of the attribute definition to update.</param>
+            <param name="newValue">New Value</param>
+        </member>
+        <member name="T:commercetools.ProductTypes.UpdateActions.ChangePlainEnumValueOrderAction">
+            <summary>
+            This action changes the order of enum values in an EnumType attribute definition. It can update an EnumType attribute definition or a Set of EnumType attribute definition.
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-productTypes.html#change-the-order-of-enumvalues"/>
+        </member>
+        <member name="P:commercetools.ProductTypes.UpdateActions.ChangePlainEnumValueOrderAction.AttributeName">
+            <summary>
+            Attribute Name
+            </summary>
+        </member>
+        <member name="P:commercetools.ProductTypes.UpdateActions.ChangePlainEnumValueOrderAction.Values">
+            <summary>
+            Values
+            </summary>
+            <remarks>
+            The values must be equal to the values of the attribute enum values (except for the order).
+            </remarks>
+        </member>
+        <member name="M:commercetools.ProductTypes.UpdateActions.ChangePlainEnumValueOrderAction.#ctor(System.String,System.Collections.Generic.List{commercetools.Common.PlainEnumValue})">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="attributeName">Attribute Name</param>
+            <param name="values">Values</param>
+        </member>
+        <member name="T:commercetools.ProductTypes.UpdateActions.RemoveAttributeDefinitionAction">
+            <summary>
+            Remove an attribute definition.
+            </summary>
+            <remarks>
+            This removal also deletes all corresponding attributes on all Products with this product type. The removal of the attributes is eventually consistent.
+            </remarks>
+            <see href="https://dev.commercetools.com/http-api-projects-productTypes.html#remove-attributedefinition"/>
+        </member>
+        <member name="P:commercetools.ProductTypes.UpdateActions.RemoveAttributeDefinitionAction.Name">
+            <summary>
+            The name of the attribute to remove.
+            </summary>
+        </member>
+        <member name="M:commercetools.ProductTypes.UpdateActions.RemoveAttributeDefinitionAction.#ctor(System.String)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="name">The name of the attribute to remove.</param>
+        </member>
+        <member name="T:commercetools.ProductTypes.UpdateActions.SetInputTipAction">
+            <summary>
+            Allows to set additional information about the specified attribute that aids content managers when setting product details.
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-productTypes.html#set-attributedefinition-inputtip"/>
+        </member>
+        <member name="P:commercetools.ProductTypes.UpdateActions.SetInputTipAction.AttributeName">
+            <summary>
+            The name of the attribute definition to update.
+            </summary>
+        </member>
+        <member name="P:commercetools.ProductTypes.UpdateActions.SetInputTipAction.InputTip">
+            <summary>
+            Input Tip
+            </summary>
+        </member>
+        <member name="M:commercetools.ProductTypes.UpdateActions.SetInputTipAction.#ctor(System.String)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="attributeName">The name of the attribute definition to update.</param>
+        </member>
+        <member name="T:commercetools.ProductTypes.UpdateActions.SetKeyAction">
+            <summary>
+            Set key
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-productTypes.html#set-key"/>
+        </member>
+        <member name="P:commercetools.ProductTypes.UpdateActions.SetKeyAction.Key">
+            <summary>
+            Key
+            </summary>
+            <remarks>
+            If key is absent or null, this field is removed if it exists.
+            </remarks>
+        </member>
+        <member name="M:commercetools.ProductTypes.UpdateActions.SetKeyAction.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
         <member name="T:commercetools.CustomFields.Custom">
             <summary>
             Custom
@@ -8399,13 +9906,32 @@
             <returns>ShippingMethod</returns>
             <see href="http://dev.commercetools.com/http-api-projects-shippingMethods.html#create-shippingmethod"/>
         </member>
+        <member name="M:commercetools.ShippingMethods.ShippingMethodManager.UpdateShippingMethodAsync(commercetools.ShippingMethods.ShippingMethod,commercetools.Common.UpdateAction)">
+            <summary>
+            Updates a shipping method.
+            </summary>
+            <param name="shippingMethod">Shipping method</param>
+            <param name="action">The update action to apply to the shipping method.</param>
+            <returns>ShippingMethod</returns>
+            <see href="http://dev.commercetools.com/http-api-projects-shippingMethods.html#update-shippingmethod"/>
+        </member>
         <member name="M:commercetools.ShippingMethods.ShippingMethodManager.UpdateShippingMethodAsync(commercetools.ShippingMethods.ShippingMethod,System.Collections.Generic.List{commercetools.Common.UpdateAction})">
             <summary>
             Updates a shipping method.
             </summary>
             <param name="shippingMethod">Shipping method</param>
-            <param name="actions">The list of update actions to apply to the product.</param>
-            <returns>Product</returns>
+            <param name="actions">The list of update actions to apply to the shipping method.</param>
+            <returns>ShippingMethod</returns>
+            <see href="http://dev.commercetools.com/http-api-projects-shippingMethods.html#update-shippingmethod"/>
+        </member>
+        <member name="M:commercetools.ShippingMethods.ShippingMethodManager.UpdateShippingMethodAsync(System.String,System.Int32,commercetools.Common.UpdateAction)">
+            <summary>
+            Updates a shipping method.
+            </summary>
+            <param name="shippingMethodId">ID of the shipping method</param>
+            <param name="version">The expected version of the shipping method on which the changes should be applied.</param>
+            <param name="action">The update action to apply to the shipping method.</param>
+            <returns>ShippingMethod</returns>
             <see href="http://dev.commercetools.com/http-api-projects-shippingMethods.html#update-shippingmethod"/>
         </member>
         <member name="M:commercetools.ShippingMethods.ShippingMethodManager.UpdateShippingMethodAsync(System.String,System.Int32,System.Collections.Generic.List{commercetools.Common.UpdateAction})">
@@ -8413,9 +9939,9 @@
             Updates a shipping method.
             </summary>
             <param name="shippingMethodId">ID of the shipping method</param>
-            <param name="version">The expected version of the product on which the changes should be applied.</param>
-            <param name="actions">The list of update actions to apply to the product.</param>
-            <returns>Product</returns>
+            <param name="version">The expected version of the shipping method on which the changes should be applied.</param>
+            <param name="actions">The list of update actions to apply to the shipping method.</param>
+            <returns>ShippingMethod</returns>
             <see href="http://dev.commercetools.com/http-api-projects-shippingMethods.html#update-shippingmethod"/>
         </member>
         <member name="M:commercetools.ShippingMethods.ShippingMethodManager.DeleteShippingMethodAsync(commercetools.ShippingMethods.ShippingMethod)">
@@ -8469,6 +9995,153 @@
             </summary>
             <param name="data">JSON object</param>
         </member>
+        <member name="T:commercetools.ShippingMethods.UpdateActions.AddShippingRateAction">
+            <summary>
+            Add ShippingRate
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-shippingMethods.html#add-shippingrate"/>
+        </member>
+        <member name="P:commercetools.ShippingMethods.UpdateActions.AddShippingRateAction.Zone">
+            <summary>
+            Reference to a Zone
+            </summary>
+        </member>
+        <member name="P:commercetools.ShippingMethods.UpdateActions.AddShippingRateAction.ShippingRate">
+            <summary>
+            Shipping Rate
+            </summary>
+        </member>
+        <member name="M:commercetools.ShippingMethods.UpdateActions.AddShippingRateAction.#ctor(commercetools.Common.Reference,commercetools.ShippingMethods.ShippingRate)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="zone">Reference to a Zone</param>
+            <param name="shippingRate">Shipping Rate</param>
+        </member>
+        <member name="T:commercetools.ShippingMethods.UpdateActions.AddZoneAction">
+            <summary>
+            Add Zone
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-shippingMethods.html#add-zone"/>
+        </member>
+        <member name="P:commercetools.ShippingMethods.UpdateActions.AddZoneAction.Zone">
+            <summary>
+            Reference to a Zone
+            </summary>
+        </member>
+        <member name="M:commercetools.ShippingMethods.UpdateActions.AddZoneAction.#ctor(commercetools.Common.Reference)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="zone">Reference to a Zone</param>
+        </member>
+        <member name="T:commercetools.ShippingMethods.UpdateActions.ChangeIsDefaultAction">
+            <summary>
+            Change isDefault
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-shippingMethods.html#change-isdefault"/>
+        </member>
+        <member name="P:commercetools.ShippingMethods.UpdateActions.ChangeIsDefaultAction.IsDefault">
+            <summary>
+            IsDefault
+            </summary>
+        </member>
+        <member name="M:commercetools.ShippingMethods.UpdateActions.ChangeIsDefaultAction.#ctor(System.Boolean)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="isDefault">IsDefault</param>
+        </member>
+        <member name="T:commercetools.ShippingMethods.UpdateActions.ChangeNameAction">
+            <summary>
+            Change Name
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-shippingMethods.html#change-name"/>
+        </member>
+        <member name="P:commercetools.ShippingMethods.UpdateActions.ChangeNameAction.Name">
+            <summary>
+            Name
+            </summary>
+        </member>
+        <member name="M:commercetools.ShippingMethods.UpdateActions.ChangeNameAction.#ctor(System.String)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="name">Name</param>
+        </member>
+        <member name="T:commercetools.ShippingMethods.UpdateActions.ChangeTaxCategoryAction">
+            <summary>
+            Change Tax Category
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-shippingMethods.html#change-taxcategory"/>
+        </member>
+        <member name="P:commercetools.ShippingMethods.UpdateActions.ChangeTaxCategoryAction.TaxCategory">
+            <summary>
+            Reference to a TaxCategory
+            </summary>
+        </member>
+        <member name="M:commercetools.ShippingMethods.UpdateActions.ChangeTaxCategoryAction.#ctor(commercetools.Common.Reference)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="taxCategory">Reference to a TaxCategory</param>
+        </member>
+        <member name="T:commercetools.ShippingMethods.UpdateActions.RemoveShippingRateAction">
+            <summary>
+            Remove ShippingRate
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-shippingMethods.html#remove-shippingrate"/>
+        </member>
+        <member name="P:commercetools.ShippingMethods.UpdateActions.RemoveShippingRateAction.Zone">
+            <summary>
+            Reference to a Zone
+            </summary>
+        </member>
+        <member name="P:commercetools.ShippingMethods.UpdateActions.RemoveShippingRateAction.ShippingRate">
+            <summary>
+            Shipping Rate
+            </summary>
+        </member>
+        <member name="M:commercetools.ShippingMethods.UpdateActions.RemoveShippingRateAction.#ctor(commercetools.Common.Reference,commercetools.ShippingMethods.ShippingRate)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="zone">Reference to a Zone</param>
+            <param name="shippingRate">Shipping Rate</param>
+        </member>
+        <member name="T:commercetools.ShippingMethods.UpdateActions.RemoveZoneAction">
+            <summary>
+            Remove Zone
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-shippingMethods.html#remove-zone"/>
+        </member>
+        <member name="P:commercetools.ShippingMethods.UpdateActions.RemoveZoneAction.Zone">
+            <summary>
+            Reference to a Zone
+            </summary>
+        </member>
+        <member name="M:commercetools.ShippingMethods.UpdateActions.RemoveZoneAction.#ctor(commercetools.Common.Reference)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="zone">Reference to a Zone</param>
+        </member>
+        <member name="T:commercetools.ShippingMethods.UpdateActions.SetDescriptionAction">
+            <summary>
+            Set Description
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-shippingMethods.html#set-description"/>
+        </member>
+        <member name="P:commercetools.ShippingMethods.UpdateActions.SetDescriptionAction.Description">
+            <summary>
+            Description
+            </summary>
+        </member>
+        <member name="M:commercetools.ShippingMethods.UpdateActions.SetDescriptionAction.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
         <member name="T:commercetools.ShippingMethods.ZoneRate">
             <summary>
             Defines shipping rates (prices) for a specific zone. Shipping rates is an array because the rates for different currencies can be defined.
@@ -8509,6 +10182,653 @@
             Initializes this instance with JSON data from an API response.
             </summary>
             <param name="data">JSON object</param>
+        </member>
+        <member name="T:commercetools.States.StateDraft">
+            <summary>
+            A StateDraft is the representation to be given with a Create State request.
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-states.html#statedraft"/>
+        </member>
+        <member name="P:commercetools.States.StateDraft.Key">
+            <summary>
+            Key
+            </summary>
+        </member>
+        <member name="P:commercetools.States.StateDraft.Type">
+            <summary>
+            StateType
+            </summary>
+        </member>
+        <member name="P:commercetools.States.StateDraft.Name">
+            <summary>
+            Name
+            </summary>
+        </member>
+        <member name="P:commercetools.States.StateDraft.Description">
+            <summary>
+            Description
+            </summary>
+        </member>
+        <member name="P:commercetools.States.StateDraft.Initial">
+            <summary>
+            Initial
+            </summary>
+        </member>
+        <member name="P:commercetools.States.StateDraft.Transitions">
+            <summary>
+            List of References to States
+            </summary>
+        </member>
+        <member name="M:commercetools.States.StateDraft.#ctor(System.String,commercetools.States.StateType)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="key">Key</param>
+            <param name="type">StateType</param>
+        </member>
+        <member name="T:commercetools.Subscriptions.AWSSNSDestination">
+            <summary>
+            AWS SNS can be used to push messages to AWS Lambda, HTTP endpoints (webhooks) or fan-out messages to SQS queues.
+            </summary>
+            <remarks>
+            The topic needs to exist beforehand. It is recommended to create an accessKey and accessSecret pair specifically for each subscription that only has the sns:Publish permission on this topic.
+            </remarks>
+            <see href="https://dev.commercetools.com/http-api-projects-subscriptions.html#aws-sns-destination"/>
+            <seealso href="https://aws.amazon.com/sns/"/>
+        </member>
+        <member name="P:commercetools.Subscriptions.AWSSNSDestination.TopicArn">
+            <summary>
+            Topic Arn
+            </summary>
+        </member>
+        <member name="P:commercetools.Subscriptions.AWSSNSDestination.AccessKey">
+            <summary>
+            Access key
+            </summary>
+        </member>
+        <member name="P:commercetools.Subscriptions.AWSSNSDestination.AccessSecret">
+            <summary>
+            Access secret
+            </summary>
+        </member>
+        <member name="M:commercetools.Subscriptions.AWSSNSDestination.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="topicArn">Topic Arn</param>
+            <param name="accessKey">Access key</param>
+            <param name="accessSecret">Access secret</param>
+        </member>
+        <member name="M:commercetools.Subscriptions.AWSSNSDestination.#ctor(System.Object)">
+            <summary>
+            Initializes this instance with JSON data from an API response.
+            </summary>
+            <param name="data">JSON object</param>
+        </member>
+        <member name="T:commercetools.Subscriptions.AWSSQSDestination">
+            <summary>
+            AWS SQS is a pull-queue on AWS.
+            </summary>
+            <remarks>
+            The queue needs to exist beforehand. It is recommended to create an accessKey and accessSecret pair specifically for each subscription that only has the sqs:SendMessage permission on this queue.
+            </remarks>
+            <see href="https://dev.commercetools.com/http-api-projects-subscriptions.html#aws-sqs-destination"/>
+            <seealso href="https://aws.amazon.com/sqs/"/>
+        </member>
+        <member name="P:commercetools.Subscriptions.AWSSQSDestination.QueueUrl">
+            <summary>
+            Queue URL
+            </summary>
+        </member>
+        <member name="P:commercetools.Subscriptions.AWSSQSDestination.AccessKey">
+            <summary>
+            Access key
+            </summary>
+        </member>
+        <member name="P:commercetools.Subscriptions.AWSSQSDestination.AccessSecret">
+            <summary>
+            Access secret
+            </summary>
+        </member>
+        <member name="P:commercetools.Subscriptions.AWSSQSDestination.Region">
+            <summary>
+            Region
+            </summary>
+        </member>
+        <member name="M:commercetools.Subscriptions.AWSSQSDestination.#ctor(System.String,System.String,System.String,System.String)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="queueUrl">Queue URL</param>
+            <param name="accessKey">Access key</param>
+            <param name="accessSecret">Access secret</param>
+            <param name="region">Region</param>
+        </member>
+        <member name="M:commercetools.Subscriptions.AWSSQSDestination.#ctor(System.Object)">
+            <summary>
+            Initializes this instance with JSON data from an API response.
+            </summary>
+            <param name="data">JSON object</param>
+        </member>
+        <member name="T:commercetools.Subscriptions.ChangeSubscription">
+            <summary>
+            ChangeSubscription
+            </summary>
+            <remarks>
+            Different payloads for resource creation, update and deletion are delivered.
+            </remarks>
+            <see href="https://dev.commercetools.com/http-api-projects-subscriptions.html#changesubscription"/>
+        </member>
+        <member name="P:commercetools.Subscriptions.ChangeSubscription.ResourceTypeId">
+            <summary>
+            Resource Type ID
+            </summary>
+        </member>
+        <member name="M:commercetools.Subscriptions.ChangeSubscription.#ctor(System.String)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="resourceTypeId">Resource Type ID</param>
+        </member>
+        <member name="M:commercetools.Subscriptions.ChangeSubscription.#ctor(System.Object)">
+            <summary>
+            Initializes this instance with JSON data from an API response.
+            </summary>
+            <param name="data">JSON object</param>
+        </member>
+        <member name="T:commercetools.Subscriptions.DeliveryPayload">
+            <summary>
+            DeliveryPayload
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-subscriptions.html#delivery-payloads"/>
+        </member>
+        <member name="P:commercetools.Subscriptions.DeliveryPayload.ProjectKey">
+            <summary>
+            The key of the project. Useful if the same queue is filled from multiple projects.
+            </summary>
+        </member>
+        <member name="P:commercetools.Subscriptions.DeliveryPayload.NotificationType">
+            <summary>
+            Identifies the payload
+            </summary>
+        </member>
+        <member name="P:commercetools.Subscriptions.DeliveryPayload.Resource">
+            <summary>
+            A reference to the resource that triggered this delivery.
+            </summary>
+        </member>
+        <member name="M:commercetools.Subscriptions.DeliveryPayload.#ctor(System.Object)">
+            <summary>
+            Initializes this instance with JSON data from an API response.
+            </summary>
+            <param name="data">JSON object</param>
+        </member>
+        <member name="T:commercetools.Subscriptions.Destination">
+            <summary>
+            A destination contains all info necessary for the commercetools platform to deliver a message onto your Message Queue. Message Queues can be differentiated by the type field.
+            </summary>
+            <remarks>
+            Currently the Message Queues IronMQ, AWS SQS and AWS SNS are supported.
+            </remarks>
+            <see href="https://dev.commercetools.com/http-api-projects-subscriptions.html#destination"/>
+        </member>
+        <member name="P:commercetools.Subscriptions.Destination.Type">
+            <summary>
+            Type
+            </summary>
+        </member>
+        <member name="M:commercetools.Subscriptions.Destination.#ctor(System.String)">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:commercetools.Subscriptions.Destination.#ctor(System.Object)">
+            <summary>
+            Initializes this instance with JSON data from an API response.
+            </summary>
+            <param name="data">JSON object</param>
+        </member>
+        <member name="M:commercetools.Subscriptions.DestinationFactory.Create(System.Object)">
+            <summary>
+            Creates a Message using JSON data from an API response.
+            </summary>
+            <param name="data">JSON object</param>
+            <returns>A object derived from Destination, or null</returns>
+        </member>
+        <member name="T:commercetools.Subscriptions.Extensions">
+            <summary>
+            Extensions
+            </summary>
+        </member>
+        <member name="M:commercetools.Subscriptions.Extensions.Subscriptions(commercetools.Common.Client)">
+            <summary>
+            Creates an instance of the SubscriptionManager.
+            </summary>
+            <returns>SubscriptionManager</returns>
+        </member>
+        <member name="T:commercetools.Subscriptions.IronMQDestination">
+            <summary>
+            IronMQ can be used as a pull-queue, but it can also be used to push messages to IronWorkers or HTTP endpoints (webhooks) or fan-out messages to other IronMQ queues.
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-subscriptions.html#ironmq-destination"/>
+            <seealso href="https://www.iron.io/platform/ironmq/"/>
+        </member>
+        <member name="P:commercetools.Subscriptions.IronMQDestination.Uri">
+            <summary>
+            The webhook URI of your IronMQ.
+            </summary>
+        </member>
+        <member name="M:commercetools.Subscriptions.IronMQDestination.#ctor(System.String)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="uri">The webhook URI of your IronMQ.</param>
+        </member>
+        <member name="M:commercetools.Subscriptions.IronMQDestination.#ctor(System.Object)">
+            <summary>
+            Initializes this instance with JSON data from an API response.
+            </summary>
+            <param name="data">JSON object</param>
+        </member>
+        <member name="T:commercetools.Subscriptions.MessageSubscription">
+            <summary>
+            MessageSubscription
+            </summary>
+            <remarks>
+            For supported resources and message types, please refer to the Messages Documentation. Messages will be delivered even if the Messages REST API is disabled. The Message Subscription Payload is delivered.
+            </remarks>
+            <see href="https://dev.commercetools.com/http-api-projects-subscriptions.html#messagesubscription"/>
+        </member>
+        <member name="P:commercetools.Subscriptions.MessageSubscription.ResourceTypeId">
+            <summary>
+            Resource Type ID
+            </summary>
+        </member>
+        <member name="P:commercetools.Subscriptions.MessageSubscription.Types">
+            <summary>
+            types must contain valid message types for this resource, e.g. for resource type product the message type ProductPublished is valid. If no types of messages are given, the subscription is valid for all messages of this resource.
+            </summary>
+        </member>
+        <member name="M:commercetools.Subscriptions.MessageSubscription.#ctor(System.String)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="resourceTypeId">Resource Type ID</param>
+        </member>
+        <member name="M:commercetools.Subscriptions.MessageSubscription.#ctor(System.Object)">
+            <summary>
+            Initializes this instance with JSON data from an API response.
+            </summary>
+            <param name="data">JSON object</param>
+        </member>
+        <member name="T:commercetools.Subscriptions.MessageSubscriptionPayload">
+            <summary>
+            This payload will be sent for a MessageSubscription.
+            </summary>
+            <remarks>
+            The payload will always contain the common fields id, version, sequenceNumber, resourceVersion, createdAt and lastModifiedAt for any message. If the payload fits within the size limit of your message queue (the limit is often 256kb), all additional fields for the specific message are included as well (along with the type field). If the payload did not fit, it can be retrieved from the Messages endpoint if messages are enabled.
+            </remarks>
+            <see href="https://dev.commercetools.com/http-api-projects-subscriptions.html#message-subscription-payload"/>
+        </member>
+        <member name="M:commercetools.Subscriptions.MessageSubscriptionPayload.#ctor(System.Object)">
+            <summary>
+            Initializes this instance with JSON data from an API response.
+            </summary>
+            <param name="data">JSON object</param>
+        </member>
+        <member name="T:commercetools.Subscriptions.ResourceCreatedPayload">
+            <summary>
+            This payload will be sent for a ChangeSubscription if a resource was updated.
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-subscriptions.html#resourcecreated-payload"/>
+        </member>
+        <member name="P:commercetools.Subscriptions.ResourceCreatedPayload.Version">
+            <summary>
+            The version of the resource after it was created
+            </summary>
+        </member>
+        <member name="M:commercetools.Subscriptions.ResourceCreatedPayload.#ctor(System.Object)">
+            <summary>
+            Initializes this instance with JSON data from an API response.
+            </summary>
+            <param name="data">JSON object</param>
+        </member>
+        <member name="T:commercetools.Subscriptions.ResourceDeletedPayload">
+            <summary>
+            This payload will be sent for a ChangeSubscription if a resource was deleted.
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-subscriptions.html#resourcedeleted-payload"/>
+        </member>
+        <member name="P:commercetools.Subscriptions.ResourceDeletedPayload.Version">
+            <summary>
+            The version of the resource after it was created
+            </summary>
+        </member>
+        <member name="M:commercetools.Subscriptions.ResourceDeletedPayload.#ctor(System.Object)">
+            <summary>
+            Initializes this instance with JSON data from an API response.
+            </summary>
+            <param name="data">JSON object</param>
+        </member>
+        <member name="T:commercetools.Subscriptions.ResourceUpdatedPayload">
+            <summary>
+            This payload will be sent for a ChangeSubscription if a resource was updated.
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-subscriptions.html#resourceupdated-payload"/>
+        </member>
+        <member name="P:commercetools.Subscriptions.ResourceUpdatedPayload.Version">
+            <summary>
+            The version of the resource after the update
+            </summary>
+        </member>
+        <member name="P:commercetools.Subscriptions.ResourceUpdatedPayload.OldVersion">
+            <summary>
+            The version of the resource before the update
+            </summary>
+        </member>
+        <member name="M:commercetools.Subscriptions.ResourceUpdatedPayload.#ctor(System.Object)">
+            <summary>
+            Initializes this instance with JSON data from an API response.
+            </summary>
+            <param name="data">JSON object</param>
+        </member>
+        <member name="T:commercetools.Subscriptions.Subscription">
+            <summary>
+            Subscription
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-subscriptions.html#subscription"/>
+        </member>
+        <member name="P:commercetools.Subscriptions.Subscription.Id">
+            <summary>
+            Id
+            </summary>
+        </member>
+        <member name="P:commercetools.Subscriptions.Subscription.Version">
+            <summary>
+            Version
+            </summary>
+        </member>
+        <member name="P:commercetools.Subscriptions.Subscription.Key">
+            <summary>
+            User-specific unique identifier for the subscription
+            </summary>
+        </member>
+        <member name="P:commercetools.Subscriptions.Subscription.Destination">
+            <summary>
+            The Message Queue into which the notifications are to be sent
+            </summary>
+        </member>
+        <member name="P:commercetools.Subscriptions.Subscription.Messages">
+            <summary>
+            The messages subscribed to
+            </summary>
+        </member>
+        <member name="P:commercetools.Subscriptions.Subscription.Changes">
+            <summary>
+            The change notifications subscribed to
+            </summary>
+        </member>
+        <member name="P:commercetools.Subscriptions.Subscription.CreatedAt">
+            <summary>
+            CreatedAt
+            </summary>
+        </member>
+        <member name="P:commercetools.Subscriptions.Subscription.LastModifiedAt">
+            <summary>
+            LastModifiedAt
+            </summary>
+        </member>
+        <member name="M:commercetools.Subscriptions.Subscription.#ctor(System.Object)">
+            <summary>
+            Initializes this instance with JSON data from an API response.
+            </summary>
+            <param name="data">JSON object</param>
+        </member>
+        <member name="M:commercetools.Subscriptions.Subscription.Equals(System.Object)">
+            <summary>
+            Equals
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:commercetools.Subscriptions.Subscription.GetHashCode">
+            <summary>
+            GetHashCode
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:commercetools.Subscriptions.SubscriptionDraft">
+            <summary>
+            SubscriptionDraft
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-subscriptions.html#subscriptiondraft"/>
+        </member>
+        <member name="P:commercetools.Subscriptions.SubscriptionDraft.Key">
+            <summary>
+            User-specific unique identifier for the subscription
+            </summary>
+        </member>
+        <member name="P:commercetools.Subscriptions.SubscriptionDraft.Destination">
+            <summary>
+            The Message Queue into which the notifications are to be sent
+            </summary>
+        </member>
+        <member name="P:commercetools.Subscriptions.SubscriptionDraft.Messages">
+            <summary>
+            The messages to be subscribed to.
+            </summary>
+        </member>
+        <member name="P:commercetools.Subscriptions.SubscriptionDraft.Changes">
+            <summary>
+            The change notifications to be subscribed to.
+            </summary>
+        </member>
+        <member name="M:commercetools.Subscriptions.SubscriptionDraft.#ctor(commercetools.Subscriptions.Destination,System.Collections.Generic.List{commercetools.Subscriptions.MessageSubscription},System.Collections.Generic.List{commercetools.Subscriptions.ChangeSubscription})">
+            <summary>
+            Constructor.
+            </summary>
+            <remarks>
+            Either messages or changes need to be set.
+            </remarks>
+            <param name="destination">The Message Queue into which the notifications are to be sent</param>
+            <param name="messages">The messages to be subscribed to.</param>
+            <param name="changes">The change notifications to be subscribed to.</param>
+        </member>
+        <member name="T:commercetools.Subscriptions.SubscriptionManager">
+            <summary>
+            Provides access to the functions in the Subscriptions section of the API.
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-subscriptions.html"/>
+        </member>
+        <member name="M:commercetools.Subscriptions.SubscriptionManager.#ctor(commercetools.Common.Client)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="client">Client</param>
+        </member>
+        <member name="M:commercetools.Subscriptions.SubscriptionManager.GetSubscriptionByIdAsync(System.String)">
+            <summary>
+            Retrieves the representation of a subscription by its id.
+            </summary>
+            <param name="subscriptionId">Subscription ID</param>
+            <returns>Subscription</returns>
+            <see href="https://dev.commercetools.com/http-api-projects-subscriptions.html#get-a-subscription-by-id"/>
+        </member>
+        <member name="M:commercetools.Subscriptions.SubscriptionManager.GetSubscriptionByKeyAsync(System.String)">
+            <summary>
+            Retrieves the representation of a subscription by its key.
+            </summary>
+            <param name="key">Subscription key</param>
+            <returns>Subscription</returns>
+            <see href="https://dev.commercetools.com/http-api-projects-subscriptions.html#get-a-subscription-by-key"/>
+        </member>
+        <member name="M:commercetools.Subscriptions.SubscriptionManager.QuerySubscriptionsAsync(System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            Queries subscriptions.
+            </summary>
+            <param name="where">Where</param>
+            <param name="sort">Sort</param>
+            <param name="limit">Limit</param>
+            <param name="offset">Offset</param>
+            <returns>SubscriptionQueryResult</returns>
+            <see href="https://dev.commercetools.com/http-api-projects-subscriptions.html#query-subscriptions"/>
+        </member>
+        <member name="M:commercetools.Subscriptions.SubscriptionManager.CreateSubscriptionAsync(commercetools.Subscriptions.SubscriptionDraft)">
+            <summary>
+            Creates a new subscription.
+            </summary>
+            <remarks>
+            The creation of a Subscription is eventually consistent, it may take up to a minute before it becomes fully active. In order to test that the destination is correctly configured, a test message will be put into the queue. If the message could not be delivered, the subscription will not be created. The payload of the test message is a notification of type ResourceCreated for the resourceTypeId subscription. Currently, a maximum of 25 subscriptions can be created per project.
+            </remarks>
+            <param name="subscriptionDraft">SubscriptionDraft object</param>
+            <returns>Subscription</returns>
+            <see href="https://dev.commercetools.com/http-api-projects-subscriptions.html#create-a-subscription"/>
+        </member>
+        <member name="M:commercetools.Subscriptions.SubscriptionManager.UpdateSubscriptionAsync(commercetools.Subscriptions.Subscription,commercetools.Common.UpdateAction)">
+            <summary>
+            Updates a subscription.
+            </summary>
+            <param name="subscription">Subscription</param>
+            <param name="action">The update action to be performed on the subscription.</param>
+            <returns>Subscription</returns>
+            <see href="http://dev.commercetools.com/http-api-projects-subscriptions.html#update-subscription"/>
+        </member>
+        <member name="M:commercetools.Subscriptions.SubscriptionManager.UpdateSubscriptionAsync(commercetools.Subscriptions.Subscription,System.Collections.Generic.List{commercetools.Common.UpdateAction})">
+            <summary>
+            Updates a subscription.
+            </summary>
+            <param name="subscription">Subscription</param>
+            <param name="actions">The list of update actions to be performed on the subscription.</param>
+            <returns>Subscription</returns>
+            <see href="http://dev.commercetools.com/http-api-projects-subscriptions.html#update-subscription"/>
+        </member>
+        <member name="M:commercetools.Subscriptions.SubscriptionManager.UpdateSubscriptionByIdAsync(System.String,System.Int32,System.Collections.Generic.List{commercetools.Common.UpdateAction})">
+            <summary>
+            Updates a subscription by ID.
+            </summary>
+            <param name="subscriptionId">ID of the subscription</param>
+            <param name="version">The expected version of the subscription on which the changes should be applied. If the expected version does not match the actual version, a 409 Conflict will be returned.</param>
+            <param name="actions">The list of update actions to be performed on the subscription.</param>
+            <returns>Subscription</returns>
+            <see href="https://dev.commercetools.com/http-api-projects-subscriptions.html#update-subscription-by-id"/>
+        </member>
+        <member name="M:commercetools.Subscriptions.SubscriptionManager.UpdateSubscriptionByKeyAsync(System.String,System.Int32,System.Collections.Generic.List{commercetools.Common.UpdateAction})">
+            <summary>
+            Updates a subscription by key.
+            </summary>
+            <param name="key">Key of the subscription</param>
+            <param name="version">The expected version of the subscription on which the changes should be applied. If the expected version does not match the actual version, a 409 Conflict will be returned.</param>
+            <param name="actions">The list of update actions to be performed on the subscription.</param>
+            <returns>Subscription</returns>
+            <see href="https://dev.commercetools.com/http-api-projects-subscriptions.html#update-subscription-by-key"/>
+        </member>
+        <member name="M:commercetools.Subscriptions.SubscriptionManager.UpdateSubscriptionAsync(System.String,System.Int32,System.Collections.Generic.List{commercetools.Common.UpdateAction})">
+            <summary>
+            Private worker method for UpdateSubscriptionByIdAsync and UpdateSubscriptionByKeyAsync.
+            </summary>
+            <param name="endpoint">Request endpoint</param>
+            <param name="version">The expected version of the subscription on which the changes should be applied. If the expected version does not match the actual version, a 409 Conflict will be returned.</param>
+            <param name="actions">The list of update actions to be performed on the subscription.</param>
+            <returns></returns>
+        </member>
+        <member name="M:commercetools.Subscriptions.SubscriptionManager.DeleteSubscriptionAsync(commercetools.Subscriptions.Subscription)">
+            <summary>
+            Deletes a subscription.
+            </summary>
+            <param name="subscription">Subscription</param>
+            <returns>Subscription</returns>
+            <see href="http://dev.commercetools.com/http-api-projects-subscriptions.html#delete-subscription"/>
+        </member>
+        <member name="M:commercetools.Subscriptions.SubscriptionManager.DeleteSubscriptionByIdAsync(System.String,System.Int32)">
+            <summary>
+            Deletes a subscription by its ID.
+            </summary>
+            <param name="subscriptionId">Subscription ID</param>
+            <param name="version">Subscription version</param>
+            <returns>Subscription</returns>
+            <see href="https://dev.commercetools.com/http-api-projects-subscriptions.html#delete-subscription-by-id"/>
+        </member>
+        <member name="M:commercetools.Subscriptions.SubscriptionManager.DeleteSubscriptionByKeyAsync(System.String,System.Int32)">
+            <summary>
+            Deletes a subscription by its key.
+            </summary>
+            <param name="key">Subscription key</param>
+            <param name="version">Subscription version</param>
+            <returns>Subscription</returns>
+            <see href="https://dev.commercetools.com/http-api-projects-subscriptions.html#delete-subscription-by-id"/>
+        </member>
+        <member name="M:commercetools.Subscriptions.SubscriptionManager.UpdateSubscriptionAsync(System.String,System.Int32)">
+            <summary>
+            Private worker method for DeleteSubscriptionByIdAsync and DeleteSubscriptionByKeyAsync.
+            </summary>
+            <param name="endpoint">Request endpoint</param>
+            <param name="version">Subscription version</param>
+            <returns></returns>
+        </member>
+        <member name="T:commercetools.Subscriptions.SubscriptionQueryResult">
+            <summary>
+            An implementation of PagedQueryResult that provides access to the results as a List of Subscription objects.
+            </summary>
+            <see href="https://dev.commercetools.com/http-api.html#pagedqueryresult"/>
+        </member>
+        <member name="P:commercetools.Subscriptions.SubscriptionQueryResult.Results">
+            <summary>
+            Results
+            </summary>
+        </member>
+        <member name="M:commercetools.Subscriptions.SubscriptionQueryResult.#ctor(System.Object)">
+            <summary>
+            Initializes this instance with JSON data from an API response.
+            </summary>
+            <param name="data">JSON object</param>
+        </member>
+        <member name="T:commercetools.Subscriptions.UpdateActions.SetChangesAction">
+            <summary>
+            Set Changes
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-subscriptions.html#set-changes"/>
+        </member>
+        <member name="P:commercetools.Subscriptions.UpdateActions.SetChangesAction.Changes">
+            <summary>
+            Changes
+            </summary>
+        </member>
+        <member name="M:commercetools.Subscriptions.UpdateActions.SetChangesAction.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="T:commercetools.Subscriptions.UpdateActions.SetKeyAction">
+            <summary>
+            Set key
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-subscriptions.html#set-key"/>
+        </member>
+        <member name="P:commercetools.Subscriptions.UpdateActions.SetKeyAction.Key">
+            <summary>
+            Key
+            </summary>
+        </member>
+        <member name="M:commercetools.Subscriptions.UpdateActions.SetKeyAction.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="T:commercetools.Subscriptions.UpdateActions.SetMessagesAction">
+            <summary>
+            Set Messages
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-subscriptions.html#set-messages"/>
+        </member>
+        <member name="P:commercetools.Subscriptions.UpdateActions.SetMessagesAction.Messages">
+            <summary>
+            Messages
+            </summary>
+        </member>
+        <member name="M:commercetools.Subscriptions.UpdateActions.SetMessagesAction.#ctor">
+            <summary>
+            Constructor.
+            </summary>
         </member>
         <member name="T:commercetools.TaxCategories.Extensions">
             <summary>
@@ -8633,6 +10953,16 @@
             <returns>TaxCategory</returns>
             <see href="https://dev.commercetools.com/http-api-projects-taxCategories.html#update-taxcategory"/>
         </member>
+        <member name="M:commercetools.TaxCategories.TaxCategoryManager.UpdateTaxCategoryAsync(System.String,System.Int32,commercetools.Common.UpdateAction)">
+            <summary>
+            Updates a tax category.
+            </summary>
+            <param name="taxCategoryId">ID of the tax category</param>
+            <param name="version">The expected version of the tax category on which the changes should be applied.</param>
+            <param name="action">The update action to be performed on the tax category.</param>
+            <returns>TaxCategory</returns>
+            <see href="https://dev.commercetools.com/http-api-projects-taxCategories.html#update-taxcategory"/>
+        </member>
         <member name="M:commercetools.TaxCategories.TaxCategoryManager.UpdateTaxCategoryAsync(System.String,System.Int32,System.Collections.Generic.List{commercetools.Common.UpdateAction})">
             <summary>
             Updates a tax category.
@@ -8708,6 +11038,96 @@
             <param name="name">Name</param>
             <param name="includedInPrice">Included in price</param>
             <param name="country">A two-digit country code as per ISO 3166-1 alpha-2.</param>
+        </member>
+        <member name="T:commercetools.TaxCategories.UpdateActions.AddTaxRateAction">
+            <summary>
+            Add TaxRate
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-taxCategories.html#add-taxrate"/>
+        </member>
+        <member name="P:commercetools.TaxCategories.UpdateActions.AddTaxRateAction.TaxRate">
+            <summary>
+            TaxRateDraft
+            </summary>
+        </member>
+        <member name="M:commercetools.TaxCategories.UpdateActions.AddTaxRateAction.#ctor(commercetools.TaxCategories.TaxRateDraft)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="taxRate">TaxRateDraft</param>
+        </member>
+        <member name="T:commercetools.TaxCategories.UpdateActions.ChangeNameAction">
+            <summary>
+            Change Name
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-taxCategories.html#change-name"/>
+        </member>
+        <member name="P:commercetools.TaxCategories.UpdateActions.ChangeNameAction.Name">
+            <summary>
+            Name
+            </summary>
+        </member>
+        <member name="M:commercetools.TaxCategories.UpdateActions.ChangeNameAction.#ctor(System.String)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="name">Name</param>
+        </member>
+        <member name="T:commercetools.TaxCategories.UpdateActions.RemoveTaxRateAction">
+            <summary>
+            Remove TaxRate
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-taxCategories.html#remove-taxrate"/>
+        </member>
+        <member name="P:commercetools.TaxCategories.UpdateActions.RemoveTaxRateAction.TaxRateId">
+            <summary>
+            TaxRateId
+            </summary>
+        </member>
+        <member name="M:commercetools.TaxCategories.UpdateActions.RemoveTaxRateAction.#ctor(System.String)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="taxRateId">TaxRateId</param>
+        </member>
+        <member name="T:commercetools.TaxCategories.UpdateActions.ReplaceTaxRateAction">
+            <summary>
+            Replace TaxRate
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-taxCategories.html#replace-taxrate"/>
+        </member>
+        <member name="P:commercetools.TaxCategories.UpdateActions.ReplaceTaxRateAction.TaxRateId">
+            <summary>
+            TaxRateId
+            </summary>
+        </member>
+        <member name="P:commercetools.TaxCategories.UpdateActions.ReplaceTaxRateAction.TaxRate">
+            <summary>
+            TaxRateDraft
+            </summary>
+        </member>
+        <member name="M:commercetools.TaxCategories.UpdateActions.ReplaceTaxRateAction.#ctor(System.String,commercetools.TaxCategories.TaxRateDraft)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="taxRateId">TaxRateId</param>
+            <param name="taxRate">TaxRateDraft</param>
+        </member>
+        <member name="T:commercetools.TaxCategories.UpdateActions.SetDescriptionAction">
+            <summary>
+            Set Description 
+            </summary>
+            <see href="https://dev.commercetools.com/http-api-projects-taxCategories.html#set-description"/>
+        </member>
+        <member name="P:commercetools.TaxCategories.UpdateActions.SetDescriptionAction.Description">
+            <summary>
+            Deescription
+            </summary>
+        </member>
+        <member name="M:commercetools.TaxCategories.UpdateActions.SetDescriptionAction.#ctor">
+            <summary>
+            Constructor.
+            </summary>
         </member>
         <member name="T:commercetools.Types.BooleanType">
             <summary>
@@ -8789,7 +11209,7 @@
             Updates a type.
             </summary>
             <param name="type">Type</param>
-            <param name="action">The update action to be performed on the type.</param>
+            <param name="actions">The update actions to be performed on the type.</param>
             <returns>Type</returns>
         </member>
         <member name="M:commercetools.Types.TypeManager.UpdateTypeByIdAsync(System.String,System.Int32,commercetools.Common.UpdateAction)">
@@ -8841,7 +11261,13 @@
             <param name="actions">The list of update actions to apply to the type.</param>
             <returns>Type</returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:commercetools.Types.TypeManager.DeleteTypeAsync(commercetools.Types.Type)" -->
+        <member name="M:commercetools.Types.TypeManager.DeleteTypeAsync(commercetools.Types.Type)">
+            <summary>
+            Deletes a type.
+            </summary>
+            <param name="type">Type</param>
+            <returns>Response of type JObject</returns>
+        </member>
         <member name="M:commercetools.Types.TypeManager.DeleteTypeByIdAsync(System.String,System.Int32)">
             <summary>
             Deletes a type.
@@ -8855,7 +11281,7 @@
             <summary>
             Deletes a type.
             </summary>
-            <param name="typeId">Type ID</param>
+            <param name="key">Type key</param>
             <param name="version">Type version</param>
             <returns>JObject</returns>
             <see href="https://dev.commercetools.com/http-api-projects-types.html#delete-type-by-key"/>
@@ -9189,11 +11615,38 @@
             </summary>
             <see href="https://dev.commercetools.com/http-api-projects-types.html#typedraft"/>
         </member>
+        <member name="P:commercetools.Types.TypeDraft.Key">
+            <summary>
+            Identifier for the type (max. 256 characters).
+            </summary>
+        </member>
+        <member name="P:commercetools.Types.TypeDraft.Name">
+            <summary>
+            Name
+            </summary>
+        </member>
+        <member name="P:commercetools.Types.TypeDraft.Description">
+            <summary>
+            Description
+            </summary>
+        </member>
+        <member name="P:commercetools.Types.TypeDraft.ResourceTypeIds">
+            <summary>
+            The IDs of the resources that can be customized with this type.
+            </summary>
+        </member>
+        <member name="P:commercetools.Types.TypeDraft.FieldDefinitions">
+            <summary>
+            List of FieldDefinitions
+            </summary>
+        </member>
         <member name="M:commercetools.Types.TypeDraft.#ctor(System.String,commercetools.Common.LocalizedString,System.Collections.Generic.List{System.String})">
             <summary>
             Constructor.
             </summary>
-            <param name="currency">Currency</param>
+            <param name="key">Identifier for the type (max. 256 characters).</param>
+            <param name="name">Name</param>
+            <param name="resourceTypeIds">The IDs of the resources that can be customized with this type.</param>
         </member>
         <member name="T:commercetools.Zones.Extensions">
             <summary>
@@ -9280,9 +11733,9 @@
             </summary>
             <see href="https://dev.commercetools.com/http-api-projects-zones.html#set-description"/>
         </member>
-        <member name="P:commercetools.Zones.UpdateActions.SetDescriptionAction.Deescription">
+        <member name="P:commercetools.Zones.UpdateActions.SetDescriptionAction.Description">
             <summary>
-            Deescription
+            Description
             </summary>
         </member>
         <member name="M:commercetools.Zones.UpdateActions.SetDescriptionAction.#ctor">
@@ -9368,6 +11821,16 @@
             </summary>
             <param name="zone">Zone</param>
             <param name="actions">The list of update actions to be performed on the zone.</param>
+            <returns>Zone</returns>
+            <see href="http://dev.commercetools.com/http-api-projects-zones.html#update-zone"/>
+        </member>
+        <member name="M:commercetools.Zones.ZoneManager.UpdateZoneAsync(System.String,System.Int32,commercetools.Common.UpdateAction)">
+            <summary>
+            Updates a zone.
+            </summary>
+            <param name="zoneId">ID of the zone</param>
+            <param name="version">The expected version of the zone on which the changes should be applied.</param>
+            <param name="action">The update action to be performed on the zone.</param>
             <returns>Zone</returns>
             <see href="http://dev.commercetools.com/http-api-projects-zones.html#update-zone"/>
         </member>
