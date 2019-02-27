@@ -21,8 +21,14 @@ namespace Training
                     // setup commercetools client with correct configuration values:
                     services.UseCommercetools(configuration, "Client");
                     // Exercise Start
+                    
                     services.AddSingleton<IExercise, Exercise1>();
                     services.AddSingleton<IExercise, Exercise2>();
+                    services.AddSingleton<IExercise, Exercise3>();
+                    services.AddSingleton<IExercise, Exercise4>();
+                    services.AddSingleton<IExercise, Exercise5>();
+                    services.AddSingleton<IExercise, Exercise6>();     
+//                  services.AddSingleton<IExercise, Exercise7>();
                 });
 
             await builder.RunConsoleAsync();

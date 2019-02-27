@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
@@ -13,7 +13,6 @@
         <PackageReference Include="commercetools.Sdk.HttpApi" Version="1.0.0" />
         <PackageReference Include="commercetools.Sdk.HttpApi.Domain" Version="1.0.0" />
         <PackageReference Include="commercetools.Sdk.Linq" Version="1.0.0" />
-        <PackageReference Include="commercetools.Sdk.LinqToQueryPredicate" Version="1.0.0" />
         <PackageReference Include="commercetools.Sdk.Registration" Version="1.0.0" />
         <PackageReference Include="commercetools.Sdk.Serialization" Version="1.0.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.2.0" />
