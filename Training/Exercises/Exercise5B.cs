@@ -12,61 +12,67 @@ using System.Threading.Tasks;
 namespace Training
 {
     /// <summary>
-    /// Add Product to Category Exercise
+    /// Add Product to Category Exercise - Good Solution
     /// </summary>
-    public class Exercise5 : IExercise
+    public class Exercise5B : IExercise
     {
         private readonly IClient _commercetoolsClient;
         
         private static Random random = new Random();
         
-        public Exercise5(IClient commercetoolsClient)
+        public Exercise5B(IClient commercetoolsClient)
         {
             this._commercetoolsClient =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
         }
         public void Execute()
         {
-            AddProductToCategory();
+            AddProductToCategoryAsync();
         }
         
         /// <summary>
-        /// Bad Solution
+        /// Good Solution
         /// </summary>
-        private void AddProductToCategory()
+        private async void AddProductToCategoryAsync()
         {
+            
             string productKey = "Product1-Key-123";
             string categoryKey = "Category1-Key-123";
-            
-            
-            //retrieve category by key
-            Category category =
-                _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<Category>(categoryKey)).Result;
-            
-            //retrieve product by key
-            Product product =
-                _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<Product>(productKey)).Result;
-            
-            //Create AddToCategoryUpdateAction
-            AddToCategoryUpdateAction addToCategoryUpdateAction = new AddToCategoryUpdateAction()
-            {
-                OrderHint = this.RandomSortOrder(),
-                Category =  new ResourceIdentifier() { Key = categoryKey}
-            };
-            
-            List<UpdateAction<Product>> updateActions = new List<UpdateAction<Product>>();
-            updateActions.Add(addToCategoryUpdateAction);
-            
-            //Add the category to the product
-            Product retrievedProduct = _commercetoolsClient
-                .ExecuteAsync(new UpdateByKeyCommand<Product>(productKey, product.Version, updateActions))
-                .Result;
+
+            var retrieveCategoryTask = _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<Category>(categoryKey));
+            var retrieveProductTask = _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<Product>(productKey));
+
+
+            var updatedProduct = await Task.WhenAll(retrieveCategoryTask, retrieveProductTask).ContinueWith(
+                retrieveTask => AddCategoryToProductTask(retrieveCategoryTask.Result, retrieveProductTask.Result), TaskContinuationOptions.OnlyOnRanToCompletion).Unwrap();
             
             //show product categories
-            foreach (var cat in retrievedProduct.MasterData.Current.Categories)
+            foreach (var cat in updatedProduct.MasterData.Current.Categories)
             {
                 Console.WriteLine($"Category ID {cat.Id}");
             }
+
+        }
+
+        /// <summary>
+        /// Create AddCategoryToProduct Task
+        /// </summary>
+        /// <param name="category"></param>
+        /// <param name="product"></param>
+        /// <returns></returns>
+        private Task<Product> AddCategoryToProductTask(Category category, Product product)
+        {
+            AddToCategoryUpdateAction addToCategoryUpdateAction = new AddToCategoryUpdateAction()
+            {
+                OrderHint = this.RandomSortOrder(),
+                Category = new ResourceIdentifier() {Key = category.Key}
+            };
+
+            List<UpdateAction<Product>> updateActions = new List<UpdateAction<Product>>();
+
+            updateActions.Add(addToCategoryUpdateAction);
+            return _commercetoolsClient
+                .ExecuteAsync(new UpdateByKeyCommand<Product>(product.Key, product.Version, updateActions));            
         }
         
         /// <summary>

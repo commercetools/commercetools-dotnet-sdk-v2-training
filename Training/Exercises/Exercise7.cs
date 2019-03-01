@@ -32,17 +32,18 @@ namespace Training
         private void AddProductToCart()
         {
             string productVariantSku = "test123";
-            string cartID = "2825e31e-7bd1-4b68-ace3-e8252e2a062c";
+            string cartId = "200b3777-6373-437c-8327-4489b170f90b";
 
             // retrieve cart by Id
             Cart cart =
-                _commercetoolsClient.ExecuteAsync(new GetByIdCommand<Cart>(new Guid(cartID))).Result;
+                _commercetoolsClient.ExecuteAsync(new GetByIdCommand<Cart>(new Guid(cartId))).Result;
             
             // get lineItemDraft and create AddLineItemUpdateAction
             var lineItemDraft = this.GetLineItemDraft(productVariantSku, 3);
-            AddLineItemUpdateAction addLineItemUpdateAction = new AddLineItemUpdateAction()
+            AddLineItemBySkuUpdateAction addLineItemUpdateAction = new AddLineItemBySkuUpdateAction()
             {
-                LineItem = lineItemDraft
+                LineItem = lineItemDraft,
+                Sku = productVariantSku
             };
             
             List<UpdateAction<Cart>> updateActions = new List<UpdateAction<Cart>>();

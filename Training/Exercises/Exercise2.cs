@@ -4,6 +4,9 @@ using commercetools.Sdk.Domain.Customers;
 
 namespace Training
 {
+    /// <summary>
+    /// Create new customer (SignUp customer)
+    /// </summary>
     public class Exercise2 : IExercise
     {
         private readonly IClient _commercetoolsClient;
@@ -35,7 +38,7 @@ namespace Training
                 FirstName = "userName",
                 LastName =  "test",
                 Email = $"siaw{random.Next()}@asdf.com",
-                Password = "adsf"
+                Password = "password"
             };
         }
         

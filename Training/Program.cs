@@ -24,11 +24,16 @@ namespace Training
                     
                     services.AddSingleton<IExercise, Exercise1>();
                     services.AddSingleton<IExercise, Exercise2>();
+                    services.AddSingleton<IExercise, Exercise2B>();
+                    services.AddSingleton<IExercise, Exercise2C>();
                     services.AddSingleton<IExercise, Exercise3>();
                     services.AddSingleton<IExercise, Exercise4>();
+                    services.AddSingleton<IExercise, Exercise4B>();
                     services.AddSingleton<IExercise, Exercise5>();
+                    services.AddSingleton<IExercise, Exercise5B>();
                     services.AddSingleton<IExercise, Exercise6>();     
-//                  services.AddSingleton<IExercise, Exercise7>();
+                    services.AddSingleton<IExercise, Exercise7>();
+                    services.AddSingleton<IExercise, Exercise8>();
                 });
 
             await builder.RunConsoleAsync();
