@@ -35,11 +35,12 @@ namespace Training
             Cart cart = GetCartByCustomerId();
             
             // get lineItemDraft and create AddLineItemUpdateAction
-            var lineItemDraft = this.GetLineItemDraft(Settings.PRODUCTVARIANTSKU, 3);
+            var lineItemDraft = this.GetLineItemDraft(Settings.PRODUCTVARIANTSKU, 6);
             AddLineItemBySkuUpdateAction addLineItemUpdateAction = new AddLineItemBySkuUpdateAction()
             {
                 LineItem = lineItemDraft,
-                Sku = Settings.PRODUCTVARIANTSKU
+                Sku = Settings.PRODUCTVARIANTSKU,
+                Quantity = lineItemDraft.Quantity
             };
             
             List<UpdateAction<Cart>> updateActions = new List<UpdateAction<Cart>>();
