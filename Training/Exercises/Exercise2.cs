@@ -1,5 +1,6 @@
 using System;
 using commercetools.Sdk.Client;
+using commercetools.Sdk.Domain;
 using commercetools.Sdk.Domain.Customers;
 
 namespace Training
@@ -40,6 +41,49 @@ namespace Training
                 Email = $"siaw{random.Next()}@asdf.com",
                 Password = "password"
             };
+        }
+        
+        /// <summary>
+        /// Get Customer Draft with Custom Fields
+        /// </summary>
+        /// <returns></returns>
+        private CustomerDraft GetCustomerDraftWithCustomFields()
+        {
+            return new CustomerDraft
+            {
+                FirstName = "userName",
+                LastName =  "test",
+                Email = $"siaw{random.Next()}@asdf.com",
+                Password = "password",
+                Custom = GetCustomFieldsDraft()
+            };
+        }
+
+        /// <summary>
+        /// Get Custom Fields Draft
+        /// </summary>
+        /// <returns></returns>
+        private CustomFieldsDraft GetCustomFieldsDraft()
+        {
+            var customFieldsDraft = new CustomFieldsDraft()
+            {
+                Type = new ResourceIdentifier()
+                {
+                    Key = "Shoe-Size-Key"
+                },
+                Fields = GetCustomFields()
+            };
+            return customFieldsDraft;
+        }
+        /// <summary>
+        /// Create 
+        /// </summary>
+        /// <returns></returns>
+        private Fields GetCustomFields()
+        {
+            Fields fields = new Fields();
+            fields.Add("Shoe-Size-field", 42);//set the shoeSizeField
+            return fields;
         }
         
     }

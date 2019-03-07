@@ -39,10 +39,8 @@ namespace Training
         }
         public CartDraft GetCartDraft()
         {
-            string customerId = "e65458d0-b350-4c52-984b-bbf6db188748";
-            
             CartDraft cartDraft = new CartDraft();
-            cartDraft.CustomerId = customerId;
+            cartDraft.CustomerId = Settings.CUSTOMERID;
             cartDraft.Currency = "EUR";
             cartDraft.ShippingAddress = new Address()
             {

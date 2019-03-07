@@ -40,20 +40,18 @@ namespace Training
         
         public ProductDraft GetProductDraft()
         {
-            string productTypeKey = "Jacket-PT";
-            string categoryKey = "Category1-Key-123";
             
             //Get the Product Type
-            ProductType productType = _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<ProductType>(productTypeKey)).Result;
+            ProductType productType = _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<ProductType>(Settings.PRODUCTTYPEKEY)).Result;
             
             //Get the Category
-            Category category = _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<Category>(categoryKey)).Result;
+            Category category = _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<Category>(Settings.CATEGORYKEY)).Result;
             
             //Create the Product Draft
             ProductDraft productDraft = new ProductDraft();
-            productDraft.Name = new LocalizedString() {{"en", this.RandomString(4)}};
-            productDraft.Key = this.RandomString(3);
-            productDraft.Slug = new LocalizedString() {{"en", this.RandomString(3)}};
+            productDraft.Name = new LocalizedString() {{"en", Settings.RandomString(4)}};
+            productDraft.Key = Settings.RandomString(3);
+            productDraft.Slug = new LocalizedString() {{"en", Settings.RandomString(3)}};
             productDraft.ProductType = new ResourceIdentifier() {Id = productType.Id};
             ProductVariantDraft productMasterVariant =this.GetProductVariantDraft();
             productDraft.MasterVariant = productMasterVariant;
@@ -69,8 +67,8 @@ namespace Training
             var price = GetPriceDraft();
             var productVariantDraft = new ProductVariantDraft()
             {
-                Key = this.RandomString(5),
-                Sku = this.RandomString(5),
+                Key = Settings.RandomString(5),
+                Sku = Settings.RandomString(5),
                 Prices = new List<PriceDraft>(){price}
             };
             return productVariantDraft;
@@ -95,11 +93,6 @@ namespace Training
             return priceDraft;
         }
         
-        public string RandomString(int length)
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            return new string(Enumerable.Repeat(chars, length)
-                .Select(s => s[random.Next(s.Length)]).ToArray());
-        }
+      
     }
 }

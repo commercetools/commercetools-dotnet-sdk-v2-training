@@ -24,8 +24,7 @@ namespace Training
         private void VerifyCustomerEmail()
         {
             //Get Customer By ID
-            string customerID = "e65458d0-b350-4c52-984b-bbf6db188748";
-            Customer customer = _commercetoolsClient.ExecuteAsync(new GetByIdCommand<Customer>(new Guid(customerID))).Result;
+            Customer customer = _commercetoolsClient.ExecuteAsync(new GetByIdCommand<Customer>(new Guid(Settings.CUSTOMERID))).Result;
             
             //Create token for verifying the customer's email
             CustomerToken customerToken = _commercetoolsClient.ExecuteAsync(new CreateTokenForCustomerEmailVerificationCommand(customer.Id, 10, customer.Version)).Result as CustomerToken;

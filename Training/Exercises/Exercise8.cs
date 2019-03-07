@@ -19,7 +19,6 @@ namespace Training
     public class Exercise8 : IExercise
     {
         private readonly IClient _commercetoolsClient;
-        private static Random random = new Random();
         
         public Exercise8(IClient commercetoolsClient)
         {
@@ -42,8 +41,9 @@ namespace Training
             //Create Order
             Order order = _commercetoolsClient.ExecuteAsync(new CreateCommand<Order>(orderFromCartDraft)).Result;
             
+            
             //Display Order Number
-            Console.WriteLine($"Order Created with order number: {order.OrderNumber}");
+            Console.WriteLine($"Order Created with order number: {order.OrderNumber}, and Total Price: {order.TotalPrice.CentAmount} cents");
             
         }
         /// <summary>
@@ -52,17 +52,15 @@ namespace Training
         /// <returns></returns>
         private OrderFromCartDraft GetOrderFromCartDraft()
         {
-            string cartId = "200b3777-6373-437c-8327-4489b170f90b";
-            
             //Get the cart By Id (Cart must have at least one product)
             Cart cart =
-                _commercetoolsClient.ExecuteAsync(new GetByIdCommand<Cart>(new Guid(cartId))).Result;
+                _commercetoolsClient.ExecuteAsync(new GetByIdCommand<Cart>(new Guid(Settings.CARTID))).Result;
             
             //Then Create Order from this Cart
             OrderFromCartDraft orderFromCartDraft = new OrderFromCartDraft();
             orderFromCartDraft.Id = cart.Id;
             orderFromCartDraft.Version = cart.Version;
-            orderFromCartDraft.OrderNumber = $"Order{random.Next()}";
+            orderFromCartDraft.OrderNumber = $"Order{Settings.RandomInt()}";
             return orderFromCartDraft;
         }
     }

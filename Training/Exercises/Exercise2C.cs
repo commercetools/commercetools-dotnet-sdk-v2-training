@@ -31,9 +31,7 @@ namespace Training
         /// </summary>
         private async void VerifyCustomerEmailAsync()
         {
-            string customerId = "e9386f5a-dfea-402f-bc57-79623ae3776f";
-
-            var customerByIdTask = _commercetoolsClient.ExecuteAsync(new GetByIdCommand<Customer>(new Guid(customerId)));
+            var customerByIdTask = _commercetoolsClient.ExecuteAsync(new GetByIdCommand<Customer>(new Guid(Settings.CUSTOMERID)));
             
             //Get Customer By ID
             var retrievedCustomer = await

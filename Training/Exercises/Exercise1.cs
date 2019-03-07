@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain;
 
@@ -10,10 +12,13 @@ namespace Training
 
         // by using services.UseCommercetools() on the services object in the Program.cs
         // an instance of IClient is registered on the DI container, which we are retrieving here by using constructor injection.
-        public Exercise1(IClient commercetoolsClient)
+        public Exercise1(IEnumerable<IClient> clients)
         {
-            this._commercetoolsClient =
-                commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
+            if (clients == null || !clients.Any())
+            {
+                throw new ArgumentNullException(nameof(clients));
+            }
+            this._commercetoolsClient = clients.FirstOrDefault(c => c.Name == Settings.DEFAULTCLIENT);// the default client
         }
         public void Execute()
         {

@@ -25,9 +25,8 @@ namespace Training
 
         private void SearchForProductsByProductType()
         {
-            string productTypeId = "c870fbf6-4a32-4454-bcb2-088d01c97bb6";
             QueryCommand<Product> queryCommand = new QueryCommand<Product>();
-            QueryPredicate<Product> queryPredicate = new QueryPredicate<Product>(p => p.ProductType.Id == productTypeId);
+            QueryPredicate<Product> queryPredicate = new QueryPredicate<Product>(p => p.ProductType.Id == Settings.PRODUCTTYPEID);
             queryCommand.SetWhere(queryPredicate);
             PagedQueryResult<Product> returnedSet = _commercetoolsClient.ExecuteAsync(queryCommand).Result;
             if (returnedSet.Results.Count > 0)

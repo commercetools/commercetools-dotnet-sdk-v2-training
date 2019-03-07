@@ -5,64 +5,59 @@ using commercetools.Sdk.Domain;
 using commercetools.Sdk.Domain.Carts;
 using commercetools.Sdk.Domain.Carts.UpdateActions;
 using commercetools.Sdk.Domain.Categories;
-using commercetools.Sdk.Domain.Customers;
 using commercetools.Sdk.Domain.Predicates;
-using commercetools.Sdk.Domain.Products;
 using commercetools.Sdk.Domain.Query;
+using Type = commercetools.Sdk.Domain.Type;
 
 namespace Training
 {
     /// <summary>
-    /// Add Product to Cart
+    /// Add Discount Code to Cart - Make sure that discount code is active
+    // 1- create a cart and get cartId (run ex6)
+    // 2- get cart by Id, add the discount code to this cart (this exercise)
+    // 3- add product to this cart (run ex7) - don't forget to change cartId
+    // 4- Create the order and check the total price (run ex8) - don't forget to change cartId, you can check discounts on orders using MC
     /// </summary>
-    public class Exercise7 : IExercise
+    public class Exercise11 : IExercise
     {
         private readonly IClient _commercetoolsClient;
         
-        public Exercise7(IClient commercetoolsClient)
+        public Exercise11(IClient commercetoolsClient)
         {
             this._commercetoolsClient =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
         }
         public void Execute()
         {
-            AddProductToCart();
+            AddDiscountCodeToTheCart();
         }
 
-        private void AddProductToCart()
+        /// <summary>
+        /// Add Discount code to the cart
+        /// </summary>
+        private void AddDiscountCodeToTheCart()
         {
             // retrieve cart by Id
             Cart cart =
                 _commercetoolsClient.ExecuteAsync(new GetByIdCommand<Cart>(new Guid(Settings.CARTID))).Result;
             
-            // get lineItemDraft and create AddLineItemUpdateAction
-            var lineItemDraft = this.GetLineItemDraft(Settings.PRODUCTVARIANTSKU, 3);
-            AddLineItemBySkuUpdateAction addLineItemUpdateAction = new AddLineItemBySkuUpdateAction()
+            AddDiscountCodeUpdateAction addDiscountCodeUpdateAction = new AddDiscountCodeUpdateAction()
             {
-                LineItem = lineItemDraft,
-                Sku = Settings.PRODUCTVARIANTSKU
+               Code = Settings.DISCOUNTCODE
             };
             
             List<UpdateAction<Cart>> updateActions = new List<UpdateAction<Cart>>();
-            updateActions.Add(addLineItemUpdateAction);
+            updateActions.Add(addDiscountCodeUpdateAction);
 
             Cart retrievedCart = _commercetoolsClient
                 .ExecuteAsync(new UpdateByIdCommand<Cart>(new Guid(cart.Id),
                     cart.Version, updateActions))
                 .Result;
-            
-            foreach (var lineItem in retrievedCart.LineItems)
+            Console.WriteLine($"Showing discount code added to cart {retrievedCart.Id}");
+            foreach (var codeInfo in retrievedCart.DiscountCodes)
             {
-                Console.WriteLine($"LineItem Name: {lineItem.Name["en"]}, Quantity: {lineItem.Quantity}");
+                Console.WriteLine(codeInfo.DiscountCode.Id);
             }
-            
-        }
-        public LineItemDraft GetLineItemDraft(string productVariantSku, int quantity = 1)
-        {
-            LineItemDraft lineItemDraft = new LineItemDraft();
-            lineItemDraft.Sku = productVariantSku;
-            lineItemDraft.Quantity = quantity;
-            return lineItemDraft;
         }
     }
 }
