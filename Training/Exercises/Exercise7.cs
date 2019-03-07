@@ -31,9 +31,8 @@ namespace Training
 
         private void AddProductToCart()
         {
-            // retrieve cart by Id
-            Cart cart =
-                _commercetoolsClient.ExecuteAsync(new GetByIdCommand<Cart>(new Guid(Settings.CARTID))).Result;
+            // retrieve cart by customer Id
+            Cart cart = GetCartByCustomerId();
             
             // get lineItemDraft and create AddLineItemUpdateAction
             var lineItemDraft = this.GetLineItemDraft(Settings.PRODUCTVARIANTSKU, 3);
@@ -57,6 +56,17 @@ namespace Training
             }
             
         }
+        /// <summary>
+        /// Get the active Cart By Customer Id (that has been modified most recently) 
+        /// </summary>
+        /// <returns></returns>
+        private Cart GetCartByCustomerId()
+        {
+            Cart cart =
+                _commercetoolsClient.ExecuteAsync(new GetCartByCustomerIdCommand(Settings.CUSTOMERID)).Result;
+            return cart;
+        }
+        
         public LineItemDraft GetLineItemDraft(string productVariantSku, int quantity = 1)
         {
             LineItemDraft lineItemDraft = new LineItemDraft();
@@ -64,5 +74,17 @@ namespace Training
             lineItemDraft.Quantity = quantity;
             return lineItemDraft;
         }
+
+        /// <summary>
+        /// Get Cart By Id
+        /// </summary>
+        /// <returns></returns>
+        private Cart GetCartById()
+        {
+            Cart cart =
+                _commercetoolsClient.ExecuteAsync(new GetByIdCommand<Cart>(new Guid(Settings.CARTID))).Result;
+            return cart;
+        }
+     
     }
 }
