@@ -38,7 +38,7 @@ namespace Training
         public TypeDraft CreateShoeSizeTypeDraft()
         {
             TypeDraft typeDraft = new TypeDraft();
-            typeDraft.Key = "Shoe-Size-Key";
+            typeDraft.Key = "shoe-size-key";
             typeDraft.Name = new LocalizedString();
             typeDraft.Name.Add("en", "Shoe Size Type");
             typeDraft.Description = new LocalizedString();
@@ -51,7 +51,7 @@ namespace Training
         private FieldDefinition CreateShoeSizeFieldDefinition()
         {
             FieldDefinition fieldDefinition = new FieldDefinition();
-            fieldDefinition.Name = "Shoe-Size-field";
+            fieldDefinition.Name = "shoe-size-field";
             fieldDefinition.Required = true;
             fieldDefinition.Label = new LocalizedString();
             fieldDefinition.Label.Add("en", "Shoe Size");

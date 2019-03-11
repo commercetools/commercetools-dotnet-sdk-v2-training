@@ -30,8 +30,8 @@ namespace Training
                     
                     
                     // Exercise Start
-                    //services.AddSingleton<IExercise, Exercise123>(); //Testing calling Machine Learning from .Net HTTP Client
-                    services.AddSingleton<IExercise, Exercise9>(); // Excerise to call Machine Learning from .Net SDK
+                    services.AddSingleton<IExercise, Exercise1>();
+                    //services.AddSingleton<IExercise, Exercise9>(); // Excerise to call Machine Learning from .Net SDK
                 });
 
             await builder.RunConsoleAsync();

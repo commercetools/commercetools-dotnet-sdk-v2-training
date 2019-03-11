@@ -69,7 +69,7 @@ namespace Training
             {
                 Type = new ResourceIdentifier()
                 {
-                    Key = "Shoe-Size-Key"
+                    Key = "shoe-size-key"
                 },
                 Fields = GetCustomFields()
             };
@@ -82,7 +82,7 @@ namespace Training
         private Fields GetCustomFields()
         {
             Fields fields = new Fields();
-            fields.Add("Shoe-Size-field", 42);//set the shoeSizeField
+            fields.Add("shoe-size-field", 42);//set the shoeSizeField
             return fields;
         }
         
