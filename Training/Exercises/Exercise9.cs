@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain;
-using commercetools.Sdk.Domain.Categories;
-using commercetools.Sdk.Domain.Predicates;
-using commercetools.Sdk.Domain.Query;
 using Training.MachineLearningExtensions;
 
 namespace Training
@@ -27,7 +24,6 @@ namespace Training
         }
         public void Execute()
         {
-            //first change the api base address of the client
             GetCategoriesRecommendationsFromProductName();
             GetCategoriesRecommendationsFromProductImageUrl();
         }
@@ -41,10 +37,26 @@ namespace Training
             var recommendationCommand = new QueryCommand<GeneralCategoryRecommendation>(additionalParams);
             
             PagedQueryResult<GeneralCategoryRecommendation> returnedSet = _machineLearningClient.ExecuteAsync(recommendationCommand).Result;
+            Console.WriteLine("Category Recommendations using Product Name:");
+            foreach (var categoryRecommendation in returnedSet.Results)
+            {
+                Console.WriteLine($"Category name: {categoryRecommendation.CategoryName}, Confidence : {categoryRecommendation.Confidence}");
+            }
         }
         private void GetCategoriesRecommendationsFromProductImageUrl()
         {
+            var additionalParams = new GetGeneralCategoriesRecommendationsAdditionalParameters()
+            {
+                ProductImageUrl = "https://27f39057e2c520ef562d-e965cc5b4f2ea17c6cdc007c161d738e.ssl.cf3.rackcdn.com/Gar-HOkwvZ2E-small.jpg"
+            };
+            var recommendationCommand = new QueryCommand<GeneralCategoryRecommendation>(additionalParams);
             
+            PagedQueryResult<GeneralCategoryRecommendation> returnedSet = _machineLearningClient.ExecuteAsync(recommendationCommand).Result;
+            Console.WriteLine("Category Recommendations using Product Image Url:");
+            foreach (var categoryRecommendation in returnedSet.Results)
+            {
+                Console.WriteLine($"Category name: {categoryRecommendation.CategoryName}, Confidence : {categoryRecommendation.Confidence}");
+            }
         }
     }
 }

@@ -23,19 +23,15 @@ namespace Training
                 {
                     services.AddOptions();
                     services.AddSingleton<IHostedService, PrintTextToConsoleService>();
-                    //start training
-                    // setup commercetools client with correct configuration values:
-                    //services.UseCommercetools(configuration, "Client");
+                    //start training setup commercetools client with correct configuration values like: services.UseCommercetools(configuration, "Client");
                     ConfigureServices(services, configuration);
-                    
-                    
+
                     // Exercise Start
                     services.AddSingleton<IExercise, Exercise1>();
-                    //services.AddSingleton<IExercise, Exercise9>(); // Excerise to call Machine Learning from .Net SDK
                 });
 
             await builder.RunConsoleAsync();
-            
+
         }
 
         /// <summary>
@@ -50,7 +46,7 @@ namespace Training
             };
             services.AddSingleton<IAdditionalParametersBuilder, GetGeneralCategoriesRecommendationsAdditionalParametersBuilder>();
             services.UseCommercetools(configuration, clients);
-            
+
         }
 
         private static IConfiguration GetConfiguration()

@@ -3,7 +3,6 @@ using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain.Customers;
 using System.Threading.Tasks;
 using commercetools.Sdk.Domain;
-using commercetools.Sdk.HttpApi.Domain;
 
 namespace Training
 {

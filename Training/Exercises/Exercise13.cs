@@ -2,13 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using commercetools.Sdk.Client;
-using commercetools.Sdk.Domain;
-using commercetools.Sdk.Domain.Categories;
-using commercetools.Sdk.Domain.Predicates;
-using commercetools.Sdk.Domain.Query;
-using commercetools.Sdk.Serialization;
 using Training.GraphQL;
-using Training.MachineLearningExtensions;
 
 namespace Training
 {

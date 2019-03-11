@@ -37,8 +37,6 @@ namespace Training
             
             //In the second Day
             
-            
-            
             //Create AddToCategoryUpdateAction
             AddToCategoryUpdateAction addToCategoryUpdateAction = new AddToCategoryUpdateAction()
             {

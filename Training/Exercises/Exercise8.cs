@@ -52,9 +52,9 @@ namespace Training
         /// <returns></returns>
         private OrderFromCartDraft GetOrderFromCartDraft()
         {
-            //Get the cart By Id (Cart must have at least one product)
+            //Get the active cart By Customer Id (Cart must have at least one product)
             Cart cart =
-                _commercetoolsClient.ExecuteAsync(new GetByIdCommand<Cart>(new Guid(Settings.CARTID))).Result;
+                _commercetoolsClient.ExecuteAsync(new GetCartByCustomerIdCommand(Settings.CUSTOMERID)).Result;
             
             //Then Create Order from this Cart
             OrderFromCartDraft orderFromCartDraft = new OrderFromCartDraft();

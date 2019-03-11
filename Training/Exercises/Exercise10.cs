@@ -1,14 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain;
-using commercetools.Sdk.Domain.Categories;
-using commercetools.Sdk.Domain.Predicates;
 using commercetools.Sdk.Domain.ProductProjections;
 using commercetools.Sdk.Domain.Products.Attributes;
-using commercetools.Sdk.Domain.Query;
 
 namespace Training
 {

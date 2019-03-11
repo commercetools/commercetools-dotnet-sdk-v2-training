@@ -13,15 +13,15 @@ namespace Training
 {
     /// <summary>
     /// Add Discount Code to Cart - Make sure that discount code is active
-    // 1- create a cart and get cartId (run ex6)
-    // 2- get cart by Id, add the discount code to this cart (this exercise)
-    // 3- add product to this cart (run ex7) - don't forget to change cartId
-    // 4- Create the order and check the total price (run ex8) - don't forget to change cartId, you can check discounts on orders using MC
+    // 1- Create a cart and get cart By CustomerID (run ex6)
+    // 2- Add the discount code to this cart (this exercise)
+    // 3- add product to this cart (run ex7)
+    // 4- Create the order and check the total price (run ex8) - you can check discounts on orders using MC
     /// </summary>
     public class Exercise11 : IExercise
     {
         private readonly IClient _commercetoolsClient;
-        
+
         public Exercise11(IClient commercetoolsClient)
         {
             this._commercetoolsClient =
@@ -37,15 +37,15 @@ namespace Training
         /// </summary>
         private void AddDiscountCodeToTheCart()
         {
-            // retrieve cart by Id
+            // retrieve Active cart by Customer ID
             Cart cart =
-                _commercetoolsClient.ExecuteAsync(new GetByIdCommand<Cart>(new Guid(Settings.CARTID))).Result;
-            
+                _commercetoolsClient.ExecuteAsync(new GetCartByCustomerIdCommand(Settings.CUSTOMERID)).Result;
+
             AddDiscountCodeUpdateAction addDiscountCodeUpdateAction = new AddDiscountCodeUpdateAction()
             {
                Code = Settings.DISCOUNTCODE
             };
-            
+
             List<UpdateAction<Cart>> updateActions = new List<UpdateAction<Cart>>();
             updateActions.Add(addDiscountCodeUpdateAction);
 

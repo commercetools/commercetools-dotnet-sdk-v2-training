@@ -1,5 +1,6 @@
 using System;
 using commercetools.Sdk.Client;
+using commercetools.Sdk.Client.Linq;
 using commercetools.Sdk.Domain;
 using commercetools.Sdk.Domain.Predicates;
 using commercetools.Sdk.Domain.Query;
@@ -21,6 +22,7 @@ namespace Training
         public void Execute()
         {
             SearchForProductsByProductType();
+            //SearchForProductsByProductTypeKey();
         }
 
         private void SearchForProductsByProductType()
@@ -31,7 +33,23 @@ namespace Training
             PagedQueryResult<Product> returnedSet = _commercetoolsClient.ExecuteAsync(queryCommand).Result;
             if (returnedSet.Results.Count > 0)
             {
-                Console.WriteLine("------------------------------------------------------------");//as delimiter
+                Console.WriteLine("Specific Products: ");
+                foreach (var product in returnedSet.Results)
+                {
+                    Console.WriteLine(product.MasterData.Current.Name["en"]);
+                }
+            }
+        }
+        private void SearchForProductsByProductTypeKey()
+        {
+            ProductType productType = _commercetoolsClient
+                .ExecuteAsync(new GetByKeyCommand<ProductType>(Settings.PRODUCTTYPEKEY)).Result;
+            
+            QueryCommand<Product> queryCommand = new QueryCommand<Product>();
+            queryCommand.Where(p => p.ProductType.Id == productType.Id.valueOf());
+            PagedQueryResult<Product> returnedSet = _commercetoolsClient.ExecuteAsync(queryCommand).Result;
+            if (returnedSet.Results.Count > 0)
+            {
                 Console.WriteLine("Specific Products: ");
                 foreach (var product in returnedSet.Results)
                 {

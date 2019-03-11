@@ -7,17 +7,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="commercetools.Sdk.Client" Version="1.0.0" />
-        <PackageReference Include="commercetools.Sdk.DependencyInjection" Version="1.0.0" />
-        <PackageReference Include="commercetools.Sdk.Domain" Version="1.0.0" />
-        <PackageReference Include="commercetools.Sdk.HttpApi" Version="1.0.0" />
-        <PackageReference Include="commercetools.Sdk.HttpApi.Domain" Version="1.0.0" />
-        <PackageReference Include="commercetools.Sdk.Linq" Version="1.0.0" />
-        <PackageReference Include="commercetools.Sdk.Registration" Version="1.0.0" />
-        <PackageReference Include="commercetools.Sdk.Serialization" Version="1.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.2.0" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
-      <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.2.0" />
+        <PackageReference Include="commercetools.Sdk.Client" Version="1.0.0.15" />
+        <PackageReference Include="commercetools.Sdk.DependencyInjection" Version="1.0.0.15" />
+        <PackageReference Include="commercetools.Sdk.Domain" Version="1.0.0.15" />
+        <PackageReference Include="commercetools.Sdk.HttpApi" Version="1.0.0.15" />
+        <PackageReference Include="commercetools.Sdk.HttpApi.Domain" Version="1.0.0.15" />
+        <PackageReference Include="commercetools.Sdk.Linq" Version="1.0.0.15" />
+        <PackageReference Include="commercetools.Sdk.Registration" Version="1.0.0.15" />
+        <PackageReference Include="commercetools.Sdk.Serialization" Version="1.0.0.15" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.0.0-preview3.19153.1" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.0-preview3.19153.1" />
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.0.0-preview3.19153.1" />
     </ItemGroup>
 
     <ItemGroup>

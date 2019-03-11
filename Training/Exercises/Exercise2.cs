@@ -11,7 +11,6 @@ namespace Training
     public class Exercise2 : IExercise
     {
         private readonly IClient _commercetoolsClient;
-        private static Random random = new Random();
         
         public Exercise2(IClient commercetoolsClient)
         {
@@ -38,7 +37,7 @@ namespace Training
             {
                 FirstName = "userName",
                 LastName =  "test",
-                Email = $"siaw{random.Next()}@asdf.com",
+                Email = $"siaw{Settings.RandomInt()}@asdf.com",
                 Password = "password"
             };
         }
@@ -53,7 +52,7 @@ namespace Training
             {
                 FirstName = "userName",
                 LastName =  "test",
-                Email = $"siaw{random.Next()}@asdf.com",
+                Email = $"siaw{Settings.RandomInt()}@asdf.com",
                 Password = "password",
                 Custom = GetCustomFieldsDraft()
             };
