@@ -39,7 +39,7 @@ namespace Training
         {
             // retrieve Active cart by Customer ID
             Cart cart =
-                _commercetoolsClient.ExecuteAsync(new GetCartByCustomerIdCommand(Settings.CUSTOMERID)).Result;
+                _commercetoolsClient.ExecuteAsync(new GetCartByCustomerIdCommand(new Guid(Settings.CUSTOMERID))).Result;
 
             AddDiscountCodeUpdateAction addDiscountCodeUpdateAction = new AddDiscountCodeUpdateAction()
             {

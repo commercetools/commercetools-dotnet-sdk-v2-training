@@ -13,7 +13,7 @@ namespace Training
     public class Exercise7 : IExercise
     {
         private readonly IClient _commercetoolsClient;
-        
+
         public Exercise7(IClient commercetoolsClient)
         {
             this._commercetoolsClient =
@@ -28,7 +28,7 @@ namespace Training
         {
             // retrieve cart by customer Id
             Cart cart = GetCartByCustomerId();
-            
+
             // get lineItemDraft and create AddLineItemUpdateAction
             var lineItemDraft = this.GetLineItemDraft(Settings.PRODUCTVARIANTSKU, 6);
             AddLineItemBySkuUpdateAction addLineItemUpdateAction = new AddLineItemBySkuUpdateAction()
@@ -37,7 +37,7 @@ namespace Training
                 Sku = Settings.PRODUCTVARIANTSKU,
                 Quantity = lineItemDraft.Quantity
             };
-            
+
             List<UpdateAction<Cart>> updateActions = new List<UpdateAction<Cart>>();
             updateActions.Add(addLineItemUpdateAction);
 
@@ -45,24 +45,24 @@ namespace Training
                 .ExecuteAsync(new UpdateByIdCommand<Cart>(new Guid(cart.Id),
                     cart.Version, updateActions))
                 .Result;
-            
+
             foreach (var lineItem in retrievedCart.LineItems)
             {
                 Console.WriteLine($"LineItem Name: {lineItem.Name["en"]}, Quantity: {lineItem.Quantity}");
             }
-            
+
         }
         /// <summary>
-        /// Get the active Cart By Customer Id (that has been modified most recently) 
+        /// Get the active Cart By Customer Id (that has been modified most recently)
         /// </summary>
         /// <returns></returns>
         private Cart GetCartByCustomerId()
         {
             Cart cart =
-                _commercetoolsClient.ExecuteAsync(new GetCartByCustomerIdCommand(Settings.CUSTOMERID)).Result;
+                _commercetoolsClient.ExecuteAsync(new GetCartByCustomerIdCommand(new Guid( Settings.CUSTOMERID))).Result;
             return cart;
         }
-        
+
         public LineItemDraft GetLineItemDraft(string productVariantSku, int quantity = 1)
         {
             LineItemDraft lineItemDraft = new LineItemDraft();
@@ -81,6 +81,6 @@ namespace Training
                 _commercetoolsClient.ExecuteAsync(new GetByIdCommand<Cart>(new Guid(Settings.CARTID))).Result;
             return cart;
         }
-     
+
     }
 }

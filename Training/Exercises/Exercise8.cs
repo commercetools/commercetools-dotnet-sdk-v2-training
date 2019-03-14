@@ -19,7 +19,7 @@ namespace Training
     public class Exercise8 : IExercise
     {
         private readonly IClient _commercetoolsClient;
-        
+
         public Exercise8(IClient commercetoolsClient)
         {
             this._commercetoolsClient =
@@ -29,7 +29,7 @@ namespace Training
         {
             CreateAnOrderFromCart();
         }
-        
+
         /// <summary>
         /// Create Order from Cart
         /// </summary>
@@ -37,25 +37,25 @@ namespace Training
         {
             //Create Order Draft
             var orderFromCartDraft = this.GetOrderFromCartDraft();
-            
+
             //Create Order
             Order order = _commercetoolsClient.ExecuteAsync(new CreateCommand<Order>(orderFromCartDraft)).Result;
-            
-            
+
+
             //Display Order Number
             Console.WriteLine($"Order Created with order number: {order.OrderNumber}, and Total Price: {order.TotalPrice.CentAmount} cents");
-            
+
         }
         /// <summary>
-        /// Create Draft Order from Cart 
+        /// Create Draft Order from Cart
         /// </summary>
         /// <returns></returns>
         private OrderFromCartDraft GetOrderFromCartDraft()
         {
             //Get the active cart By Customer Id (Cart must have at least one product)
             Cart cart =
-                _commercetoolsClient.ExecuteAsync(new GetCartByCustomerIdCommand(Settings.CUSTOMERID)).Result;
-            
+                _commercetoolsClient.ExecuteAsync(new GetCartByCustomerIdCommand(new Guid(Settings.CUSTOMERID))).Result;
+
             //Then Create Order from this Cart
             OrderFromCartDraft orderFromCartDraft = new OrderFromCartDraft();
             orderFromCartDraft.Id = cart.Id;

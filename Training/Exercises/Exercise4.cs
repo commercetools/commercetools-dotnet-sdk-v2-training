@@ -1,6 +1,5 @@
 using System;
 using commercetools.Sdk.Client;
-using commercetools.Sdk.Client.Linq;
 using commercetools.Sdk.Domain;
 using commercetools.Sdk.Domain.Predicates;
 using commercetools.Sdk.Domain.Query;
@@ -13,7 +12,7 @@ namespace Training
     public class Exercise4 : IExercise
     {
         private readonly IClient _commercetoolsClient;
-        
+
         public Exercise4(IClient commercetoolsClient)
         {
             this._commercetoolsClient =
@@ -44,7 +43,7 @@ namespace Training
         {
             ProductType productType = _commercetoolsClient
                 .ExecuteAsync(new GetByKeyCommand<ProductType>(Settings.PRODUCTTYPEKEY)).Result;
-            
+
             QueryCommand<Product> queryCommand = new QueryCommand<Product>();
             queryCommand.Where(p => p.ProductType.Id == productType.Id.valueOf());
             PagedQueryResult<Product> returnedSet = _commercetoolsClient.ExecuteAsync(queryCommand).Result;
