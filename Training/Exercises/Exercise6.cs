@@ -1,47 +1,28 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using commercetools.Sdk.Client;
-using commercetools.Sdk.Domain;
-using commercetools.Sdk.Domain.Carts;
 
 namespace Training
 {
-    /// <summary>
-    /// Create a Cart Exercise
-    /// </summary>
     public class Exercise6 : IExercise
     {
         private readonly IClient _commercetoolsClient;
-        
-        public Exercise6(IClient commercetoolsClient)
+
+        // by using services.UseCommercetools() on the services object in the Program.cs
+        // an instance of IClient is registered on the DI container, which we are retrieving here by using constructor injection.
+        public Exercise6(IEnumerable<IClient> clients)
         {
-            this._commercetoolsClient =
-                commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
+            if (clients == null || !clients.Any())
+            {
+                throw new ArgumentNullException(nameof(clients));
+            }
+            this._commercetoolsClient = clients.FirstOrDefault(c => c.Name == Settings.DEFAULTCLIENT);// the default client
         }
         public void Execute()
         {
-            CreateACart();
-        }
-
-        private void CreateACart()
-        {
-            CartDraft cartDraft = this.GetCartDraft();
-            Cart cart = _commercetoolsClient.ExecuteAsync(new CreateCommand<Cart>(cartDraft)).Result;
-            if (cart != null)
-            {
-                Console.WriteLine($"Cart {cart.Id} for customer: {cart.CustomerId}");
-            }
-        }
-        public CartDraft GetCartDraft()
-        {
-            CartDraft cartDraft = new CartDraft();
-            cartDraft.CustomerId = Settings.CUSTOMERID;
-            cartDraft.Currency = "EUR";
-            cartDraft.ShippingAddress = new Address()
-            {
-                Country = "DE"
-            };
-            cartDraft.DeleteDaysAfterLastModification = 30;
-            return cartDraft;
+            var project =  _commercetoolsClient.ExecuteAsync(new GetProjectCommand()).Result;
+            Console.WriteLine(project.Name);
         }
     }
 }

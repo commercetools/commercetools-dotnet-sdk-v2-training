@@ -1,59 +1,62 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain;
-using Type = commercetools.Sdk.Domain.Type;
+using Training.MachineLearningExtensions;
 
 namespace Training
 {
     /// <summary>
-    /// Create your own resource type (like ShoeSize Type) exercise
-    /// 1- Create TypeDraft with Custom fields
-    /// 2- Create The Type and assign it to customers (as Resources you want to extend)
+    /// Machine Learning Exercise
     /// </summary>
     public class Exercise12 : IExercise
     {
-        private readonly IClient _commercetoolsClient;
-        
-        public Exercise12(IClient commercetoolsClient)
+        private readonly IClient _machineLearningClient;
+
+        public Exercise12(IEnumerable<IClient> clients)
         {
-            this._commercetoolsClient =
-                commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
+            if (clients == null || !clients.Any())
+            {
+                throw new ArgumentNullException(nameof(clients));
+            }
+            this._machineLearningClient = clients.FirstOrDefault(c => c.Name == Settings.MACHINELEARNINGCLIENT);// the machine learning client
         }
         public void Execute()
         {
-            CreateYourOwnResourceType();
+            GetCategoriesRecommendationsFromProductName();
+            GetCategoriesRecommendationsFromProductImageUrl();
         }
 
-        private void CreateYourOwnResourceType()
+        private void GetCategoriesRecommendationsFromProductName()
         {
-            TypeDraft typeDraft = this.CreateShoeSizeTypeDraft();
-            Type createdType = _commercetoolsClient.ExecuteAsync(new CreateCommand<Type>(typeDraft)).Result;
-            Console.WriteLine($"New custom type has been created with Id: {createdType.Id}");
-            
+            var additionalParams = new GetGeneralCategoriesRecommendationsAdditionalParameters()
+            {
+                ProductName = "car"
+            };
+            var recommendationCommand = new QueryCommand<GeneralCategoryRecommendation>(additionalParams);
+
+            PagedQueryResult<GeneralCategoryRecommendation> returnedSet = _machineLearningClient.ExecuteAsync(recommendationCommand).Result;
+            Console.WriteLine("Category Recommendations using Product Name:");
+            foreach (var categoryRecommendation in returnedSet.Results)
+            {
+                Console.WriteLine($"Category name: {categoryRecommendation.CategoryName}, Confidence : {categoryRecommendation.Confidence}");
+            }
         }
-        public TypeDraft CreateShoeSizeTypeDraft()
+        private void GetCategoriesRecommendationsFromProductImageUrl()
         {
-            TypeDraft typeDraft = new TypeDraft();
-            typeDraft.Key = "shoe-size-key";
-            typeDraft.Name = new LocalizedString();
-            typeDraft.Name.Add("en", "Shoe Size Type");
-            typeDraft.Description = new LocalizedString();
-            typeDraft.Description.Add("en", "Store Customer's Shoe size");
-            typeDraft.ResourceTypeIds = new List<ResourceTypeId>() { ResourceTypeId.Customer };
-            typeDraft.FieldDefinitions = new List<FieldDefinition>();
-            typeDraft.FieldDefinitions.Add(this.CreateShoeSizeFieldDefinition());
-            return typeDraft;
-        }
-        private FieldDefinition CreateShoeSizeFieldDefinition()
-        {
-            FieldDefinition fieldDefinition = new FieldDefinition();
-            fieldDefinition.Name = "shoe-size-field";
-            fieldDefinition.Required = true;
-            fieldDefinition.Label = new LocalizedString();
-            fieldDefinition.Label.Add("en", "Shoe Size");
-            fieldDefinition.Type = new NumberFieldType();
-            return fieldDefinition;
+            var additionalParams = new GetGeneralCategoriesRecommendationsAdditionalParameters()
+            {
+                ProductImageUrl = "https://27f39057e2c520ef562d-e965cc5b4f2ea17c6cdc007c161d738e.ssl.cf3.rackcdn.com/Gar-HOkwvZ2E-small.jpg"
+            };
+            var recommendationCommand = new QueryCommand<GeneralCategoryRecommendation>(additionalParams);
+
+            PagedQueryResult<GeneralCategoryRecommendation> returnedSet = _machineLearningClient.ExecuteAsync(recommendationCommand).Result;
+            Console.WriteLine("Category Recommendations using Product Image Url:");
+            foreach (var categoryRecommendation in returnedSet.Results)
+            {
+                Console.WriteLine($"Category name: {categoryRecommendation.CategoryName}, Confidence : {categoryRecommendation.Confidence}");
+            }
         }
     }
 }

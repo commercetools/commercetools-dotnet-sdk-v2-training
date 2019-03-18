@@ -7,11 +7,11 @@ namespace Training
     /// <summary>
     /// Query Products Exercise
     /// </summary>
-    public class Exercise3 : IExercise
+    public class Exercise14A : IExercise
     {
         private readonly IClient _commercetoolsClient;
-        
-        public Exercise3(IClient commercetoolsClient)
+
+        public Exercise14A(IClient commercetoolsClient)
         {
             this._commercetoolsClient =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));

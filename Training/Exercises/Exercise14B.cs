@@ -7,13 +7,13 @@ using commercetools.Sdk.Domain.Query;
 namespace Training
 {
     /// <summary>
-    /// Search for Products Exercise
+    /// Search for Products By ProductTypeId Exercise
     /// </summary>
-    public class Exercise4 : IExercise
+    public class Exercise14B : IExercise
     {
         private readonly IClient _commercetoolsClient;
 
-        public Exercise4(IClient commercetoolsClient)
+        public Exercise14B(IClient commercetoolsClient)
         {
             this._commercetoolsClient =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
@@ -39,13 +39,16 @@ namespace Training
                 }
             }
         }
+        /// <summary>
+        /// Search for Products using QueryCommand Extensions (instead of creating QueryPredicate)
+        /// </summary>
         private void SearchForProductsByProductTypeKey()
         {
             ProductType productType = _commercetoolsClient
                 .ExecuteAsync(new GetByKeyCommand<ProductType>(Settings.PRODUCTTYPEKEY)).Result;
 
             QueryCommand<Product> queryCommand = new QueryCommand<Product>();
-            queryCommand.Where(p => p.ProductType.Id == productType.Id.valueOf());
+            queryCommand.Where(p => p.ProductType.Id == productType.Id.valueOf().ToString());
             PagedQueryResult<Product> returnedSet = _commercetoolsClient.ExecuteAsync(queryCommand).Result;
             if (returnedSet.Results.Count > 0)
             {

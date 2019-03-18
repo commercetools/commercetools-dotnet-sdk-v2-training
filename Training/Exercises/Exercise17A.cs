@@ -16,11 +16,11 @@ namespace Training
     /// <summary>
     /// Create an order from cart, Cart must have at least one product and has to be in active state
     /// </summary>
-    public class Exercise8 : IExercise
+    public class Exercise17A : IExercise
     {
         private readonly IClient _commercetoolsClient;
 
-        public Exercise8(IClient commercetoolsClient)
+        public Exercise17A(IClient commercetoolsClient)
         {
             this._commercetoolsClient =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));

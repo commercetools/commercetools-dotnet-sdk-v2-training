@@ -1,54 +1,78 @@
 using System;
 using commercetools.Sdk.Client;
-using commercetools.Sdk.Domain.Orders;
+using commercetools.Sdk.Domain.Customers;
+using System.Threading.Tasks;
+using commercetools.Sdk.Domain;
 
 namespace Training
 {
     /// <summary>
-    /// Delete Order
+    /// Get Customer By ID and Verify Email Exercise - async chaining tasks
     /// </summary>
     public class Exercise8B : IExercise
     {
         private readonly IClient _commercetoolsClient;
-        
+
         public Exercise8B(IClient commercetoolsClient)
         {
             this._commercetoolsClient =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
         }
+
         public void Execute()
         {
-            DeleteOrderByOrderNumber();
+            VerifyCustomerEmailAsync();
         }
-        
-        /// <summary>
-        /// Delete Order BY OrderNumber 
-        /// </summary>
-        private void DeleteOrderByOrderNumber()
-        {
-            //retrieve order by ordernumber to get it's version
-            Order retrievedOrder = _commercetoolsClient
-                .ExecuteAsync(new GetOrderByOrderNumberCommand(Settings.ORDERNUMBER)).Result;
 
-            retrievedOrder = _commercetoolsClient
-                .ExecuteAsync(new DeleteByOrderNumberCommand(retrievedOrder.OrderNumber, retrievedOrder.Version)).Result;
-            
-            Console.WriteLine($"Order Number: {retrievedOrder.OrderNumber} has been deleted");
+        /// <summary>
+        /// Verify Customer Email
+        /// Chaining multiple tasks using ContinueWith
+        /// </summary>
+        private async void VerifyCustomerEmailAsync()
+        {
+            var customerByIdTask = _commercetoolsClient.ExecuteAsync(new GetByIdCommand<Customer>(new Guid(Settings.CUSTOMERID)));
+
+            //Get Customer By ID
+            var retrievedCustomer = await
+                customerByIdTask
+                    .ContinueWith(
+                        customerTask => CreateTokenForCustomerEmailVerificationTask(customerTask.Result),
+                        TaskContinuationOptions.OnlyOnRanToCompletion)
+                    .Unwrap() // to return Task<Token<Customer>> instead of Task<Task<Token<Customer>>>
+                    .ContinueWith(
+                        customerTokenTask => VerifyCustomerEmailTask(customerTokenTask.Result as CustomerToken,
+                            customerByIdTask.Result.Version),
+                        TaskContinuationOptions.OnlyOnRanToCompletion)
+                    .Unwrap();
+
+            Console.WriteLine($"Is Email Verified:{retrievedCustomer.IsEmailVerified}");
         }
-        
-        /// <summary>
-        /// Delete Order BY OrderId 
-        /// </summary>
-        private void DeleteOrderById()
-        {
-            //retrieve order by ordernumber to get it's version
-            Order retrievedOrder = _commercetoolsClient
-                .ExecuteAsync(new GetOrderByOrderNumberCommand(Settings.ORDERNUMBER)).Result;
 
-            retrievedOrder = _commercetoolsClient
-                .ExecuteAsync(new DeleteByIdCommand<Order>(new Guid(retrievedOrder.Id), retrievedOrder.Version)).Result;
-            
-            Console.WriteLine($"Order Number: {retrievedOrder.OrderNumber} has been deleted");
+        /// <summary>
+        /// Return Task for Create Token for Customer Email Verification
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
+        private Task<Token<Customer>> CreateTokenForCustomerEmailVerificationTask(Customer customer)
+        {
+            Console.WriteLine($"CustomerById Task finished, here is the customer last name: {customer.LastName}");
+            Console.WriteLine($"Starting CreateTokenForCustomerEmailVerification Task");
+            return _commercetoolsClient.ExecuteAsync(
+                new CreateTokenForCustomerEmailVerificationCommand(customer.Id, 10, customer.Version));
+        }
+
+        /// <summary>
+        /// Return Task for Customer Email Verification
+        /// </summary>
+        /// <param name="customerToken"></param>
+        /// <param name="version"></param>
+        /// <returns></returns>
+        private Task<Customer> VerifyCustomerEmailTask(CustomerToken customerToken, int version)
+        {
+            Console.WriteLine($"CreateTokenForCustomerEmailVerification Task finished, here is the token: {customerToken.Value}");
+            Console.WriteLine($"Starting verifying customer email task");
+            return _commercetoolsClient.ExecuteAsync(
+                new VerifyCustomerEmailCommand(customerToken.Value, version));
         }
     }
 }

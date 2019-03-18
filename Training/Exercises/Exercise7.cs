@@ -1,14 +1,12 @@
 using System;
-using System.Collections.Generic;
 using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain;
-using commercetools.Sdk.Domain.Carts;
-using commercetools.Sdk.Domain.Carts.UpdateActions;
+using commercetools.Sdk.Domain.Customers;
 
 namespace Training
 {
     /// <summary>
-    /// Add Product to Cart
+    /// Create new customer (SignUp customer)
     /// </summary>
     public class Exercise7 : IExercise
     {
@@ -21,65 +19,69 @@ namespace Training
         }
         public void Execute()
         {
-            AddProductToCart();
-        }
-
-        private void AddProductToCart()
-        {
-            // retrieve cart by customer Id
-            Cart cart = GetCartByCustomerId();
-
-            // get lineItemDraft and create AddLineItemUpdateAction
-            var lineItemDraft = this.GetLineItemDraft(Settings.PRODUCTVARIANTSKU, 6);
-            AddLineItemBySkuUpdateAction addLineItemUpdateAction = new AddLineItemBySkuUpdateAction()
+            var customerDraft = this.GetCustomerDraft();
+            var signUpCustomerCommand = new SignUpCustomerCommand(customerDraft);
+            var result =  _commercetoolsClient.ExecuteAsync(signUpCustomerCommand).Result as CustomerSignInResult;
+            var customer = result?.Customer;
+            if (customer != null)
             {
-                LineItem = lineItemDraft,
-                Sku = Settings.PRODUCTVARIANTSKU,
-                Quantity = lineItemDraft.Quantity
-            };
-
-            List<UpdateAction<Cart>> updateActions = new List<UpdateAction<Cart>>();
-            updateActions.Add(addLineItemUpdateAction);
-
-            Cart retrievedCart = _commercetoolsClient
-                .ExecuteAsync(new UpdateByIdCommand<Cart>(new Guid(cart.Id),
-                    cart.Version, updateActions))
-                .Result;
-
-            foreach (var lineItem in retrievedCart.LineItems)
-            {
-                Console.WriteLine($"LineItem Name: {lineItem.Name["en"]}, Quantity: {lineItem.Quantity}");
+                Console.WriteLine($"Customer Created with Id : {customer.Id}");
             }
-
-        }
-        /// <summary>
-        /// Get the active Cart By Customer Id (that has been modified most recently)
-        /// </summary>
-        /// <returns></returns>
-        private Cart GetCartByCustomerId()
-        {
-            Cart cart =
-                _commercetoolsClient.ExecuteAsync(new GetCartByCustomerIdCommand(new Guid( Settings.CUSTOMERID))).Result;
-            return cart;
         }
 
-        public LineItemDraft GetLineItemDraft(string productVariantSku, int quantity = 1)
+
+        private CustomerDraft GetCustomerDraft()
         {
-            LineItemDraft lineItemDraft = new LineItemDraft();
-            lineItemDraft.Sku = productVariantSku;
-            lineItemDraft.Quantity = quantity;
-            return lineItemDraft;
+            return new CustomerDraft
+            {
+                FirstName = "fName",
+                LastName =  "lName",
+                Email = $"email{Settings.RandomInt()}@test.com",
+                Password = "password"
+            };
         }
 
         /// <summary>
-        /// Get Cart By Id
+        /// Get Customer Draft with Custom Fields
         /// </summary>
         /// <returns></returns>
-        private Cart GetCartById()
+        private CustomerDraft GetCustomerDraftWithCustomFields()
         {
-            Cart cart =
-                _commercetoolsClient.ExecuteAsync(new GetByIdCommand<Cart>(new Guid(Settings.CARTID))).Result;
-            return cart;
+            return new CustomerDraft
+            {
+                FirstName = "fName",
+                LastName =  "lName",
+                Email = $"email{Settings.RandomInt()}@test.com",
+                Password = "password",
+                Custom = GetCustomFieldsDraft()
+            };
+        }
+
+        /// <summary>
+        /// Get Custom Fields Draft
+        /// </summary>
+        /// <returns></returns>
+        private CustomFieldsDraft GetCustomFieldsDraft()
+        {
+            var customFieldsDraft = new CustomFieldsDraft()
+            {
+                Type = new ResourceIdentifier()
+                {
+                    Key = "shoe-size-key"
+                },
+                Fields = GetCustomFields()
+            };
+            return customFieldsDraft;
+        }
+        /// <summary>
+        /// Create
+        /// </summary>
+        /// <returns></returns>
+        private Fields GetCustomFields()
+        {
+            Fields fields = new Fields();
+            fields.Add("shoe-size-field", 42);//set the shoeSizeField
+            return fields;
         }
 
     }

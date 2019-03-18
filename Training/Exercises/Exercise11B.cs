@@ -11,11 +11,11 @@ namespace Training
     /// <summary>
     /// Add Product to Category Exercise - Good Solution
     /// </summary>
-    public class Exercise5B : IExercise
+    public class Exercise11B : IExercise
     {
         private readonly IClient _commercetoolsClient;
-        
-        public Exercise5B(IClient commercetoolsClient)
+
+        public Exercise11B(IClient commercetoolsClient)
         {
             this._commercetoolsClient =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
@@ -24,19 +24,19 @@ namespace Training
         {
             AddProductToCategoryAsync();
         }
-        
+
         /// <summary>
         /// Good Solution
         /// </summary>
         private async void AddProductToCategoryAsync()
         {
             var retrieveCategoryTask = _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<Category>(Settings.CATEGORYKEY));
-            var retrieveProductTask = _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<Product>(Settings.PRODUCTTYPEKEY));
+            var retrieveProductTask = _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<Product>(Settings.PRODUCTKEY));
 
 
             var updatedProduct = await Task.WhenAll(retrieveCategoryTask, retrieveProductTask).ContinueWith(
                 retrieveTask => AddCategoryToProductTask(retrieveCategoryTask.Result, retrieveProductTask.Result), TaskContinuationOptions.OnlyOnRanToCompletion).Unwrap();
-            
+
             //show product categories
             foreach (var cat in updatedProduct.MasterData.Current.Categories)
             {
@@ -63,7 +63,7 @@ namespace Training
 
             updateActions.Add(addToCategoryUpdateAction);
             return _commercetoolsClient
-                .ExecuteAsync(new UpdateByKeyCommand<Product>(product.Key, product.Version, updateActions));            
+                .ExecuteAsync(new UpdateByKeyCommand<Product>(product.Key, product.Version, updateActions));
         }
     }
 }

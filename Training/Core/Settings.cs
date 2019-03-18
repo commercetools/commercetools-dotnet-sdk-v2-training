@@ -9,18 +9,19 @@ namespace Training
     public static class Settings
     {
         private static Random random = new Random();
-        
+
         public const string DEFAULTCLIENT = "Client";//Default client name in appsettings.test.json
         public const string MACHINELEARNINGCLIENT = "MachineLearningClient"; // Machine client name
-        public const string CUSTOMERID = "e65458d0-b350-4c52-984b-bbf6db188748";//Customer ID
+        public const string CUSTOMERID = "69bfbee8-1125-4eb9-b8a1-1255f7dcee93";//Customer ID
         public const string CATEGORYKEY = "Category1-Key-123";//Category Key
         public const string PRODUCTTYPEID = "c777235b-7a62-4bee-a13e-2e010e7d037e";//Product Type ID
         public const string PRODUCTTYPEKEY = "Jacket-PT";//Product Type Key
+        public const string PRODUCTKEY = "4LK";//Product Key
         public const string PRODUCTVARIANTSKU = "test123";//Product variant sku
-        public const string CARTID = "101ce2bb-2948-4f30-9970-2bf0d4716b74";// Cart Id
+        public const string CARTID = "07331fd8-50a6-482c-8584-2c02092cd462";// Cart Id
         public const string DISCOUNTCODE = "XXXXXX"; //discount code
-        public const string ORDERNUMBER = "Order1846460484"; //Order Number
-        
+        public const string ORDERNUMBER = "Order317372326"; //Order Number
+
         /// <summary>
         /// Get Random string
         /// </summary>
@@ -32,7 +33,7 @@ namespace Training
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
-        
+
         /// <summary>
         /// String representing a number which is greater than 0 and smaller than 1. It should start with “0.” and should not end with “0”.
         /// </summary>

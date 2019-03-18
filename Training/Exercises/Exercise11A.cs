@@ -10,11 +10,11 @@ namespace Training
     /// <summary>
     /// Add Product to Category Exercise
     /// </summary>
-    public class Exercise5 : IExercise
+    public class Exercise11A : IExercise
     {
         private readonly IClient _commercetoolsClient;
-        
-        public Exercise5(IClient commercetoolsClient)
+
+        public Exercise11A(IClient commercetoolsClient)
         {
             this._commercetoolsClient =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
@@ -23,35 +23,35 @@ namespace Training
         {
             AddProductToCategory();
         }
-        
+
         private void AddProductToCategory()
         {
             //retrieve category by key
             Category category =
                 _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<Category>(Settings.CATEGORYKEY)).Result;
-            
+
             //retrieve product by key
             Product product =
-                _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<Product>(Settings.PRODUCTTYPEKEY)).Result;
-            
-            
+                _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<Product>(Settings.PRODUCTKEY)).Result;
+
+
             //In the second Day
-            
+
             //Create AddToCategoryUpdateAction
             AddToCategoryUpdateAction addToCategoryUpdateAction = new AddToCategoryUpdateAction()
             {
                 OrderHint = Settings.RandomSortOrder(),
                 Category =  new ResourceIdentifier() { Key = Settings.CATEGORYKEY}
             };
-            
+
             List<UpdateAction<Product>> updateActions = new List<UpdateAction<Product>>();
             updateActions.Add(addToCategoryUpdateAction);
-            
+
             //Add the category to the product
             Product retrievedProduct = _commercetoolsClient
-                .ExecuteAsync(new UpdateByKeyCommand<Product>(Settings.PRODUCTTYPEKEY, product.Version, updateActions))
+                .ExecuteAsync(new UpdateByKeyCommand<Product>(Settings.PRODUCTKEY, product.Version, updateActions))
                 .Result;
-            
+
             //show product categories
             foreach (var cat in retrievedProduct.MasterData.Current.Categories)
             {

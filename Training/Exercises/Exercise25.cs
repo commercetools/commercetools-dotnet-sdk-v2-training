@@ -9,11 +9,11 @@ namespace Training
     /// <summary>
     /// GraphQl Query Exercise
     /// </summary>
-    public class Exercise13 : IExercise
+    public class Exercise25 : IExercise
     {
         private readonly IClient _commercetoolsClient;
-        
-        public Exercise13(IEnumerable<IClient> clients)
+
+        public Exercise25(IEnumerable<IClient> clients)
         {
             if (clients == null || !clients.Any())
             {
@@ -38,6 +38,6 @@ namespace Training
                 Console.WriteLine(customer.Email);
             }
         }
-        
+
     }
 }
