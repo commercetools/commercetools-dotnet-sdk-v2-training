@@ -17,12 +17,12 @@ namespace Training
         {
             this._extercises = exercises;
         }
-        
+
         public Task StartAsync(CancellationToken cancellationToken)
         {
             foreach (var exercise in _extercises)
             {
-                exercise.Execute();
+                exercise.ExecuteAsync();
             }
 
             return Task.CompletedTask;

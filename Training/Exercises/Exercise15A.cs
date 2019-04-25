@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain;
 using commercetools.Sdk.Domain.Carts;
@@ -17,21 +18,17 @@ namespace Training
             this._commercetoolsClient =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
         }
-        public void Execute()
-        {
-            CreateACart();
-        }
-
-        private void CreateACart()
+        public async Task ExecuteAsync()
         {
             CartDraft cartDraft = this.GetCartDraft();
-            Cart cart = _commercetoolsClient.ExecuteAsync(new CreateCommand<Cart>(cartDraft)).Result;
+            Cart cart = await _commercetoolsClient.ExecuteAsync(new CreateCommand<Cart>(cartDraft));
             if (cart != null)
             {
                 Console.WriteLine($"Cart {cart.Id} for customer: {cart.CustomerId}");
             }
         }
-        public CartDraft GetCartDraft()
+
+        private CartDraft GetCartDraft()
         {
             CartDraft cartDraft = new CartDraft();
             cartDraft.CustomerId = Settings.CUSTOMERID;

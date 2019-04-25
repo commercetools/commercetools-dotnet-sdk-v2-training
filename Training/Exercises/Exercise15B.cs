@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain;
 using commercetools.Sdk.Domain.Carts;
@@ -19,68 +20,31 @@ namespace Training
             this._commercetoolsClient =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
         }
-        public void Execute()
+        public async Task ExecuteAsync()
         {
-            AddProductToCart();
-        }
+            //Get the active Cart By Customer Id
+            Cart cart =
+                await _commercetoolsClient.ExecuteAsync(new GetCartByCustomerIdCommand(new Guid(Settings.CUSTOMERID)));
 
-        private void AddProductToCart()
-        {
-            // retrieve cart by customer Id
-            Cart cart = GetCartByCustomerId();
-
-            // get lineItemDraft and create AddLineItemUpdateAction
-            var lineItemDraft = this.GetLineItemDraft(Settings.PRODUCTVARIANTSKU, 6);
-            AddLineItemBySkuUpdateAction addLineItemUpdateAction = new AddLineItemBySkuUpdateAction()
+            AddLineItemUpdateAction addLineItemUpdateAction = new AddLineItemUpdateAction()
             {
-                LineItem = lineItemDraft,
                 Sku = Settings.PRODUCTVARIANTSKU,
-                Quantity = lineItemDraft.Quantity
+                Quantity = 6
             };
 
-            List<UpdateAction<Cart>> updateActions = new List<UpdateAction<Cart>>();
-            updateActions.Add(addLineItemUpdateAction);
+            List<UpdateAction<Cart>> updateActions = new List<UpdateAction<Cart>>
+            {
+                addLineItemUpdateAction
+            };
 
-            Cart retrievedCart = _commercetoolsClient
+            Cart retrievedCart = await _commercetoolsClient
                 .ExecuteAsync(new UpdateByIdCommand<Cart>(new Guid(cart.Id),
-                    cart.Version, updateActions))
-                .Result;
+                    cart.Version, updateActions));
 
             foreach (var lineItem in retrievedCart.LineItems)
             {
                 Console.WriteLine($"LineItem Name: {lineItem.Name["en"]}, Quantity: {lineItem.Quantity}");
             }
-
         }
-        /// <summary>
-        /// Get the active Cart By Customer Id (that has been modified most recently)
-        /// </summary>
-        /// <returns></returns>
-        private Cart GetCartByCustomerId()
-        {
-            Cart cart =
-                _commercetoolsClient.ExecuteAsync(new GetCartByCustomerIdCommand(new Guid( Settings.CUSTOMERID))).Result;
-            return cart;
-        }
-
-        public LineItemDraft GetLineItemDraft(string productVariantSku, int quantity = 1)
-        {
-            LineItemDraft lineItemDraft = new LineItemDraft();
-            lineItemDraft.Sku = productVariantSku;
-            lineItemDraft.Quantity = quantity;
-            return lineItemDraft;
-        }
-
-        /// <summary>
-        /// Get Cart By Id
-        /// </summary>
-        /// <returns></returns>
-        private Cart GetCartById()
-        {
-            Cart cart =
-                _commercetoolsClient.ExecuteAsync(new GetByIdCommand<Cart>(new Guid(Settings.CARTID))).Result;
-            return cart;
-        }
-
     }
 }

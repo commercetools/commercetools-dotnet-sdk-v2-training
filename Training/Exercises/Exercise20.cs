@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain;
 using Type = commercetools.Sdk.Domain.Type;
@@ -20,18 +21,15 @@ namespace Training
             this._commercetoolsClient =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
         }
-        public void Execute()
-        {
-            CreateYourOwnResourceType();
-        }
 
-        private void CreateYourOwnResourceType()
+        public async Task ExecuteAsync()
         {
             TypeDraft typeDraft = this.CreateShoeSizeTypeDraft();
-            Type createdType = _commercetoolsClient.ExecuteAsync(new CreateCommand<Type>(typeDraft)).Result;
+            Type createdType = await _commercetoolsClient.ExecuteAsync(new CreateCommand<Type>(typeDraft));
             Console.WriteLine($"New custom type has been created with Id: {createdType.Id}");
 
         }
+
         public TypeDraft CreateShoeSizeTypeDraft()
         {
             TypeDraft typeDraft = new TypeDraft();

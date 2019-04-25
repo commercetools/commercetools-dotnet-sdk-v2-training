@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain;
 using commercetools.Sdk.Domain.ProductProjections;
@@ -21,28 +22,43 @@ namespace Training
             this._commercetoolsClient =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
         }
-        public void Execute()
+        /// <summary>
+        /// Search in Stage Products for products have attribute "color" and with value "Red"
+        /// </summary>
+        /// <returns></returns>
+        public async Task ExecuteAsync()
         {
-           SearchForProductsByColor();
-        }
-
-
-        private void SearchForProductsByColor()
-        {
-            Filter<ProductProjection> redColorFilter = new Filter<ProductProjection>(p => p.Variants.Any(v => v.Attributes.Any(a => a.Name == "color" && ((TextAttribute)a).Value == "Red")));
-            ProductProjectionSearchParameters searchParameters = new ProductProjectionSearchParameters();
-            searchParameters.SetFilterQuery(new List<Filter<ProductProjection>>() { redColorFilter });
-
-            ProductProjectionAdditionalParameters stagedAdditionalParameters = new ProductProjectionAdditionalParameters();
-            stagedAdditionalParameters.Staged = true;
-
-            SearchProductProjectionsCommand searchProductProjectionsCommand = new SearchProductProjectionsCommand(searchParameters, stagedAdditionalParameters);
-            PagedQueryResult<ProductProjection> searchResults = _commercetoolsClient.ExecuteAsync(searchProductProjectionsCommand).Result;
-
+            SearchProductProjectionsCommand searchProductProjectionsCommand = new SearchProductProjectionsCommand();
+            searchProductProjectionsCommand.SetStaged(true);
+            searchProductProjectionsCommand.FilterQuery(p =>
+                p.Variants.Any(v => v.Attributes.Any(a => a.Name == "color" && ((TextAttribute) a).Value == "Red")));
+            PagedQueryResult<ProductProjection> searchResults = await _commercetoolsClient.ExecuteAsync(searchProductProjectionsCommand);
             foreach (var product in searchResults.Results)
             {
                 Console.WriteLine(product.Name["en"]);
             }
+        }
+    }
+
+
+    /// <summary>
+    /// Adding Custom Extension Method for SearchCommand
+    /// </summary>
+
+    public static class SearchExtension
+    {
+        public static void SetStaged<T>(this SearchCommand<T> command, bool staged)
+        {
+            if (command.AdditionalParameters == null)
+            {
+                command.AdditionalParameters = new ProductProjectionAdditionalParameters();
+            }
+            if (command.AdditionalParameters is ProductProjectionAdditionalParameters parameters)
+            {
+                parameters.Staged = staged;
+                return;
+            }
+            throw new ArgumentException("AdditionalParameters not of type ProductProjectionAdditionalParameters");
         }
     }
 }

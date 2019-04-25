@@ -5,6 +5,7 @@ using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain;
 using commercetools.Sdk.Domain.Categories;
 using commercetools.Sdk.Domain.Products;
+using commercetools.Sdk.Domain.Products.UpdateActions;
 
 namespace Training
 {
@@ -20,29 +21,24 @@ namespace Training
             this._commercetoolsClient =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
         }
-        public void Execute()
-        {
-            AddProductToCategoryAsync();
-        }
 
-        /// <summary>
-        /// Good Solution
-        /// </summary>
-        private async void AddProductToCategoryAsync()
+        public async Task ExecuteAsync()
         {
-            var retrieveCategoryTask = _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<Category>(Settings.CATEGORYKEY));
-            var retrieveProductTask = _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<Product>(Settings.PRODUCTKEY));
+            var retrieveCategoryTask =
+                _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<Category>(Settings.CATEGORYKEY));
+            var retrieveProductTask =
+                _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<Product>(Settings.PRODUCTKEY));
 
 
             var updatedProduct = await Task.WhenAll(retrieveCategoryTask, retrieveProductTask).ContinueWith(
-                retrieveTask => AddCategoryToProductTask(retrieveCategoryTask.Result, retrieveProductTask.Result), TaskContinuationOptions.OnlyOnRanToCompletion).Unwrap();
+                retrieveTask => AddCategoryToProductTask(retrieveCategoryTask.Result, retrieveProductTask.Result),
+                TaskContinuationOptions.OnlyOnRanToCompletion).Unwrap();
 
             //show product categories
             foreach (var cat in updatedProduct.MasterData.Current.Categories)
             {
                 Console.WriteLine($"Category ID {cat.Id}");
             }
-
         }
 
         /// <summary>
@@ -59,9 +55,11 @@ namespace Training
                 Category = new ResourceIdentifier() {Key = category.Key}
             };
 
-            List<UpdateAction<Product>> updateActions = new List<UpdateAction<Product>>();
+            List<UpdateAction<Product>> updateActions = new List<UpdateAction<Product>>
+            {
+                addToCategoryUpdateAction
+            };
 
-            updateActions.Add(addToCategoryUpdateAction);
             return _commercetoolsClient
                 .ExecuteAsync(new UpdateByKeyCommand<Product>(product.Key, product.Version, updateActions));
         }

@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain;
 using commercetools.Sdk.Domain.Categories;
+using Type = commercetools.Sdk.Domain.Type;
 
 namespace Training
 {
@@ -18,17 +20,13 @@ namespace Training
             this._commercetoolsClient =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
         }
-        public void Execute()
-        {
-            AddNewProduct();
-        }
 
-        private void AddNewProduct()
+        public async Task ExecuteAsync()
         {
             // get the product draft first
             var productDraft = GetProductDraft();
             // create the product
-            Product product = _commercetoolsClient.ExecuteAsync(new CreateCommand<Product>(productDraft)).Result;
+            Product product = await _commercetoolsClient.ExecuteAsync(new CreateCommand<Product>(productDraft));
 
             //Display Product Name
             Console.WriteLine($"New Product Created with name: {product.MasterData.Staged.Name["en"]} and Product Key: {product.Key}");
@@ -48,7 +46,7 @@ namespace Training
             productDraft.Name = new LocalizedString() {{"en", Settings.RandomString(4)}};
             productDraft.Key = Settings.RandomString(3);
             productDraft.Slug = new LocalizedString() {{"en", Settings.RandomString(3)}};
-            productDraft.ProductType = new ResourceIdentifier() {Id = productType.Id};
+            productDraft.ProductType = new ResourceIdentifier<ProductType> {Id = productType.Id};
             ProductVariantDraft productMasterVariant =this.GetProductVariantDraft();
             productDraft.MasterVariant = productMasterVariant;
 
@@ -103,12 +101,12 @@ namespace Training
             productDraft.Name = new LocalizedString() {{"en", Settings.RandomString(4)}};
             productDraft.Key = Settings.RandomString(3);
             productDraft.Slug = new LocalizedString() {{"en", Settings.RandomString(3)}};
-            productDraft.ProductType = new ResourceIdentifier() {Id = productType.Id};
+            productDraft.ProductType = new ResourceIdentifier<ProductType> {Id = productType.Id};
             ProductVariantDraft productMasterVariant =this.GetProductVariantDraft();
             productDraft.MasterVariant = productMasterVariant;
-            productDraft.Categories = new List<ResourceIdentifier>
+            productDraft.Categories = new List<IReferenceable<Category>>
             {
-                new ResourceIdentifier() {Id = category.Id}
+                new ResourceIdentifier<Category> {Id = category.Id}
             };
 
             return productDraft;

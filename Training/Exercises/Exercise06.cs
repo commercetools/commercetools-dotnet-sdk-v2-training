@@ -1,17 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using commercetools.Sdk.Client;
 
 namespace Training
 {
-    public class Exercise6 : IExercise
+    public class Exercise06 : IExercise
     {
         private readonly IClient _commercetoolsClient;
 
         // by using services.UseCommercetools() on the services object in the Program.cs
         // an instance of IClient is registered on the DI container, which we are retrieving here by using constructor injection.
-        public Exercise6(IEnumerable<IClient> clients)
+        public Exercise06(IEnumerable<IClient> clients)
         {
             if (clients == null || !clients.Any())
             {
@@ -19,9 +20,9 @@ namespace Training
             }
             this._commercetoolsClient = clients.FirstOrDefault(c => c.Name == Settings.DEFAULTCLIENT);// the default client
         }
-        public void Execute()
+        public async Task ExecuteAsync()
         {
-            var project =  _commercetoolsClient.ExecuteAsync(new GetProjectCommand()).Result;
+            var project =  await _commercetoolsClient.ExecuteAsync(new GetProjectCommand());
             Console.WriteLine(project.Name);
         }
     }

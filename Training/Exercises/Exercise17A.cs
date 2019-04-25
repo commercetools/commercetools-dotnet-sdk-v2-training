@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Xml.Schema;
 using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain;
@@ -25,27 +26,19 @@ namespace Training
             this._commercetoolsClient =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
         }
-        public void Execute()
-        {
-            CreateAnOrderFromCart();
-        }
-
-        /// <summary>
-        /// Create Order from Cart
-        /// </summary>
-        private void CreateAnOrderFromCart()
+        public async Task ExecuteAsync()
         {
             //Create Order Draft
             var orderFromCartDraft = this.GetOrderFromCartDraft();
 
             //Create Order
-            Order order = _commercetoolsClient.ExecuteAsync(new CreateCommand<Order>(orderFromCartDraft)).Result;
+            Order order = await _commercetoolsClient.ExecuteAsync(new CreateCommand<Order>(orderFromCartDraft));
 
 
             //Display Order Number
             Console.WriteLine($"Order Created with order number: {order.OrderNumber}, and Total Price: {order.TotalPrice.CentAmount} cents");
-
         }
+
         /// <summary>
         /// Create Draft Order from Cart
         /// </summary>

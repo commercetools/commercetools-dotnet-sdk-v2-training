@@ -9,30 +9,22 @@ namespace Training
     /// <summary>
     /// Get Customer By ID and Verify Email Exercise - async chaining tasks
     /// </summary>
-    public class Exercise8B : IExercise
+    public class Exercise08B : IExercise
     {
         private readonly IClient _commercetoolsClient;
 
-        public Exercise8B(IClient commercetoolsClient)
+        public Exercise08B(IClient commercetoolsClient)
         {
             this._commercetoolsClient =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
         }
 
-        public void Execute()
+        public async Task ExecuteAsync()
         {
-            VerifyCustomerEmailAsync();
-        }
+            var customerByIdTask =
+                _commercetoolsClient.ExecuteAsync(new GetByIdCommand<Customer>(new Guid(Settings.CUSTOMERID)));
 
-        /// <summary>
-        /// Verify Customer Email
-        /// Chaining multiple tasks using ContinueWith
-        /// </summary>
-        private async void VerifyCustomerEmailAsync()
-        {
-            var customerByIdTask = _commercetoolsClient.ExecuteAsync(new GetByIdCommand<Customer>(new Guid(Settings.CUSTOMERID)));
-
-            //Get Customer By ID
+            // Verify Customer Email as Chaining multiple tasks using ContinueWith
             var retrievedCustomer = await
                 customerByIdTask
                     .ContinueWith(
@@ -69,7 +61,8 @@ namespace Training
         /// <returns></returns>
         private Task<Customer> VerifyCustomerEmailTask(CustomerToken customerToken, int version)
         {
-            Console.WriteLine($"CreateTokenForCustomerEmailVerification Task finished, here is the token: {customerToken.Value}");
+            Console.WriteLine(
+                $"CreateTokenForCustomerEmailVerification Task finished, here is the token: {customerToken.Value}");
             Console.WriteLine($"Starting verifying customer email task");
             return _commercetoolsClient.ExecuteAsync(
                 new VerifyCustomerEmailCommand(customerToken.Value, version));

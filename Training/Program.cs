@@ -27,7 +27,7 @@ namespace Training
                     ConfigureServices(services, configuration);
 
                     // Exercise Start
-                    services.AddSingleton<IExercise, Exercise6>();
+                    services.AddSingleton<IExercise, Exercise06>();
                 });
 
             await builder.RunConsoleAsync();

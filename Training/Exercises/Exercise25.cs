@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using commercetools.Sdk.Client;
+using commercetools.Sdk.Domain.GraphQL;
 using Training.GraphQL;
 
 namespace Training
@@ -13,24 +15,18 @@ namespace Training
     {
         private readonly IClient _commercetoolsClient;
 
-        public Exercise25(IEnumerable<IClient> clients)
+        public Exercise25(IClient commercetoolsClient)
         {
-            if (clients == null || !clients.Any())
-            {
-                throw new ArgumentNullException(nameof(clients));
-            }
-            this._commercetoolsClient = clients.FirstOrDefault(c => c.Name == Settings.DEFAULTCLIENT);
-        }
-        public void Execute()
-        {
-            GetCustomersByGraphQl();
+            this._commercetoolsClient =
+                commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
         }
 
-        private void GetCustomersByGraphQl()
+        public async Task ExecuteAsync()
         {
             string graphQuery = "query {customers{count,results{email}}}";
-            GraphQlQuery query = new GraphQlQuery(graphQuery);
-            GraphQLResult result = _commercetoolsClient.ExecuteAsync(new CreateCommand<GraphQLResult>(query)).Result;
+            var graphQlCommand = new GraphQLCommand<GraphQLResult>(new GraphQLParameters(graphQuery));
+            //var graphQlCommand = new GraphQLCommand<dynamic>(new GraphQLParameters(graphQuery));
+            var result = await _commercetoolsClient.ExecuteAsync(graphQlCommand);
             Console.WriteLine($"Customers count: {result.Data.Customers.Count}");
             Console.WriteLine("Showing Customers emails:");
             foreach (var customer in result.Data.Customers.Results)
@@ -38,6 +34,7 @@ namespace Training
                 Console.WriteLine(customer.Email);
             }
         }
+
 
     }
 }

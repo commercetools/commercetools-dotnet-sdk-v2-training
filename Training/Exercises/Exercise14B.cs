@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain;
 using commercetools.Sdk.Domain.Predicates;
@@ -18,38 +19,14 @@ namespace Training
             this._commercetoolsClient =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
         }
-        public void Execute()
-        {
-            SearchForProductsByProductType();
-            //SearchForProductsByProductTypeKey();
-        }
-
-        private void SearchForProductsByProductType()
-        {
-            QueryCommand<Product> queryCommand = new QueryCommand<Product>();
-            QueryPredicate<Product> queryPredicate = new QueryPredicate<Product>(p => p.ProductType.Id == Settings.PRODUCTTYPEID);
-            queryCommand.SetWhere(queryPredicate);
-            PagedQueryResult<Product> returnedSet = _commercetoolsClient.ExecuteAsync(queryCommand).Result;
-            if (returnedSet.Results.Count > 0)
-            {
-                Console.WriteLine("Specific Products: ");
-                foreach (var product in returnedSet.Results)
-                {
-                    Console.WriteLine(product.MasterData.Current.Name["en"]);
-                }
-            }
-        }
-        /// <summary>
-        /// Search for Products using QueryCommand Extensions (instead of creating QueryPredicate)
-        /// </summary>
-        private void SearchForProductsByProductTypeKey()
+        public async Task ExecuteAsync()
         {
             ProductType productType = _commercetoolsClient
                 .ExecuteAsync(new GetByKeyCommand<ProductType>(Settings.PRODUCTTYPEKEY)).Result;
 
             QueryCommand<Product> queryCommand = new QueryCommand<Product>();
-            queryCommand.Where(p => p.ProductType.Id == productType.Id.valueOf().ToString());
-            PagedQueryResult<Product> returnedSet = _commercetoolsClient.ExecuteAsync(queryCommand).Result;
+            queryCommand.Where(p => p.ProductType.Id == productType.Id);//using QueryCommand Extensions
+            PagedQueryResult<Product> returnedSet = await _commercetoolsClient.ExecuteAsync(queryCommand);
             if (returnedSet.Results.Count > 0)
             {
                 Console.WriteLine("Specific Products: ");

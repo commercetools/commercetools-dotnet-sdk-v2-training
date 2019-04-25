@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain.Orders;
 
@@ -16,37 +17,14 @@ namespace Training
             this._commercetoolsClient =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
         }
-        public void Execute()
-        {
-            DeleteOrderByOrderNumber();
-        }
-
-        /// <summary>
-        /// Delete Order BY OrderNumber
-        /// </summary>
-        private void DeleteOrderByOrderNumber()
+        public async Task ExecuteAsync()
         {
             //retrieve order by ordernumber to get it's version
-            Order retrievedOrder = _commercetoolsClient
-                .ExecuteAsync(new GetOrderByOrderNumberCommand(Settings.ORDERNUMBER)).Result;
+            Order retrievedOrder = await _commercetoolsClient
+                .ExecuteAsync(new GetOrderByOrderNumberCommand(Settings.ORDERNUMBER));
 
-            retrievedOrder = _commercetoolsClient
-                .ExecuteAsync(new DeleteByOrderNumberCommand(retrievedOrder.OrderNumber, retrievedOrder.Version)).Result;
-
-            Console.WriteLine($"Order Number: {retrievedOrder.OrderNumber} has been deleted");
-        }
-
-        /// <summary>
-        /// Delete Order BY OrderId
-        /// </summary>
-        private void DeleteOrderById()
-        {
-            //retrieve order by ordernumber to get it's version
-            Order retrievedOrder = _commercetoolsClient
-                .ExecuteAsync(new GetOrderByOrderNumberCommand(Settings.ORDERNUMBER)).Result;
-
-            retrievedOrder = _commercetoolsClient
-                .ExecuteAsync(new DeleteByIdCommand<Order>(new Guid(retrievedOrder.Id), retrievedOrder.Version)).Result;
+            retrievedOrder = await _commercetoolsClient
+                .ExecuteAsync(new DeleteByOrderNumberCommand(retrievedOrder.OrderNumber, retrievedOrder.Version));
 
             Console.WriteLine($"Order Number: {retrievedOrder.OrderNumber} has been deleted");
         }

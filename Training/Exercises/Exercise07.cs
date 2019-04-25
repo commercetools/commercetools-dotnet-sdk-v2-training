@@ -1,31 +1,37 @@
 using System;
+using System.Threading.Tasks;
 using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain;
 using commercetools.Sdk.Domain.Customers;
+using Type = commercetools.Sdk.Domain.Type;
 
 namespace Training
 {
     /// <summary>
     /// Create new customer (SignUp customer)
     /// </summary>
-    public class Exercise7 : IExercise
+    public class Exercise07 : IExercise
     {
         private readonly IClient _commercetoolsClient;
 
-        public Exercise7(IClient commercetoolsClient)
+        public Exercise07(IClient commercetoolsClient)
         {
             this._commercetoolsClient =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
         }
-        public void Execute()
+
+        public async Task ExecuteAsync()
         {
             var customerDraft = this.GetCustomerDraft();
             var signUpCustomerCommand = new SignUpCustomerCommand(customerDraft);
-            var result =  _commercetoolsClient.ExecuteAsync(signUpCustomerCommand).Result as CustomerSignInResult;
-            var customer = result?.Customer;
-            if (customer != null)
+            var result = await _commercetoolsClient.ExecuteAsync(signUpCustomerCommand);
+            if (result is CustomerSignInResult customerResult)
             {
-                Console.WriteLine($"Customer Created with Id : {customer.Id}");
+                var customer = customerResult.Customer;
+                if (customer != null)
+                {
+                    Console.WriteLine($"Customer Created with Id : {customer.Id}");
+                }
             }
         }
 
@@ -35,7 +41,7 @@ namespace Training
             return new CustomerDraft
             {
                 FirstName = "fName",
-                LastName =  "lName",
+                LastName = "lName",
                 Email = $"email{Settings.RandomInt()}@test.com",
                 Password = "password"
             };
@@ -50,7 +56,7 @@ namespace Training
             return new CustomerDraft
             {
                 FirstName = "fName",
-                LastName =  "lName",
+                LastName = "lName",
                 Email = $"email{Settings.RandomInt()}@test.com",
                 Password = "password",
                 Custom = GetCustomFieldsDraft()
@@ -65,7 +71,7 @@ namespace Training
         {
             var customFieldsDraft = new CustomFieldsDraft()
             {
-                Type = new ResourceIdentifier()
+                Type = new ResourceIdentifier<Type>()
                 {
                     Key = "shoe-size-key"
                 },
@@ -73,6 +79,7 @@ namespace Training
             };
             return customFieldsDraft;
         }
+
         /// <summary>
         /// Create
         /// </summary>
@@ -80,9 +87,8 @@ namespace Training
         private Fields GetCustomFields()
         {
             Fields fields = new Fields();
-            fields.Add("shoe-size-field", 42);//set the shoeSizeField
+            fields.Add("shoe-size-field", 42); //set the shoeSizeField
             return fields;
         }
-
     }
 }

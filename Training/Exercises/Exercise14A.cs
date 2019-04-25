@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain;
 
@@ -16,15 +17,10 @@ namespace Training
             this._commercetoolsClient =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
         }
-        public void Execute()
-        {
-            QueryAllProducts();
-        }
-
-        private void QueryAllProducts()
+        public async Task ExecuteAsync()
         {
             QueryCommand<Product> queryCommand = new QueryCommand<Product>();
-            PagedQueryResult<Product> returnedSet = _commercetoolsClient.ExecuteAsync(queryCommand).Result;
+            PagedQueryResult<Product> returnedSet = await _commercetoolsClient.ExecuteAsync(queryCommand);
             if (returnedSet.Results.Count > 0)
             {
                 Console.WriteLine("Products: ");

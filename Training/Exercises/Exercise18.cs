@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain;
 using commercetools.Sdk.Domain.Carts;
@@ -12,12 +13,12 @@ using Type = commercetools.Sdk.Domain.Type;
 
 namespace Training
 {
-    /// <summary>
     /// Add Discount Code to Cart - Make sure that discount code is active
-    // 1- Create a cart and add product to it
-    // 2- Add the discount code to this cart
-    // 3- Create the order and check the total price - you can check discounts on orders using MC
-    /// </summary>
+
+    // 1- Create a cart (run Exercise15A)
+    // 2- Add Product to it (run Exercise15B)
+    // 3- Add the discount code to this cart (run this exercise)
+    // 3- Create the order and check the total price (Exercise17A) - you can check discounts on orders using MC
     public class Exercise18 : IExercise
     {
         private readonly IClient _commercetoolsClient;
@@ -27,102 +28,41 @@ namespace Training
             this._commercetoolsClient =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
         }
-        public void Execute()
-        {
-            AddDiscountCodeToTheCart();
-        }
 
-        /// <summary>
-        /// Add Discount code to the cart
-        /// </summary>
-        private void AddDiscountCodeToTheCart()
+        public async Task ExecuteAsync()
         {
-            // retrieve Active cart by Customer ID
+            //Get filled Cart and add DiscountCode to it
             Cart cart =
-                this.CreateACartWithProduct();
+                await _commercetoolsClient.ExecuteAsync(new GetCartByCustomerIdCommand(new Guid(Settings.CUSTOMERID)));
 
-            if (cart != null)
+            AddDiscountCodeUpdateAction addDiscountCodeUpdateAction = new AddDiscountCodeUpdateAction()
             {
-                AddDiscountCodeUpdateAction addDiscountCodeUpdateAction = new AddDiscountCodeUpdateAction()
-                {
-                    Code = Settings.DISCOUNTCODE
-                };
-
-                List<UpdateAction<Cart>> updateActions = new List<UpdateAction<Cart>>();
-                updateActions.Add(addDiscountCodeUpdateAction);
-
-                Cart retrievedCart = _commercetoolsClient
-                    .ExecuteAsync(new UpdateByIdCommand<Cart>(new Guid(cart.Id),
-                        cart.Version, updateActions))
-                    .Result;
-                Console.WriteLine($"Showing discount code added to cart {retrievedCart.Id}");
-                foreach (var codeInfo in retrievedCart.DiscountCodes)
-                {
-                    Console.WriteLine(codeInfo.DiscountCode.Id);
-                }
-
-                //Then Create Order from this Cart
-                OrderFromCartDraft orderFromCartDraft = new OrderFromCartDraft();
-                orderFromCartDraft.Id = retrievedCart.Id;
-                orderFromCartDraft.Version = retrievedCart.Version;
-                orderFromCartDraft.OrderNumber = $"Order{Settings.RandomInt()}";
-                Order order = _commercetoolsClient.ExecuteAsync(new CreateCommand<Order>(orderFromCartDraft)).Result;
-
-                //Display Order Number
-                Console.WriteLine($"Order Created with order number: {order.OrderNumber}, and Total Price: {order.TotalPrice.CentAmount} cents");
-            }
-        }
-
-        /// <summary>
-        /// Create A Cart and add Product to it
-        /// </summary>
-        /// <returns>Cart with Product</returns>
-        private Cart CreateACartWithProduct()
-        {
-            CartDraft cartDraft = this.GetCartDraft();
-            Cart cart = _commercetoolsClient.ExecuteAsync(new CreateCommand<Cart>(cartDraft)).Result;
-            if (cart != null)
-            {
-                // get lineItemDraft and create AddLineItemUpdateAction
-                var lineItemDraft = this.GetLineItemDraft(Settings.PRODUCTVARIANTSKU, 2);
-                AddLineItemBySkuUpdateAction addLineItemUpdateAction = new AddLineItemBySkuUpdateAction()
-                {
-                    LineItem = lineItemDraft,
-                    Sku = Settings.PRODUCTVARIANTSKU,
-                    Quantity = lineItemDraft.Quantity
-                };
-
-                List<UpdateAction<Cart>> updateActions = new List<UpdateAction<Cart>>();
-                updateActions.Add(addLineItemUpdateAction);
-
-                Cart retrievedCart = _commercetoolsClient
-                    .ExecuteAsync(new UpdateByIdCommand<Cart>(new Guid(cart.Id),
-                        cart.Version, updateActions))
-                    .Result;
-
-                return retrievedCart;
-            }
-
-            return null;
-        }
-        private CartDraft GetCartDraft()
-        {
-            CartDraft cartDraft = new CartDraft();
-            cartDraft.CustomerId = Settings.CUSTOMERID;
-            cartDraft.Currency = "EUR";
-            cartDraft.ShippingAddress = new Address()
-            {
-                Country = "DE"
+                Code = Settings.DISCOUNTCODE //must be active discount code for active cart discount
             };
-            cartDraft.DeleteDaysAfterLastModification = 30;
-            return cartDraft;
-        }
-        private LineItemDraft GetLineItemDraft(string productVariantSku, int quantity = 1)
-        {
-            LineItemDraft lineItemDraft = new LineItemDraft();
-            lineItemDraft.Sku = productVariantSku;
-            lineItemDraft.Quantity = quantity;
-            return lineItemDraft;
+
+            List<UpdateAction<Cart>> updateActions = new List<UpdateAction<Cart>> { addDiscountCodeUpdateAction };
+
+            Cart retrievedCart = await _commercetoolsClient
+                .ExecuteAsync(new UpdateByIdCommand<Cart>(new Guid(cart.Id),
+                    cart.Version, updateActions));
+
+            Console.WriteLine($"Showing discount code added to cart {retrievedCart.Id}");
+            foreach (var codeInfo in retrievedCart.DiscountCodes)
+            {
+                Console.WriteLine(codeInfo.DiscountCode.Id);
+            }
+
+            //Then Create Order from this Cart
+            OrderFromCartDraft orderFromCartDraft = new OrderFromCartDraft
+            {
+                Id = retrievedCart.Id,
+                Version = retrievedCart.Version,
+                OrderNumber = $"Order{Settings.RandomInt()}"
+            };
+            Order order = await _commercetoolsClient.ExecuteAsync(new CreateCommand<Order>(orderFromCartDraft));
+
+            //Display Order Number
+            Console.WriteLine($"Order Created with order number: {order.OrderNumber}, and Total Price: {order.TotalPrice.CentAmount} cents");
         }
     }
 }

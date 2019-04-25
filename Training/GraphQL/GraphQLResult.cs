@@ -4,12 +4,11 @@ using commercetools.Sdk.Domain.Customers;
 
 namespace Training.GraphQL
 {
-    [Endpoint("graphql")]
     public class GraphQLResult
     {
         public GraphResultData Data { get; set; }
     }
-    
+
     public class GraphResultData
     {
         public GraphCustomersResult Customers { get; set; }
