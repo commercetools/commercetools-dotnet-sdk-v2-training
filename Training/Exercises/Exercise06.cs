@@ -22,8 +22,15 @@ namespace Training
         }
         public async Task ExecuteAsync()
         {
-            var project =  await _commercetoolsClient.ExecuteAsync(new GetProjectCommand());
-            Console.WriteLine(project.Name);
+            try
+            {
+                var project =  await _commercetoolsClient.ExecuteAsync(new GetProjectCommand());
+                Console.WriteLine(project.Name);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }

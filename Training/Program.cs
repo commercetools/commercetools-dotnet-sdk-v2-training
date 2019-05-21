@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using commercetools.Sdk.DependencyInjection;
 using commercetools.Sdk.HttpApi.AdditionalParameters;
 using commercetools.Sdk.HttpApi.Tokens;
 using Microsoft.Extensions.Configuration;
@@ -29,7 +28,6 @@ namespace Training
                     // Exercise Start
                     services.AddSingleton<IExercise, Exercise06>();
                 });
-
             await builder.RunConsoleAsync();
 
         }

@@ -21,19 +21,26 @@ namespace Training
         }
         public async Task ExecuteAsync()
         {
-            ProductType productType = _commercetoolsClient
-                .ExecuteAsync(new GetByKeyCommand<ProductType>(Settings.PRODUCTTYPEKEY)).Result;
-
-            QueryCommand<Product> queryCommand = new QueryCommand<Product>();
-            queryCommand.Where(p => p.ProductType.Id == productType.Id);//using QueryCommand Extensions
-            PagedQueryResult<Product> returnedSet = await _commercetoolsClient.ExecuteAsync(queryCommand);
-            if (returnedSet.Results.Count > 0)
+            try
             {
-                Console.WriteLine("Specific Products: ");
-                foreach (var product in returnedSet.Results)
+                ProductType productType = _commercetoolsClient
+                    .ExecuteAsync(new GetByKeyCommand<ProductType>(Settings.PRODUCTTYPEKEY)).Result;
+
+                QueryCommand<Product> queryCommand = new QueryCommand<Product>();
+                queryCommand.Where(p => p.ProductType.Id == productType.Id.valueOf());//using QueryCommand Extensions
+                PagedQueryResult<Product> returnedSet = await _commercetoolsClient.ExecuteAsync(queryCommand);
+                if (returnedSet.Results.Count > 0)
                 {
-                    Console.WriteLine(product.MasterData.Current.Name["en"]);
+                    Console.WriteLine("Specific Products: ");
+                    foreach (var product in returnedSet.Results)
+                    {
+                        Console.WriteLine(product.MasterData.Current.Name["en"]);
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
         }
     }

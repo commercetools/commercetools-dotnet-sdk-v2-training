@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain;
+using commercetools.Sdk.Domain.Predicates;
 using commercetools.Sdk.Domain.ProductProjections;
 using commercetools.Sdk.Domain.Products.Attributes;
 
@@ -28,14 +29,28 @@ namespace Training
         /// <returns></returns>
         public async Task ExecuteAsync()
         {
-            SearchProductProjectionsCommand searchProductProjectionsCommand = new SearchProductProjectionsCommand();
-            searchProductProjectionsCommand.SetStaged(true);
-            searchProductProjectionsCommand.FilterQuery(p =>
-                p.Variants.Any(v => v.Attributes.Any(a => a.Name == "color" && ((TextAttribute) a).Value == "Red")));
-            PagedQueryResult<ProductProjection> searchResults = await _commercetoolsClient.ExecuteAsync(searchProductProjectionsCommand);
-            foreach (var product in searchResults.Results)
+            try
             {
-                Console.WriteLine(product.Name["en"]);
+                SearchProductProjectionsCommand searchProductProjectionsCommand = new SearchProductProjectionsCommand();
+                searchProductProjectionsCommand.SetStaged(true);
+                searchProductProjectionsCommand.FilterQuery(p =>
+                    p.Variants.Any(v => v.Attributes.Any(a => a.Name == "color" && ((TextAttribute) a).Value == "Red")));
+                PagedQueryResult<ProductProjection> searchResults = await _commercetoolsClient.ExecuteAsync(searchProductProjectionsCommand);
+                if (searchResults.Results.Count > 0)
+                {
+                    foreach (var product in searchResults.Results)
+                    {
+                        Console.WriteLine(product.Name["en"]);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No Results found");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
         }
     }

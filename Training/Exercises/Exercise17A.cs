@@ -28,15 +28,22 @@ namespace Training
         }
         public async Task ExecuteAsync()
         {
-            //Create Order Draft
-            var orderFromCartDraft = this.GetOrderFromCartDraft();
+            try
+            {
+                //Create Order Draft
+                var orderFromCartDraft = this.GetOrderFromCartDraft();
 
-            //Create Order
-            Order order = await _commercetoolsClient.ExecuteAsync(new CreateCommand<Order>(orderFromCartDraft));
+                //Create Order
+                Order order = await _commercetoolsClient.ExecuteAsync(new CreateCommand<Order>(orderFromCartDraft));
 
 
-            //Display Order Number
-            Console.WriteLine($"Order Created with order number: {order.OrderNumber}, and Total Price: {order.TotalPrice.CentAmount} cents");
+                //Display Order Number
+                Console.WriteLine($"Order Created with order number: {order.OrderNumber}, and Total Price: {order.TotalPrice.CentAmount} cents");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         /// <summary>

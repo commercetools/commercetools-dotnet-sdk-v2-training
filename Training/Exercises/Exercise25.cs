@@ -23,15 +23,22 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            string graphQuery = "query {customers{count,results{email}}}";
-            var graphQlCommand = new GraphQLCommand<GraphQLResult>(new GraphQLParameters(graphQuery));
-            //var graphQlCommand = new GraphQLCommand<dynamic>(new GraphQLParameters(graphQuery));
-            var result = await _commercetoolsClient.ExecuteAsync(graphQlCommand);
-            Console.WriteLine($"Customers count: {result.Data.Customers.Count}");
-            Console.WriteLine("Showing Customers emails:");
-            foreach (var customer in result.Data.Customers.Results)
+            try
             {
-                Console.WriteLine(customer.Email);
+                string graphQuery = "query {customers{count,results{email}}}";
+                var graphQlCommand = new GraphQLCommand<GraphQLResult>(new GraphQLParameters(graphQuery));
+                //var graphQlCommand = new GraphQLCommand<dynamic>(new GraphQLParameters(graphQuery));
+                var result = await _commercetoolsClient.ExecuteAsync(graphQlCommand);
+                Console.WriteLine($"Customers count: {result.Data.Customers.Count}");
+                Console.WriteLine("Showing Customers emails:");
+                foreach (var customer in result.Data.Customers.Results)
+                {
+                    Console.WriteLine(customer.Email);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
         }
 

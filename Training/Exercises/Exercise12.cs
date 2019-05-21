@@ -25,33 +25,40 @@ namespace Training
         }
         public async Task ExecuteAsync()
         {
-            // Get categories recommendations using product name
-            var additionalParams = new GetGeneralCategoriesRecommendationsAdditionalParameters()
+            try
             {
-                ProductName = "car"
-            };
-            var recommendationCommand = new QueryCommand<GeneralCategoryRecommendation>(additionalParams);
+                // Get categories recommendations using product name
+                var additionalParams = new GetGeneralCategoriesRecommendationsAdditionalParameters()
+                {
+                    ProductName = "car"
+                };
+                var recommendationCommand = new QueryCommand<GeneralCategoryRecommendation>(additionalParams);
 
-            PagedQueryResult<GeneralCategoryRecommendation> returnedSet = await _machineLearningClient.ExecuteAsync(recommendationCommand);
-            Console.WriteLine("Category Recommendations using Product Name:");
-            foreach (var categoryRecommendation in returnedSet.Results)
-            {
-                Console.WriteLine($"Category name: {categoryRecommendation.CategoryName}, Confidence : {categoryRecommendation.Confidence}");
+                PagedQueryResult<GeneralCategoryRecommendation> returnedSet = await _machineLearningClient.ExecuteAsync(recommendationCommand);
+                Console.WriteLine("Category Recommendations using Product Name:");
+                foreach (var categoryRecommendation in returnedSet.Results)
+                {
+                    Console.WriteLine($"Category name: {categoryRecommendation.CategoryName}, Confidence : {categoryRecommendation.Confidence}");
+                }
+
+                // Get categories recommendations using product image url
+
+                var additionalParams2 = new GetGeneralCategoriesRecommendationsAdditionalParameters()
+                {
+                    ProductImageUrl = "https://storage.googleapis.com/ctp-playground-ml-public/hoodie.jpg"
+                };
+                var recommendationCommand2 = new QueryCommand<GeneralCategoryRecommendation>(additionalParams2);
+
+                PagedQueryResult<GeneralCategoryRecommendation> returnedSet2 = await _machineLearningClient.ExecuteAsync(recommendationCommand2);
+                Console.WriteLine("Category Recommendations using Product Image Url:");
+                foreach (var categoryRecommendation in returnedSet2.Results)
+                {
+                    Console.WriteLine($"Category name: {categoryRecommendation.CategoryName}, Confidence : {categoryRecommendation.Confidence}");
+                }
             }
-
-            // Get categories recommendations using product image url
-
-            var additionalParams2 = new GetGeneralCategoriesRecommendationsAdditionalParameters()
+            catch (Exception e)
             {
-                ProductImageUrl = "https://27f39057e2c520ef562d-e965cc5b4f2ea17c6cdc007c161d738e.ssl.cf3.rackcdn.com/Gar-HOkwvZ2E-small.jpg"
-            };
-            var recommendationCommand2 = new QueryCommand<GeneralCategoryRecommendation>(additionalParams2);
-
-            PagedQueryResult<GeneralCategoryRecommendation> returnedSet2 = await _machineLearningClient.ExecuteAsync(recommendationCommand2);
-            Console.WriteLine("Category Recommendations using Product Image Url:");
-            foreach (var categoryRecommendation in returnedSet2.Results)
-            {
-                Console.WriteLine($"Category name: {categoryRecommendation.CategoryName}, Confidence : {categoryRecommendation.Confidence}");
+                Console.WriteLine(e.Message);
             }
         }
     }

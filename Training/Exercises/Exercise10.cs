@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain;
 using commercetools.Sdk.Domain.Categories;
+using commercetools.Sdk.Domain.Common;
 using Type = commercetools.Sdk.Domain.Type;
 
 namespace Training
@@ -23,13 +24,20 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            // get the product draft first
-            var productDraft = GetProductDraft();
-            // create the product
-            Product product = await _commercetoolsClient.ExecuteAsync(new CreateCommand<Product>(productDraft));
+            try
+            {
+                // get the product draft first
+                var productDraft = GetProductDraft();
+                // create the product
+                Product product = await _commercetoolsClient.ExecuteAsync(new CreateCommand<Product>(productDraft));
 
-            //Display Product Name
-            Console.WriteLine($"New Product Created with name: {product.MasterData.Staged.Name["en"]} and Product Key: {product.Key}");
+                //Display Product Name
+                Console.WriteLine($"New Product Created with name: {product.MasterData.Staged.Name["en"]} and Product Key: {product.Key}");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         /// <summary>
@@ -104,7 +112,7 @@ namespace Training
             productDraft.ProductType = new ResourceIdentifier<ProductType> {Id = productType.Id};
             ProductVariantDraft productMasterVariant =this.GetProductVariantDraft();
             productDraft.MasterVariant = productMasterVariant;
-            productDraft.Categories = new List<IReferenceable<Category>>
+            productDraft.Categories = new List<IReference<Category>>
             {
                 new ResourceIdentifier<Category> {Id = category.Id}
             };

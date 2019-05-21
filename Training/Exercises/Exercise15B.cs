@@ -22,28 +22,35 @@ namespace Training
         }
         public async Task ExecuteAsync()
         {
-            //Get the active Cart By Customer Id
-            Cart cart =
-                await _commercetoolsClient.ExecuteAsync(new GetCartByCustomerIdCommand(new Guid(Settings.CUSTOMERID)));
-
-            AddLineItemUpdateAction addLineItemUpdateAction = new AddLineItemUpdateAction()
+            try
             {
-                Sku = Settings.PRODUCTVARIANTSKU,
-                Quantity = 6
-            };
+                //Get the active Cart By Customer Id
+                Cart cart =
+                    await _commercetoolsClient.ExecuteAsync(new GetCartByCustomerIdCommand(new Guid(Settings.CUSTOMERID)));
 
-            List<UpdateAction<Cart>> updateActions = new List<UpdateAction<Cart>>
+                AddLineItemUpdateAction addLineItemUpdateAction = new AddLineItemUpdateAction()
+                {
+                    Sku = Settings.PRODUCTVARIANTSKU,
+                    Quantity = 6
+                };
+
+                List<UpdateAction<Cart>> updateActions = new List<UpdateAction<Cart>>
+                {
+                    addLineItemUpdateAction
+                };
+
+                Cart retrievedCart = await _commercetoolsClient
+                    .ExecuteAsync(new UpdateByIdCommand<Cart>(new Guid(cart.Id),
+                        cart.Version, updateActions));
+
+                foreach (var lineItem in retrievedCart.LineItems)
+                {
+                    Console.WriteLine($"LineItem Name: {lineItem.Name["en"]}, Quantity: {lineItem.Quantity}");
+                }
+            }
+            catch (Exception e)
             {
-                addLineItemUpdateAction
-            };
-
-            Cart retrievedCart = await _commercetoolsClient
-                .ExecuteAsync(new UpdateByIdCommand<Cart>(new Guid(cart.Id),
-                    cart.Version, updateActions));
-
-            foreach (var lineItem in retrievedCart.LineItems)
-            {
-                Console.WriteLine($"LineItem Name: {lineItem.Name["en"]}, Quantity: {lineItem.Quantity}");
+                Console.WriteLine(e);
             }
         }
     }
