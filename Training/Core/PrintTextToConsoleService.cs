@@ -11,26 +11,24 @@ namespace Training
 {
     public class PrintTextToConsoleService : IHostedService
     {
-        private readonly IEnumerable<IExercise> _extercises;
+        private readonly IExercise _exercise;
+        private readonly IHostApplicationLifetime _applicationLifetime;
 
-        public PrintTextToConsoleService(IEnumerable<IExercise> exercises)
+        public PrintTextToConsoleService(IExercise exercise, IHostApplicationLifetime lifetime)
         {
-            this._extercises = exercises;
+            this._exercise = exercise;
+            this._applicationLifetime = lifetime;
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
-            foreach (var exercise in _extercises)
-            {
-                exercise.ExecuteAsync();
-            }
-
-            return Task.CompletedTask;
+            await _exercise.ExecuteAsync();
+            _applicationLifetime.StopApplication();
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
     }

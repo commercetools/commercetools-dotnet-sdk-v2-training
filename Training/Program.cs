@@ -25,11 +25,10 @@ namespace Training
                     //start training setup commercetools client with correct configuration values like: services.UseCommercetools(configuration, "Client");
                     ConfigureServices(services, configuration);
 
-                    // Exercise Start
-                    services.AddSingleton<IExercise, Exercise06>();
+                    // Inject Exercise as Service
+                    ConfigureExerciseService(services, args);
                 });
             await builder.RunConsoleAsync();
-
         }
 
         /// <summary>
@@ -47,6 +46,19 @@ namespace Training
 
         }
 
+        private static void ConfigureExerciseService(IServiceCollection services, string[] args)
+        {
+            var runningEx = args != null && args.Length > 0 ? args[0] : "Exercise06"; //Exercise06 is the default exercise
+            Type exerciseType = Type.GetType($"Training.{runningEx}");
+            if (exerciseType != null)
+            {
+                services.AddSingleton(typeof(IExercise), exerciseType);
+            }
+            else
+            {
+                services.AddSingleton<IExercise, DummyExercise>(); // Dummy Ex to show message
+            }
+        }
         private static IConfiguration GetConfiguration()
         {
             return new ConfigurationBuilder().
