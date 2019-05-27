@@ -21,30 +21,23 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            try
-            {
-                var customerByIdTask =
-                    _commercetoolsClient.ExecuteAsync(new GetByIdCommand<Customer>(new Guid(Settings.CUSTOMERID)));
+            var customerByIdTask =
+                _commercetoolsClient.ExecuteAsync(new GetByIdCommand<Customer>(new Guid(Settings.CUSTOMERID)));
 
-                // Verify Customer Email as Chaining multiple tasks using ContinueWith
-                var retrievedCustomer = await
-                    customerByIdTask
-                        .ContinueWith(
-                            customerTask => CreateTokenForCustomerEmailVerificationTask(customerTask.Result),
-                            TaskContinuationOptions.OnlyOnRanToCompletion)
-                        .Unwrap() // to return Task<Token<Customer>> instead of Task<Task<Token<Customer>>>
-                        .ContinueWith(
-                            customerTokenTask => VerifyCustomerEmailTask(customerTokenTask.Result as CustomerToken,
-                                customerByIdTask.Result.Version),
-                            TaskContinuationOptions.OnlyOnRanToCompletion)
-                        .Unwrap();
+            // Verify Customer Email as Chaining multiple tasks using ContinueWith
+            var retrievedCustomer = await
+                customerByIdTask
+                    .ContinueWith(
+                        customerTask => CreateTokenForCustomerEmailVerificationTask(customerTask.Result),
+                        TaskContinuationOptions.OnlyOnRanToCompletion)
+                    .Unwrap() // to return Task<Token<Customer>> instead of Task<Task<Token<Customer>>>
+                    .ContinueWith(
+                        customerTokenTask => VerifyCustomerEmailTask(customerTokenTask.Result as CustomerToken,
+                            customerByIdTask.Result.Version),
+                        TaskContinuationOptions.OnlyOnRanToCompletion)
+                    .Unwrap();
 
-                Console.WriteLine($"Is Email Verified:{retrievedCustomer.IsEmailVerified}");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            Console.WriteLine($"Is Email Verified:{retrievedCustomer.IsEmailVerified}");
         }
 
         /// <summary>

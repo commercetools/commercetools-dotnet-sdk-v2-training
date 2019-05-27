@@ -26,35 +26,28 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            try
-            {
-                string lastId = null ;int pageSize = 20;int currentPage = 1; bool lastPage = false;
+            string lastId = null ;int pageSize = 20;int currentPage = 1; bool lastPage = false;
 
-                var queryCommand = new QueryCommand<Category>();
-                queryCommand.Sort(category => category.Id);//sort By Id asc
-                queryCommand.Limit = pageSize; //
-                while (!lastPage)
-                {
-                    if (lastId != null)
-                    {
-                        //queryCommand.Where(category => category.Id > lastId);
-                        queryCommand.SetWhere($"id > \"{lastId}\"");
-                    }
-                    var returnedSet = await _commercetoolsClient.ExecuteAsync(queryCommand);
-                    Console.WriteLine($"Show Results of Page {currentPage}");
-                    foreach (var category in returnedSet.Results)
-                    {
-                        Console.WriteLine($"{category.Name["en"]}");
-                    }
-                    Console.WriteLine("///////////////////////");
-                    currentPage++;
-                    lastId = returnedSet.Results.Last().Id;
-                    lastPage = returnedSet.Results.Count < pageSize;
-                }
-            }
-            catch (Exception e)
+            var queryCommand = new QueryCommand<Category>();
+            queryCommand.Sort(category => category.Id);//sort By Id asc
+            queryCommand.Limit = pageSize; //
+            while (!lastPage)
             {
-                Console.WriteLine(e.Message);
+                if (lastId != null)
+                {
+                    //queryCommand.Where(category => category.Id > lastId);
+                    queryCommand.SetWhere($"id > \"{lastId}\"");
+                }
+                var returnedSet = await _commercetoolsClient.ExecuteAsync(queryCommand);
+                Console.WriteLine($"Show Results of Page {currentPage}");
+                foreach (var category in returnedSet.Results)
+                {
+                    Console.WriteLine($"{category.Name["en"]}");
+                }
+                Console.WriteLine("///////////////////////");
+                currentPage++;
+                lastId = returnedSet.Results.Last().Id;
+                lastPage = returnedSet.Results.Count < pageSize;
             }
         }
 

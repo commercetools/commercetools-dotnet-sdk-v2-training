@@ -19,21 +19,14 @@ namespace Training
         }
         public async Task ExecuteAsync()
         {
-            try
-            {
-                //retrieve order by ordernumber to get it's version
-                Order retrievedOrder = await _commercetoolsClient
-                    .ExecuteAsync(new GetOrderByOrderNumberCommand(Settings.ORDERNUMBER));
+            //retrieve order by ordernumber to get it's version
+            Order retrievedOrder = await _commercetoolsClient
+                .ExecuteAsync(new GetOrderByOrderNumberCommand(Settings.ORDERNUMBER));
 
-                retrievedOrder = await _commercetoolsClient
-                    .ExecuteAsync(new DeleteByOrderNumberCommand(retrievedOrder.OrderNumber, retrievedOrder.Version));
+            retrievedOrder = await _commercetoolsClient
+                .ExecuteAsync(new DeleteByOrderNumberCommand(retrievedOrder.OrderNumber, retrievedOrder.Version));
 
-                Console.WriteLine($"Order Number: {retrievedOrder.OrderNumber} has been deleted");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            Console.WriteLine($"Order Number: {retrievedOrder.OrderNumber} has been deleted");
         }
     }
 }

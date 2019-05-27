@@ -24,16 +24,9 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            try
-            {
-                TypeDraft typeDraft = this.CreateShoeSizeTypeDraft();
-                Type createdType = await _commercetoolsClient.ExecuteAsync(new CreateCommand<Type>(typeDraft));
-                Console.WriteLine($"New custom type has been created with Id: {createdType.Id}");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            TypeDraft typeDraft = this.CreateShoeSizeTypeDraft();
+            Type createdType = await _commercetoolsClient.ExecuteAsync(new CreateCommand<Type>(typeDraft));
+            Console.WriteLine($"New custom type has been created with Id: {createdType.Id}");
         }
 
         public TypeDraft CreateShoeSizeTypeDraft()

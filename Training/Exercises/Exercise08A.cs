@@ -19,26 +19,19 @@ namespace Training
         }
         public async Task ExecuteAsync()
         {
-            try
+            //Get Customer By ID
+            Customer customer = await _commercetoolsClient.ExecuteAsync(new GetByIdCommand<Customer>(new Guid(Settings.CUSTOMERID)));
+
+            //Create token for verifying the customer's email
+            var customerTokenResult = await _commercetoolsClient.ExecuteAsync(new CreateTokenForCustomerEmailVerificationCommand(customer.Id, 10, customer.Version));
+
+            if (customerTokenResult is CustomerToken customerToken)
             {
-                //Get Customer By ID
-                Customer customer = await _commercetoolsClient.ExecuteAsync(new GetByIdCommand<Customer>(new Guid(Settings.CUSTOMERID)));
+                //Create VerifyCustomerEmailCommand and Execute it
+                Customer retrievedCustomer = await _commercetoolsClient
+                    .ExecuteAsync(new VerifyCustomerEmailCommand(customerToken.Value, customer.Version));
 
-                //Create token for verifying the customer's email
-                var customerTokenResult = await _commercetoolsClient.ExecuteAsync(new CreateTokenForCustomerEmailVerificationCommand(customer.Id, 10, customer.Version));
-
-                if (customerTokenResult is CustomerToken customerToken)
-                {
-                    //Create VerifyCustomerEmailCommand and Execute it
-                    Customer retrievedCustomer = await _commercetoolsClient
-                        .ExecuteAsync(new VerifyCustomerEmailCommand(customerToken.Value, customer.Version));
-
-                    Console.WriteLine($"Is Email Verified:{retrievedCustomer.IsEmailVerified}");
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
+                Console.WriteLine($"Is Email Verified:{retrievedCustomer.IsEmailVerified}");
             }
         }
 

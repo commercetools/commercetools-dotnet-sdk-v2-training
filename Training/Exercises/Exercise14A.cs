@@ -19,22 +19,15 @@ namespace Training
         }
         public async Task ExecuteAsync()
         {
-            try
+            QueryCommand<Product> queryCommand = new QueryCommand<Product>();
+            PagedQueryResult<Product> returnedSet = await _commercetoolsClient.ExecuteAsync(queryCommand);
+            if (returnedSet.Results.Count > 0)
             {
-                QueryCommand<Product> queryCommand = new QueryCommand<Product>();
-                PagedQueryResult<Product> returnedSet = await _commercetoolsClient.ExecuteAsync(queryCommand);
-                if (returnedSet.Results.Count > 0)
+                Console.WriteLine("Products: ");
+                foreach (var product in returnedSet.Results)
                 {
-                    Console.WriteLine("Products: ");
-                    foreach (var product in returnedSet.Results)
-                    {
-                        Console.WriteLine(product.MasterData.Current.Name["en"]);
-                    }
+                    Console.WriteLine(product.MasterData.Current.Name["en"]);
                 }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
             }
         }
     }

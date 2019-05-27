@@ -24,20 +24,13 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            try
-            {
-                // get the product draft first
-                var productDraft = GetProductDraft();
-                // create the product
-                Product product = await _commercetoolsClient.ExecuteAsync(new CreateCommand<Product>(productDraft));
+            // get the product draft first
+            var productDraft = GetProductDraft();
+            // create the product
+            Product product = await _commercetoolsClient.ExecuteAsync(new CreateCommand<Product>(productDraft));
 
-                //Display Product Name
-                Console.WriteLine($"New Product Created with name: {product.MasterData.Staged.Name["en"]} and Product Key: {product.Key}");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            //Display Product Name
+            Console.WriteLine($"New Product Created with name: {product.MasterData.Staged.Name["en"]} and Product Key: {product.Key}");
         }
 
         /// <summary>

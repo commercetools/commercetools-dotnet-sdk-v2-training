@@ -22,23 +22,16 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            try
+            var customerDraft = this.GetCustomerDraft();
+            var signUpCustomerCommand = new SignUpCustomerCommand(customerDraft);
+            var result = await _commercetoolsClient.ExecuteAsync(signUpCustomerCommand);
+            if (result is CustomerSignInResult customerResult)
             {
-                var customerDraft = this.GetCustomerDraft();
-                var signUpCustomerCommand = new SignUpCustomerCommand(customerDraft);
-                var result = await _commercetoolsClient.ExecuteAsync(signUpCustomerCommand);
-                if (result is CustomerSignInResult customerResult)
+                var customer = customerResult.Customer;
+                if (customer != null)
                 {
-                    var customer = customerResult.Customer;
-                    if (customer != null)
-                    {
-                        Console.WriteLine($"Customer Created with Id : {customer.Id}");
-                    }
+                    Console.WriteLine($"Customer Created with Id : {customer.Id}");
                 }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
             }
         }
 

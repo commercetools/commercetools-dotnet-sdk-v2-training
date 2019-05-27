@@ -24,27 +24,20 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            try
+            var retrieveCategoryTask =
+                _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<Category>(Settings.CATEGORYKEY));
+            var retrieveProductTask =
+                _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<Product>(Settings.PRODUCTKEY));
+
+
+            var updatedProduct = await Task.WhenAll(retrieveCategoryTask, retrieveProductTask).ContinueWith(
+                retrieveTask => AddCategoryToProductTask(retrieveCategoryTask.Result, retrieveProductTask.Result),
+                TaskContinuationOptions.OnlyOnRanToCompletion).Unwrap();
+
+            //show product categories
+            foreach (var cat in updatedProduct.MasterData.Current.Categories)
             {
-                var retrieveCategoryTask =
-                    _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<Category>(Settings.CATEGORYKEY));
-                var retrieveProductTask =
-                    _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<Product>(Settings.PRODUCTKEY));
-
-
-                var updatedProduct = await Task.WhenAll(retrieveCategoryTask, retrieveProductTask).ContinueWith(
-                    retrieveTask => AddCategoryToProductTask(retrieveCategoryTask.Result, retrieveProductTask.Result),
-                    TaskContinuationOptions.OnlyOnRanToCompletion).Unwrap();
-
-                //show product categories
-                foreach (var cat in updatedProduct.MasterData.Current.Categories)
-                {
-                    Console.WriteLine($"Category ID {cat.Id}");
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
+                Console.WriteLine($"Category ID {cat.Id}");
             }
         }
 

@@ -22,7 +22,7 @@ namespace Training
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            await _exercise.ExecuteAsync();
+            await _exercise.ExecuteAsync().FireAndForgetSafeAsync();
             _applicationLifetime.StopApplication();
         }
 

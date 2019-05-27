@@ -20,18 +20,11 @@ namespace Training
         }
         public async Task ExecuteAsync()
         {
-            try
+            CartDraft cartDraft = this.GetCartDraft();
+            Cart cart = await _commercetoolsClient.ExecuteAsync(new CreateCommand<Cart>(cartDraft));
+            if (cart != null)
             {
-                CartDraft cartDraft = this.GetCartDraft();
-                Cart cart = await _commercetoolsClient.ExecuteAsync(new CreateCommand<Cart>(cartDraft));
-                if (cart != null)
-                {
-                    Console.WriteLine($"Cart {cart.Id} for customer: {cart.CustomerId}");
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
+                Console.WriteLine($"Cart {cart.Id} for customer: {cart.CustomerId}");
             }
         }
 

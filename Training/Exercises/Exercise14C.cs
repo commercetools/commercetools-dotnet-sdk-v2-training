@@ -29,28 +29,21 @@ namespace Training
         /// <returns></returns>
         public async Task ExecuteAsync()
         {
-            try
+            SearchProductProjectionsCommand searchProductProjectionsCommand = new SearchProductProjectionsCommand();
+            searchProductProjectionsCommand.SetStaged(true);
+            searchProductProjectionsCommand.FilterQuery(p =>
+                p.Variants.Any(v => v.Attributes.Any(a => a.Name == "color" && ((TextAttribute) a).Value == "Red")));
+            PagedQueryResult<ProductProjection> searchResults = await _commercetoolsClient.ExecuteAsync(searchProductProjectionsCommand);
+            if (searchResults.Results.Count > 0)
             {
-                SearchProductProjectionsCommand searchProductProjectionsCommand = new SearchProductProjectionsCommand();
-                searchProductProjectionsCommand.SetStaged(true);
-                searchProductProjectionsCommand.FilterQuery(p =>
-                    p.Variants.Any(v => v.Attributes.Any(a => a.Name == "color" && ((TextAttribute) a).Value == "Red")));
-                PagedQueryResult<ProductProjection> searchResults = await _commercetoolsClient.ExecuteAsync(searchProductProjectionsCommand);
-                if (searchResults.Results.Count > 0)
+                foreach (var product in searchResults.Results)
                 {
-                    foreach (var product in searchResults.Results)
-                    {
-                        Console.WriteLine(product.Name["en"]);
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("No Results found");
+                    Console.WriteLine(product.Name["en"]);
                 }
             }
-            catch (Exception e)
+            else
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine("No Results found");
             }
         }
     }

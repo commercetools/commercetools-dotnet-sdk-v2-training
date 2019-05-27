@@ -24,44 +24,37 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            try
+            //retrieve category by key
+            Category category =
+                await _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<Category>(Settings.CATEGORYKEY));
+
+            //retrieve product by key
+            Product product =
+                await _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<Product>(Settings.PRODUCTKEY));
+
+
+            //In the second Day
+
+            //Create AddToCategoryUpdateAction
+            AddToCategoryUpdateAction addToCategoryUpdateAction = new AddToCategoryUpdateAction()
             {
-                //retrieve category by key
-                Category category =
-                    await _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<Category>(Settings.CATEGORYKEY));
+                OrderHint = Settings.RandomSortOrder(),
+                Category = new ResourceIdentifier() {Key = Settings.CATEGORYKEY}
+            };
 
-                //retrieve product by key
-                Product product =
-                    await _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<Product>(Settings.PRODUCTKEY));
-
-
-                //In the second Day
-
-                //Create AddToCategoryUpdateAction
-                AddToCategoryUpdateAction addToCategoryUpdateAction = new AddToCategoryUpdateAction()
-                {
-                    OrderHint = Settings.RandomSortOrder(),
-                    Category = new ResourceIdentifier() {Key = Settings.CATEGORYKEY}
-                };
-
-                List<UpdateAction<Product>> updateActions = new List<UpdateAction<Product>>
-                {
-                    addToCategoryUpdateAction
-                };
-
-                //Add the category to the product
-                Product retrievedProduct = await _commercetoolsClient
-                    .ExecuteAsync(new UpdateByKeyCommand<Product>(Settings.PRODUCTKEY, product.Version, updateActions));
-
-                //show product categories
-                foreach (var cat in retrievedProduct.MasterData.Current.Categories)
-                {
-                    Console.WriteLine($"Category ID {cat.Id}");
-                }
-            }
-            catch (Exception e)
+            List<UpdateAction<Product>> updateActions = new List<UpdateAction<Product>>
             {
-                Console.WriteLine(e.Message);
+                addToCategoryUpdateAction
+            };
+
+            //Add the category to the product
+            Product retrievedProduct = await _commercetoolsClient
+                .ExecuteAsync(new UpdateByKeyCommand<Product>(Settings.PRODUCTKEY, product.Version, updateActions));
+
+            //show product categories
+            foreach (var cat in retrievedProduct.MasterData.Current.Categories)
+            {
+                Console.WriteLine($"Category ID {cat.Id}");
             }
         }
     }
