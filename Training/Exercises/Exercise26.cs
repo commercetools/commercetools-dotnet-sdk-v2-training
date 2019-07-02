@@ -30,7 +30,7 @@ namespace Training
 
             var queryCommand = new QueryCommand<Category>();
             queryCommand.Sort(category => category.Id);//sort By Id asc
-            queryCommand.Limit = pageSize; //
+            queryCommand.SetLimit(pageSize); //
             while (!lastPage)
             {
                 if (lastId != null)

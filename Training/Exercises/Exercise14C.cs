@@ -47,26 +47,4 @@ namespace Training
             }
         }
     }
-
-
-    /// <summary>
-    /// Adding Custom Extension Method for SearchCommand
-    /// </summary>
-
-    public static class SearchExtension
-    {
-        public static void SetStaged<T>(this SearchCommand<T> command, bool staged)
-        {
-            if (command.AdditionalParameters == null)
-            {
-                command.AdditionalParameters = new ProductProjectionAdditionalParameters();
-            }
-            if (command.AdditionalParameters is ProductProjectionAdditionalParameters parameters)
-            {
-                parameters.Staged = staged;
-                return;
-            }
-            throw new ArgumentException("AdditionalParameters not of type ProductProjectionAdditionalParameters");
-        }
-    }
 }
