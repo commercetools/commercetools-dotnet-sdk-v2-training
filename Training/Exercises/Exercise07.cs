@@ -30,7 +30,7 @@ namespace Training
                 var customer = customerResult.Customer;
                 if (customer != null)
                 {
-                    Console.WriteLine($"Customer Created with Id : {customer.Id}");
+                    Console.WriteLine($"Customer Created with Id : {customer.Id} and Key : {customer.Key}");
                 }
             }
         }
@@ -43,7 +43,8 @@ namespace Training
                 FirstName = "fName",
                 LastName = "lName",
                 Email = $"email{Settings.RandomInt()}@test.com",
-                Password = "password"
+                Password = "password",
+                Key = Settings.RandomString()
             };
         }
 
@@ -59,6 +60,7 @@ namespace Training
                 LastName = "lName",
                 Email = $"email{Settings.RandomInt()}@test.com",
                 Password = "password",
+                Key = Settings.RandomString(),
                 Custom = GetCustomFieldsDraft()
             };
         }

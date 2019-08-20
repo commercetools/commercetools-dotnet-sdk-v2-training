@@ -13,11 +13,12 @@ namespace Training
         public const string DEFAULTCLIENT = "Client";//Default client name in appsettings.test.json
         public const string MACHINELEARNINGCLIENT = "MachineLearningClient"; // Machine client name
         public const string CUSTOMERID = "5d5250a2-a5eb-423e-bde2-3d9f570348b9";//Customer ID
+        public const string CUSTOMERKEY = "F5TLDXZICK";//Customer Key
         public const string CATEGORYKEY = "Category1-Key-123";//Category Key
         public const string PRODUCTTYPEID = "c777235b-7a62-4bee-a13e-2e010e7d037e";//Product Type ID
         public const string PRODUCTTYPEKEY = "Jacket-PT";//Product Type Key
         public const string PRODUCTKEY = "4LK";//Product Key
-        public const string PRODUCTVARIANTSKU = "AU8G1";//Product variant sku
+        public const string PRODUCTVARIANTSKU = "XUDO7SO85V";//Product variant sku
         public const string CARTID = "c1af9744-0db8-4e6b-908f-4409f2d5ffa5";// Cart Id
         public const string DISCOUNTCODE = "TWENTY"; //discount code
         public const string ORDERNUMBER = "Order317372326"; //Order Number
@@ -27,7 +28,7 @@ namespace Training
         /// </summary>
         /// <param name="length"></param>
         /// <returns></returns>
-        public static string RandomString(int length)
+        public static string RandomString(int length = 10)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length)

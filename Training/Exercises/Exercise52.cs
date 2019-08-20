@@ -14,11 +14,11 @@ namespace Training
     /// PageQueryRequests Optimized, Query all Categories in optimized way
     /// https://docs.commercetools.com/http-api#paging
     /// </summary>
-    public class Exercise26 : IExercise
+    public class Exercise52 : IExercise
     {
         private readonly IClient _commercetoolsClient;
 
-        public Exercise26(IClient commercetoolsClient)
+        public Exercise52(IClient commercetoolsClient)
         {
             this._commercetoolsClient =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
@@ -31,6 +31,7 @@ namespace Training
             var queryCommand = new QueryCommand<Category>();
             queryCommand.Sort(category => category.Id);//sort By Id asc
             queryCommand.SetLimit(pageSize); //
+            queryCommand.SetWithTotal(false);
             while (!lastPage)
             {
                 if (lastId != null)

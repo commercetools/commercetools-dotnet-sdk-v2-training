@@ -30,7 +30,11 @@ namespace Training
             Product product = await _commercetoolsClient.ExecuteAsync(new CreateCommand<Product>(productDraft));
 
             //Display Product Name
-            Console.WriteLine($"New Product Created with name: {product.MasterData.Staged.Name["en"]} and Product Key: {product.Key}");
+            Console.WriteLine(
+                $"New Product Created with name: {product.MasterData.Staged.Name["en"]} and Product Key: {product.Key}");
+            var masterVariant = product.MasterData.Staged.MasterVariant;
+            Console.WriteLine($"With master variant key: {masterVariant.Key} and SKU: {masterVariant.Sku}");
+
         }
 
         /// <summary>
@@ -44,9 +48,9 @@ namespace Training
 
             //Create the Product Draft
             ProductDraft productDraft = new ProductDraft();
-            productDraft.Name = new LocalizedString() {{"en", Settings.RandomString(4)}};
-            productDraft.Key = Settings.RandomString(3);
-            productDraft.Slug = new LocalizedString() {{"en", Settings.RandomString(3)}};
+            productDraft.Name = new LocalizedString() {{"en", Settings.RandomString()}};
+            productDraft.Key = Settings.RandomString();
+            productDraft.Slug = new LocalizedString() {{"en", Settings.RandomString()}};
             productDraft.ProductType = new ResourceIdentifier<ProductType> {Id = productType.Id};
             ProductVariantDraft productMasterVariant =this.GetProductVariantDraft();
             productDraft.MasterVariant = productMasterVariant;
@@ -58,8 +62,8 @@ namespace Training
             var price = GetPriceDraft();
             var productVariantDraft = new ProductVariantDraft()
             {
-                Key = Settings.RandomString(5),
-                Sku = Settings.RandomString(5),
+                Key = Settings.RandomString(),
+                Sku = Settings.RandomString(),
                 Prices = new List<PriceDraft>(){price}
             };
             return productVariantDraft;
@@ -99,9 +103,9 @@ namespace Training
 
             //Create the Product Draft
             ProductDraft productDraft = new ProductDraft();
-            productDraft.Name = new LocalizedString() {{"en", Settings.RandomString(4)}};
-            productDraft.Key = Settings.RandomString(3);
-            productDraft.Slug = new LocalizedString() {{"en", Settings.RandomString(3)}};
+            productDraft.Name = new LocalizedString() {{"en", Settings.RandomString()}};
+            productDraft.Key = Settings.RandomString();
+            productDraft.Slug = new LocalizedString() {{"en", Settings.RandomString()}};
             productDraft.ProductType = new ResourceIdentifier<ProductType> {Id = productType.Id};
             ProductVariantDraft productMasterVariant =this.GetProductVariantDraft();
             productDraft.MasterVariant = productMasterVariant;

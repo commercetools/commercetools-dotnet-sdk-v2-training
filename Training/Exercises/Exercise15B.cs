@@ -38,8 +38,7 @@ namespace Training
             };
 
             Cart retrievedCart = await _commercetoolsClient
-                .ExecuteAsync(new UpdateByIdCommand<Cart>(new Guid(cart.Id),
-                    cart.Version, updateActions));
+                .ExecuteAsync(new UpdateByIdCommand<Cart>(cart, updateActions));
 
             foreach (var lineItem in retrievedCart.LineItems)
             {

@@ -43,8 +43,7 @@ namespace Training
             List<UpdateAction<Cart>> updateActions = new List<UpdateAction<Cart>> { addDiscountCodeUpdateAction };
 
             Cart retrievedCart = await _commercetoolsClient
-                .ExecuteAsync(new UpdateByIdCommand<Cart>(new Guid(cart.Id),
-                    cart.Version, updateActions));
+                .ExecuteAsync(new UpdateByIdCommand<Cart>(cart, updateActions));
 
             Console.WriteLine($"Showing discount code added to cart {retrievedCart.Id}");
             foreach (var codeInfo in retrievedCart.DiscountCodes)
