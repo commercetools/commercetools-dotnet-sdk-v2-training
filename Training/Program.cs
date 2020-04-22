@@ -48,8 +48,8 @@ namespace Training
 
         private static void ConfigureExerciseService(IServiceCollection services, string[] args)
         {
-            var runningEx = args != null && args.Length > 0 ? args[0] : "Exercise06"; //Exercise06 is the default exercise
-            Type exerciseType = Type.GetType($"Training.{runningEx}");
+            var runningEx = args != null && args.Length > 0 ? args[0] : "06"; //Exercise06 is the default exercise
+            Type exerciseType = Type.GetType($"Training.Exercise{runningEx}");
             if (exerciseType != null)
             {
                 services.AddSingleton(typeof(IExercise), exerciseType);

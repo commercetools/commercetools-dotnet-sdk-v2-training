@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain;
 using commercetools.Sdk.Domain.Categories;
-using commercetools.Sdk.Domain.Products;
 using commercetools.Sdk.Domain.Products.UpdateActions;
 
 namespace Training
@@ -39,7 +38,10 @@ namespace Training
             AddToCategoryUpdateAction addToCategoryUpdateAction = new AddToCategoryUpdateAction()
             {
                 OrderHint = Settings.RandomSortOrder(),
-                Category = new ResourceIdentifier() {Key = Settings.CATEGORYKEY}
+                Category = new ResourceIdentifier<Category>
+                {
+                    Key = Settings.CATEGORYKEY
+                }
             };
 
             List<UpdateAction<Product>> updateActions = new List<UpdateAction<Product>>

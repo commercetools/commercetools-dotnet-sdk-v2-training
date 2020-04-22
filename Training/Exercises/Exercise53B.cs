@@ -9,7 +9,7 @@ using commercetools.Sdk.Domain.Customers;
 using commercetools.Sdk.Domain.Orders;
 using commercetools.Sdk.Domain.Payments;
 using commercetools.Sdk.Domain.Payments.UpdateActions;
-using Type = commercetools.Sdk.Domain.Type;
+using Type = commercetools.Sdk.Domain.Types.Type;
 
 namespace Training
 {

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain;
-using Type = commercetools.Sdk.Domain.Type;
+using commercetools.Sdk.Domain.Types;
+using commercetools.Sdk.Domain.Types.FieldTypes;
+using Type = commercetools.Sdk.Domain.Types.Type;
 
 namespace Training
 {

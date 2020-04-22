@@ -3,12 +3,12 @@ using System.Threading.Tasks;
 using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain;
 using commercetools.Sdk.Domain.Customers;
-using Type = commercetools.Sdk.Domain.Type;
+using Type = commercetools.Sdk.Domain.Types.Type;
 
 namespace Training
 {
     /// <summary>
-    /// Create new customer (SignUp customer)
+    /// Registers a new customer
     /// </summary>
     public class Exercise07 : IExercise
     {

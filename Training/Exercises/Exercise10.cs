@@ -5,7 +5,6 @@ using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain;
 using commercetools.Sdk.Domain.Categories;
 using commercetools.Sdk.Domain.Common;
-using Type = commercetools.Sdk.Domain.Type;
 
 namespace Training
 {

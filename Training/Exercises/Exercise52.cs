@@ -1,12 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using commercetools.Sdk.Client;
-using commercetools.Sdk.Domain;
 using commercetools.Sdk.Domain.Categories;
-using commercetools.Sdk.Domain.GraphQL;
-using Training.GraphQL;
 
 namespace Training
 {
