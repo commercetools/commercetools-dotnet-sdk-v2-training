@@ -13,27 +13,45 @@ namespace Training
     /// </summary>
     public class Exercise10 : IExercise
     {
-        private readonly IClient _commercetoolsClient;
+        private readonly IClient _client;
 
         public Exercise10(IClient commercetoolsClient)
         {
-            this._commercetoolsClient =
+            this._client =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
         }
 
         public async Task ExecuteAsync()
         {
+            await ExecuteByCommands();
+        }
+
+        private async Task ExecuteByCommands()
+        {
             // get the product draft first
             var productDraft = GetProductDraft();
             // create the product
-            Product product = await _commercetoolsClient.ExecuteAsync(new CreateCommand<Product>(productDraft));
+            Product product = await _client.ExecuteAsync(new CreateCommand<Product>(productDraft));
 
             //Display Product Name
             Console.WriteLine(
                 $"New Product Created with name: {product.MasterData.Staged.Name["en"]} and Product Key: {product.Key}");
             var masterVariant = product.MasterData.Staged.MasterVariant;
             Console.WriteLine($"With master variant key: {masterVariant.Key} and SKU: {masterVariant.Sku}");
+        }
+        
+        private async Task ExecuteByBuilder()
+        {
+            // get the product draft first
+            var productDraft = GetProductDraft();
+            // create the product
+            Product product = await _client.ExecuteAsync(new CreateCommand<Product>(productDraft));
 
+            //Display Product Name
+            Console.WriteLine(
+                $"New Product Created with name: {product.MasterData.Staged.Name["en"]} and Product Key: {product.Key}");
+            var masterVariant = product.MasterData.Staged.MasterVariant;
+            Console.WriteLine($"With master variant key: {masterVariant.Key} and SKU: {masterVariant.Sku}");
         }
 
         /// <summary>
@@ -43,7 +61,7 @@ namespace Training
         public ProductDraft GetProductDraft()
         {
             //Get the Product Type
-            ProductType productType = _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<ProductType>(Settings.PRODUCTTYPEKEY)).Result;
+            ProductType productType = _client.ExecuteAsync(new GetByKeyCommand<ProductType>(Settings.PRODUCTTYPEKEY)).Result;
 
             //Create the Product Draft
             ProductDraft productDraft = new ProductDraft();
@@ -95,10 +113,10 @@ namespace Training
         {
 
             //Get the Product Type
-            ProductType productType = _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<ProductType>(Settings.PRODUCTTYPEKEY)).Result;
+            ProductType productType = _client.ExecuteAsync(new GetByKeyCommand<ProductType>(Settings.PRODUCTTYPEKEY)).Result;
 
             //Get the Category
-            Category category = _commercetoolsClient.ExecuteAsync(new GetByKeyCommand<Category>(Settings.CATEGORYKEY)).Result;
+            Category category = _client.ExecuteAsync(new GetByKeyCommand<Category>(Settings.CATEGORYKEY)).Result;
 
             //Create the Product Draft
             ProductDraft productDraft = new ProductDraft();

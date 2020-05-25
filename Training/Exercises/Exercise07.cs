@@ -1,8 +1,11 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain;
 using commercetools.Sdk.Domain.Customers;
+using commercetools.Sdk.Domain.Stores;
+using commercetools.Sdk.HttpApi.CommandBuilders;
 using Type = commercetools.Sdk.Domain.Types.Type;
 
 namespace Training
@@ -12,33 +15,23 @@ namespace Training
     /// </summary>
     public class Exercise07 : IExercise
     {
-        private readonly IClient _commercetoolsClient;
+        private readonly IClient _client;
 
         public Exercise07(IClient commercetoolsClient)
         {
-            this._commercetoolsClient =
+            this._client =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
         }
 
         public async Task ExecuteAsync()
         {
-            var customerDraft = this.GetCustomerDraft();
-            var signUpCustomerCommand = new SignUpCustomerCommand(customerDraft);
-            var result = await _commercetoolsClient.ExecuteAsync(signUpCustomerCommand);
-            if (result is CustomerSignInResult customerResult)
-            {
-                var customer = customerResult.Customer;
-                if (customer != null)
-                {
-                    Console.WriteLine($"Customer Created with Id : {customer.Id} and Key : {customer.Key}");
-                }
-            }
+            //await ExecuteByCommands();
+            await ExecuteByBuilder();
         }
 
-
-        private CustomerDraft GetCustomerDraft()
+        private async Task ExecuteByCommands()
         {
-            return new CustomerDraft
+            var customerDraft = new CustomerDraft
             {
                 FirstName = "fName",
                 LastName = "lName",
@@ -46,7 +39,42 @@ namespace Training
                 Password = "password",
                 Key = Settings.RandomString()
             };
+            var signUpCustomerCommand = new SignUpCustomerCommand(customerDraft);
+            var signInResult = (CustomerSignInResult) await _client.ExecuteAsync(signUpCustomerCommand);
+            var customer = signInResult.Customer;
+            Console.WriteLine($"Customer Created with Id : {customer.Id} and Key : {customer.Key}");
         }
+
+
+        private async Task ExecuteByBuilder()
+        {
+            //Create Store
+            var store = await _client.Builder().Stores().Create(
+                new StoreDraft
+                {
+                    Key = $"store_{Settings.RandomInt()}",
+                }).ExecuteAsync();
+
+            var signInResult = (CustomerSignInResult) await _client
+                .Builder()
+                .Customers()
+                .SignUp(
+                    new CustomerDraft
+                    {
+                        FirstName = "fName",
+                        LastName = "lName",
+                        Email = $"email{Settings.RandomInt()}@test.com",
+                        Password = "password",
+                        Key = Settings.RandomString()
+                    })
+                .InStore(store.Key)
+                .ExecuteAsync();
+
+            var customer = signInResult.Customer;
+            var customerStore = customer.Stores.FirstOrDefault();
+            Console.WriteLine($"Customer Created with Id : {customer.Id} and Key : {customer.Key} in store: {customerStore?.Key}");
+        }
+
 
         /// <summary>
         /// Get Customer Draft with Custom Fields

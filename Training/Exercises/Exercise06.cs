@@ -49,10 +49,18 @@ namespace Training
         
         private async Task ExecuteByBuilder()
         {
-            var taxCategory = await _client.Builder().TaxCategories().GetByKey("standard").ExecuteAsync();
+            var taxCategory = await _client
+                                            .Builder()
+                                            .TaxCategories()
+                                            .GetByKey("standard")
+                                            .ExecuteAsync();
             Console.WriteLine($"taxCategoryId: {taxCategory?.Id}");
 
-            var shippingMethod = await _client.Builder().ShippingMethods().GetById("a3e20176-4fd0-4f7f-80ad-c3bdc686743d").ExecuteAsync();
+            var shippingMethod = await _client
+                                            .Builder()
+                                            .ShippingMethods()
+                                            .GetById("a3e20176-4fd0-4f7f-80ad-c3bdc686743d")
+                                            .ExecuteAsync();
             Console.WriteLine($"shippingMethod name: {shippingMethod?.Name}");
         }
     }
