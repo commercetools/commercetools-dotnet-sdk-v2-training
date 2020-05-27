@@ -4,25 +4,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using commercetools.Sdk.Client;
 using commercetools.Sdk.Domain;
+using commercetools.Sdk.Domain.GraphQL;
+using Training.GraphQL;
 using Training.MachineLearningExtensions;
 
 namespace Training
 {
     /// <summary>
-    /// Machine Learning Exercise
+    /// MachineLearning Exercise
     /// </summary>
-    public class Exercise12 : IExercise
+    public class Task08B : IExercise
     {
-        private readonly IClient _machineLearningClient;
-
-        public Exercise12(IEnumerable<IClient> clients)
+        private readonly IClient _client;
+        
+        public Task08B(IEnumerable<IClient> clients)
         {
             if (clients == null || !clients.Any())
             {
                 throw new ArgumentNullException(nameof(clients));
             }
-            this._machineLearningClient = clients.FirstOrDefault(c => c.Name == Settings.MACHINELEARNINGCLIENT);// the machine learning client
+            this._client = clients.FirstOrDefault(c => c.Name == Settings.MACHINELEARNINGCLIENT);// the machine learning client
         }
+
         public async Task ExecuteAsync()
         {
             // Get categories recommendations using product name
@@ -32,7 +35,7 @@ namespace Training
             };
             var recommendationCommand = new QueryCommand<GeneralCategoryRecommendation>(additionalParams);
 
-            PagedQueryResult<GeneralCategoryRecommendation> returnedSet = await _machineLearningClient.ExecuteAsync(recommendationCommand);
+            var returnedSet = await _client.ExecuteAsync(recommendationCommand);
             Console.WriteLine("Category Recommendations using Product Name:");
             foreach (var categoryRecommendation in returnedSet.Results)
             {
@@ -47,11 +50,12 @@ namespace Training
             };
             var recommendationCommand2 = new QueryCommand<GeneralCategoryRecommendation>(additionalParams2);
 
-            PagedQueryResult<GeneralCategoryRecommendation> returnedSet2 = await _machineLearningClient.ExecuteAsync(recommendationCommand2);
+            var returnedSet2 = await _client.ExecuteAsync(recommendationCommand2);
             Console.WriteLine("Category Recommendations using Product Image Url:");
             foreach (var categoryRecommendation in returnedSet2.Results)
             {
-                Console.WriteLine($"Category name: {categoryRecommendation.CategoryName}, Confidence : {categoryRecommendation.Confidence}");
+                Console.WriteLine($"Category name: {categoryRecommendation.CategoryName}" +
+                                  $", Confidence : {categoryRecommendation.Confidence}");
             }
         }
     }

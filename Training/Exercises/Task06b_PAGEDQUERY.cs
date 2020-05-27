@@ -2,7 +2,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using commercetools.Sdk.Client;
-using commercetools.Sdk.Domain.Categories;
+using commercetools.Sdk.Domain;
+using commercetools.Sdk.Domain.Predicates;
 
 namespace Training
 {
@@ -10,21 +11,22 @@ namespace Training
     /// PageQueryRequests Optimized, Query all Categories in optimized way
     /// https://docs.commercetools.com/http-api#paging
     /// </summary>
-    public class Exercise52 : IExercise
+    public class Task06B : IExercise
     {
-        private readonly IClient _commercetoolsClient;
+        private readonly IClient _client;
+        
 
-        public Exercise52(IClient commercetoolsClient)
+        public Task06B(IClient commercetoolsClient)
         {
-            this._commercetoolsClient =
+            this._client =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
         }
 
         public async Task ExecuteAsync()
         {
-            string lastId = null ;int pageSize = 20;int currentPage = 1; bool lastPage = false;
+            string lastId = null ;int pageSize = 2;int currentPage = 1; bool lastPage = false;
 
-            var queryCommand = new QueryCommand<Category>();
+            var queryCommand = new QueryCommand<Product>();
             queryCommand.Sort(category => category.Id);//sort By Id asc
             queryCommand.SetLimit(pageSize); //
             queryCommand.SetWithTotal(false);
@@ -32,14 +34,14 @@ namespace Training
             {
                 if (lastId != null)
                 {
-                    //queryCommand.Where(category => category.Id > lastId);
-                    queryCommand.SetWhere($"id > \"{lastId}\"");
+                    queryCommand.Where(p => p.Id.IsGreaterThan(lastId));
+                    //queryCommand.SetWhere($"id > \"{lastId}\"");
                 }
-                var returnedSet = await _commercetoolsClient.ExecuteAsync(queryCommand);
+                var returnedSet = await _client.ExecuteAsync(queryCommand);
                 Console.WriteLine($"Show Results of Page {currentPage}");
-                foreach (var category in returnedSet.Results)
+                foreach (var product in returnedSet.Results)
                 {
-                    Console.WriteLine($"{category.Name["en"]}");
+                    Console.WriteLine($"{product.MasterData.Current.Name["en"]}");
                 }
                 Console.WriteLine("///////////////////////");
                 currentPage++;
@@ -47,7 +49,5 @@ namespace Training
                 lastPage = returnedSet.Results.Count < pageSize;
             }
         }
-
-
     }
 }

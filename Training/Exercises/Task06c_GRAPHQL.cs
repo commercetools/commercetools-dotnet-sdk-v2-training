@@ -9,13 +9,13 @@ namespace Training
     /// <summary>
     /// GraphQl Query Exercise
     /// </summary>
-    public class Exercise25 : IExercise
+    public class Task06C : IExercise
     {
-        private readonly IClient _commercetoolsClient;
-
-        public Exercise25(IClient commercetoolsClient)
+        private readonly IClient _client;
+        
+        public Task06C(IClient commercetoolsClient)
         {
-            this._commercetoolsClient =
+            this._client =
                 commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
         }
 
@@ -24,15 +24,14 @@ namespace Training
             string graphQuery = "query {customers{count,results{email}}}";
             var graphQlCommand = new GraphQLCommand<GraphQLResult>(new GraphQLParameters(graphQuery));
             //var graphQlCommand = new GraphQLCommand<dynamic>(new GraphQLParameters(graphQuery));
-            var result = await _commercetoolsClient.ExecuteAsync(graphQlCommand);
+            var result = await _client.ExecuteAsync(graphQlCommand);
             Console.WriteLine($"Customers count: {result.Data.Customers.Count}");
             Console.WriteLine("Showing Customers emails:");
             foreach (var customer in result.Data.Customers.Results)
             {
                 Console.WriteLine(customer.Email);
             }
+            
         }
-
-
     }
 }
