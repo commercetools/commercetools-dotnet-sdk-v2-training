@@ -83,6 +83,11 @@ namespace Training
 
         #region HelperFunctions
 
+        /// <summary>
+        /// Create Cart for a customer with DefaultShipping Address
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
         private async Task<Cart> CreateCart(Customer customer)
         {
             var defaultShippingAddress = customer.GetDefaultShippingAddress();
@@ -99,6 +104,13 @@ namespace Training
             return await _client.ExecuteAsync(new CreateCommand<Cart>(cartDraft));
         }
 
+        /// <summary>
+        /// Add Product to Cart by SKU and Supply Channel
+        /// </summary>
+        /// <param name="cart"></param>
+        /// <param name="channel"></param>
+        /// <param name="skus"></param>
+        /// <returns></returns>
         private async Task<Cart> AddProductToCartBySkusAndChannel(Cart cart, Channel channel, params string[] skus)
         {
             var lineItemsToAddActions = new List<UpdateAction<Cart>>();
@@ -116,6 +128,12 @@ namespace Training
                 cart.UpdateById(actions => lineItemsToAddActions));
         }
 
+        /// <summary>
+        /// Add DiscountCode to Cart
+        /// </summary>
+        /// <param name="cart"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
         private async Task<Cart> AddDiscountToCart(Cart cart, string code)
         {
             var action = new AddDiscountCodeUpdateAction
@@ -127,6 +145,7 @@ namespace Training
                     actions.AddUpdate(action)));
         }
 
+        //Recalculate a cart
         private async Task<Cart> Recalculate(Cart cart)
         {
             var action = new RecalculateUpdateAction();

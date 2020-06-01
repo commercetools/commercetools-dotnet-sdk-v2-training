@@ -35,7 +35,7 @@ namespace Training
 
         private async Task ExecuteByCommands()
         {
-            //  CREATE a customer
+            //  SignUp a customer
             var signInResult = (CustomerSignInResult)
                 await _client.ExecuteAsync(
                     new SignUpCustomerCommand(GetCustomerDraft())
@@ -79,6 +79,10 @@ namespace Training
             Console.WriteLine($"Is Email Verified:{verifiedCustomer.IsEmailVerified}");
         }
 
+        /// <summary>
+        /// Get Customer Draft
+        /// </summary>
+        /// <returns></returns>
         private CustomerDraft GetCustomerDraft()
         {
             var rand = Settings.RandomInt();

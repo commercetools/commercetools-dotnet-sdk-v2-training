@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using commercetools.Sdk.HttpApi.AdditionalParameters;
+using commercetools.Sdk.HttpApi.SearchParameters;
 using commercetools.Sdk.HttpApi.Tokens;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,13 +43,14 @@ namespace Training
                 { "Client", TokenFlow.ClientCredentials } //default client
             };
             services.AddSingleton<IAdditionalParametersBuilder, GetGeneralCategoriesRecommendationsAdditionalParametersBuilder>();
+            //To Handle "withTotal:" querystring issue
+            //services.AddSingleton<IQueryParametersBuilder, MLQueryCommandParametersBuilder>();
             services.UseCommercetools(configuration, clients);
-
         }
 
         private static void ConfigureExerciseService(IServiceCollection services, string[] args)
         {
-            var runningEx = args != null && args.Length > 0 ? args[0] : "08B"; //Task02A is the default exercise
+            var runningEx = args != null && args.Length > 0 ? args[0] : "02A"; //Task02A is the default exercise
             Type exerciseType = Type.GetType($"Training.Task{runningEx}");
             if (exerciseType != null)
             {
