@@ -83,6 +83,11 @@ namespace Training
 
         #region HelperFunctions
 
+        /// <summary>
+        /// Create Cart for a customer with DefaultShipping Address
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
         private async Task<Cart> CreateCart(Customer customer)
         {
             var defaultShippingAddress = customer.GetDefaultShippingAddress();
@@ -99,6 +104,13 @@ namespace Training
             return await _client.ExecuteAsync(new CreateCommand<Cart>(cartDraft));
         }
 
+        /// <summary>
+        /// Add Product to Cart by SKU and Supply Channel
+        /// </summary>
+        /// <param name="cart"></param>
+        /// <param name="channel"></param>
+        /// <param name="skus"></param>
+        /// <returns></returns>
         private async Task<Cart> AddProductToCartBySkusAndChannel(Cart cart, Channel channel, params string[] skus)
         {
             var lineItemsToAddActions = new List<UpdateAction<Cart>>();
@@ -116,6 +128,12 @@ namespace Training
                 cart.UpdateById(actions => lineItemsToAddActions));
         }
 
+        /// <summary>
+        /// Add DiscountCode to Cart
+        /// </summary>
+        /// <param name="cart"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
         private async Task<Cart> AddDiscountToCart(Cart cart, string code)
         {
             var action = new AddDiscountCodeUpdateAction
@@ -127,6 +145,7 @@ namespace Training
                     actions.AddUpdate(action)));
         }
 
+        //Recalculate a cart
         private async Task<Cart> Recalculate(Cart cart)
         {
             var action = new RecalculateUpdateAction();
@@ -136,6 +155,11 @@ namespace Training
                     actions.AddUpdate(action)));
         }
 
+        /// <summary>
+        /// Set ShippingMethod for a cart
+        /// </summary>
+        /// <param name="cart"></param>
+        /// <returns></returns>
         private async Task<Cart> SetShipping(Cart cart)
         {
             var shippingMethodsResult = await _client
@@ -152,6 +176,15 @@ namespace Training
                     actions.AddUpdate(action)));
         }
 
+        /// <summary>
+        /// Create A Payment and Add it to the cart
+        /// </summary>
+        /// <param name="cart"></param>
+        /// <param name="pspName"></param>
+        /// <param name="pspMethod"></param>
+        /// <param name="interfaceId"></param>
+        /// <param name="interactionId"></param>
+        /// <returns></returns>
         private async Task<Cart> CreatePaymentAndAddToCart(Cart cart, string pspName, string pspMethod,
             string interfaceId, string interactionId)
         {
@@ -201,6 +234,11 @@ namespace Training
                 .AddAction(new AddPaymentUpdateAction { Payment = payment.ToReference() }).ExecuteAsync();
         }
 
+        /// <summary>
+        /// Create an Order From the cart
+        /// </summary>
+        /// <param name="cart"></param>
+        /// <returns></returns>
         private async Task<Order> CreateOrder(Cart cart)
         {
             var orderFromCartDraft = new OrderFromCartDraft
@@ -215,6 +253,12 @@ namespace Training
         }
 
 
+        /// <summary>
+        /// Change Order State
+        /// </summary>
+        /// <param name="order"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
         private async Task<Order> ChangeOrderState(Order order, OrderState state)
         {
             var action = new ChangeOrderStateUpdateAction

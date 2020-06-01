@@ -42,14 +42,15 @@ namespace Training
             var customerGroup = await _client.ExecuteAsync(new
                 GetByKeyCommand<CustomerGroup>(_customerGroupKey));
 
-            // set customerGroup for the customer
+            // set customerGroup for the customer (using SetCustomerGroupUpdateAction)
             var action = new SetCustomerGroupUpdateAction
             {
                 CustomerGroup = customerGroup.ToKeyResourceIdentifier()
             };
             var updatedCustomer = await _client
                 .ExecuteAsync(customer.UpdateByKey(
-                    actions => actions.AddUpdate(action)).Expand(c => c.CustomerGroup));
+                    actions => actions.AddUpdate(action))
+                    .Expand(c => c.CustomerGroup));
 
             Console.WriteLine($"customer {updatedCustomer.Id} in customer group " +
                               $"{updatedCustomer.CustomerGroup.Obj.Name}");

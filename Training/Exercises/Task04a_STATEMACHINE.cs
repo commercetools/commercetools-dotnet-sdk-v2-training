@@ -31,6 +31,7 @@ namespace Training
 
         private async Task ExecuteByCommands()
         {
+            //create OrderPacked stateDraft, state
             var stateOrderPackedDraft = new StateDraft
             {
                 Key = "OrderPacked",
@@ -40,6 +41,7 @@ namespace Training
             };
             var stateOrderPacked = await _client.ExecuteAsync(new CreateCommand<State>(stateOrderPackedDraft));
             
+            //create OrderShipped stateDraft, state
             var stateOrderShippedDraft = new StateDraft
             {
                 Key = "OrderShipped",
@@ -49,6 +51,7 @@ namespace Training
             };
             var stateOrderShipped = await _client.ExecuteAsync(new CreateCommand<State>(stateOrderShippedDraft));
             
+            //update packedState to transit to stateShipped
             var action = new SetTransitionsUpdateAction
             {
                 Transitions = new List<IReference<State>>

@@ -8,7 +8,7 @@ using commercetools.Sdk.Domain.Predicates;
 namespace Training
 {
     /// <summary>
-    /// PageQueryRequests Optimized, Query all Categories in optimized way
+    /// PageQueryRequests Optimized, Query all Products in optimized way
     /// https://docs.commercetools.com/http-api#paging
     /// </summary>
     public class Task06B : IExercise
