@@ -23,7 +23,7 @@ namespace Training
             {
                 throw new ArgumentNullException(nameof(clients));
             }
-            this._client = clients.FirstOrDefault(c => c.Name == Settings.MACHINELEARNINGCLIENT);// the machine learning client
+            this._client = clients.FirstOrDefault(c => c.Name == "MachineLearningClient");// the machine learning client
         }
 
         public async Task ExecuteAsync()
@@ -31,7 +31,7 @@ namespace Training
             // Get categories recommendations using product name
             var additionalParams = new GetGeneralCategoriesRecommendationsAdditionalParameters()
             {
-                ProductName = "car"
+                ProductName = "black car"
             };
             var recommendationCommand = new QueryCommand<GeneralCategoryRecommendation>(additionalParams);
 

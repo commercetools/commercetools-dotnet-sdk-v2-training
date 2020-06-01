@@ -24,7 +24,7 @@ namespace Training
                 throw new ArgumentNullException(nameof(clients));
             }
 
-            this._client = clients.FirstOrDefault(c => c.Name == Settings.DEFAULTCLIENT); // the default client
+            this._client = clients.FirstOrDefault(c => c.Name == "Client"); // the default client
         }
 
         public async Task ExecuteAsync()

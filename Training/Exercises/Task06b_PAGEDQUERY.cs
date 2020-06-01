@@ -27,7 +27,7 @@ namespace Training
             string lastId = null ;int pageSize = 2;int currentPage = 1; bool lastPage = false;
 
             var queryCommand = new QueryCommand<Product>();
-            queryCommand.Sort(category => category.Id);//sort By Id asc
+            queryCommand.Sort(product => product.Id);//sort By Id asc
             queryCommand.SetLimit(pageSize); //
             queryCommand.SetWithTotal(false);
             while (!lastPage)

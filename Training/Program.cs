@@ -36,7 +36,7 @@ namespace Training
         /// </summary>
         private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            IDictionary<string, TokenFlow> clients = new Dictionary<string, TokenFlow>()
+            var clients = new Dictionary<string, TokenFlow>()
             {
                 { "MachineLearningClient", TokenFlow.ClientCredentials }, // Machine Learning Client
                 { "Client", TokenFlow.ClientCredentials } //default client
@@ -48,7 +48,7 @@ namespace Training
 
         private static void ConfigureExerciseService(IServiceCollection services, string[] args)
         {
-            var runningEx = args != null && args.Length > 0 ? args[0] : "02A"; //Task02A is the default exercise
+            var runningEx = args != null && args.Length > 0 ? args[0] : "08B"; //Task02A is the default exercise
             Type exerciseType = Type.GetType($"Training.Task{runningEx}");
             if (exerciseType != null)
             {

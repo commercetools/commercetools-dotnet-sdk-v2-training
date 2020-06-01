@@ -79,18 +79,5 @@ namespace Training
             Console.WriteLine($"customer {updatedCustomer.Id} in customer group " +
                               $"{updatedCustomer.CustomerGroup.Id}");
         }
-
-        private CustomerDraft GetCustomerDraft()
-        {
-            var rand = Settings.RandomInt();
-            return new CustomerDraft
-            {
-                Email = $"michael_{rand}@example.com",
-                Password = "password",
-                Key = $"customer-michael-{rand}",
-                FirstName = "michael",
-                LastName = "hartwig"
-            };
-        }
     }
 }
