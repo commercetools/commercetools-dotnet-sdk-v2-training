@@ -25,30 +25,12 @@ namespace Training
         public async Task ExecuteAsync()
         {
            //create SqsDestination
-           var destination = new SqsDestination(
-               "key",
-               "secert",
-               "url",
-               "eu-central-1");
            
            //create a subscription draft
-           var subscriptionDraft = new SubscriptionDraft
-           {
-               Key = "OnCustomerChangedSubscription",
-               Destination = destination,
-               Changes = new List<ChangeSubscription>
-               {
-                   new ChangeSubscription
-                   {
-                       ResourceTypeId = ResourceTypeId.Customer.GetDescription()
-                   }
-               }
-           };
            
            //create a subscription
-           var subscription = await _client.ExecuteAsync(new CreateCommand<Subscription>(subscriptionDraft));
            
-           Console.WriteLine($"a new subscription created with Id {subscription.Id}");
+           throw new NotImplementedException();
         }
     }
 }

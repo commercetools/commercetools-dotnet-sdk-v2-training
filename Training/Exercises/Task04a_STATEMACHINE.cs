@@ -32,39 +32,11 @@ namespace Training
         private async Task ExecuteByCommands()
         {
             //create OrderPacked stateDraft, state
-            var stateOrderPackedDraft = new StateDraft
-            {
-                Key = "OrderPacked",
-                Initial = true,
-                Name = new LocalizedString {{"en", "Order Packed"}},
-                Type = StateType.OrderState
-            };
-            var stateOrderPacked = await _client.ExecuteAsync(new CreateCommand<State>(stateOrderPackedDraft));
-            
+           
             //create OrderShipped stateDraft, state
-            var stateOrderShippedDraft = new StateDraft
-            {
-                Key = "OrderShipped",
-                Initial = false,
-                Name = new LocalizedString {{"en", "Order Shipped"}},
-                Type = StateType.OrderState
-            };
-            var stateOrderShipped = await _client.ExecuteAsync(new CreateCommand<State>(stateOrderShippedDraft));
+           
             
             //update packedState to transit to stateShipped
-            var action = new SetTransitionsUpdateAction
-            {
-                Transitions = new List<IReference<State>>
-                {
-                    stateOrderShipped.ToKeyResourceIdentifier()
-                }
-            };
-
-            var updatedStateOrderPacked = await _client
-                .ExecuteAsync(stateOrderPacked.UpdateByKey(
-                    actions => actions.AddUpdate(action)));
-            
-            Console.WriteLine($"stateOrderShipped Id : {stateOrderShipped.Id}, stateOrderPacked transition to:  {updatedStateOrderPacked.Transitions[0].Id}");
         }
 
         private async Task ExecuteByBuilder()

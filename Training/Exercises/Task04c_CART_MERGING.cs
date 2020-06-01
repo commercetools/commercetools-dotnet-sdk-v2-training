@@ -24,44 +24,31 @@ namespace Training
         public async Task ExecuteAsync()
         {
            // Create a customer
-           var customer = await CreateACustomer();
+           Customer customer = null;
            Console.WriteLine($"customer created with Id {customer.Id}");
            
            //Create Cart for this customer
 
-           var cart = await CreateACart(null, customer.Id);
+           Cart cart = null;
            Console.WriteLine($"cart for customer created with Id {cart.Id}");
 
            // Create Anonymous cart
-           var anonymousCart = await CreateACart("123456789", null);
+           Cart anonymousCart = null;
            Console.WriteLine($"anonymous cart created with Id {anonymousCart.Id}");
            
-           anonymousCart = await AddProductToACartBySku(anonymousCart, "9812", 4);
+           //AddProductToACartBySku
+           
 
-           var customerSignInCommand = new LoginCustomerCommand(customer.Email, "password")
-           {
-               AnonymousCartId = anonymousCart.Id,
-               AnonymousCartSignInMode = AnonymousCartSignInMode.MergeWithExistingCustomerCart
-           };
-           var result = await _client.ExecuteAsync(customerSignInCommand) as CustomerSignInResult;
+           //Login Customer with anonymous cartId
+           
            
            //LineItems of the anonymous cart will be copied to the customer’s active cart that has been modified most recently.
-           var currentCustomerCart = result?.Cart;
-           var lineItem = currentCustomerCart?.LineItems[0];
-           Console.WriteLine($"SKU: {lineItem.Variant.Sku}, Quantity: {lineItem.Quantity}");
+           
         }
 
         private async Task<Customer> CreateACustomer()
         {
-            var result = await _client
-                .Builder()
-                .Customers()
-                .SignUp(new CustomerDraft
-                {
-                    Email = "me@me4",
-                    Password = "password"
-                }).ExecuteAsync() as CustomerSignInResult;
-            return result?.Customer;
+            throw new NotImplementedException();
         }
         
         /// <summary>
@@ -72,27 +59,12 @@ namespace Training
         /// <returns></returns>
         private async Task<Cart> CreateACart(string anonymousId = null, string customerId = null)
         {
-            return await _client.Builder().Carts().Create(
-                new CartDraft
-                {
-                    CustomerId = customerId,
-                    AnonymousId = anonymousId,
-                    Currency = "EUR",
-                    Country = "DE",
-                    DeleteDaysAfterLastModification = 90
-                }).ExecuteAsync();
+            throw new NotImplementedException();
         }
         
         private async Task<Cart> AddProductToACartBySku(Cart cart, string sku, long quantity)
         {
-            var action = new AddLineItemUpdateAction
-            {
-                Sku = sku,
-                Quantity = quantity
-            };
-
-
-            return await _client.Builder().Carts().UpdateById(cart).AddAction(action).ExecuteAsync();
+            throw new NotImplementedException();
         }
     }
 }

@@ -38,18 +38,13 @@ namespace Training
         {
             //Fetch a channel if your inventory mode will not be NONE
             //Get Channel By Key (not supported yet)
-            var channelResult = await _client.Builder()
-                .Channels()
-                .Query()
-                .Where(ch => ch.Key == "berlin-warehouse")
-                .ExecuteAsync();
-
+           
             //check the result
-            var channel = channelResult.Results.FirstOrDefault();
+            Channel channel = null;
 
 
             //Fetch a state if you have a defined custom workflow
-            var orderPacked = await _client.Builder().States().GetByKey("OrderPacked").ExecuteAsync();
+            State orderPacked = null;
 
             // TODO: Perform cart operations:
             //      Get Customer, create cart, add products, add inventory mode
@@ -57,24 +52,31 @@ namespace Training
             // TODO: Convert cart into an order, set order status, set state in custom work flow
 
 
-            var customer = await _client.Builder()
-                .Customers().GetByKey("customer-michael1").ExecuteAsync();
+            // Get the customer By Key
+            Customer customer = null;
 
             //create a cart for a customer
             var cart = await CreateCart(customer);
 
             Console.WriteLine($"Cart {cart.Id} for customer: {cart.CustomerId}");
 
+            //AddProductToCartBySkusAndChannel
             cart = await
                 AddProductToCartBySkusAndChannel(cart, channel, "9812", "9812", "9812");
 
+            //AddDiscountToCart
             cart = await AddDiscountToCart(cart, "SUMMER");
+            
+            //Recalculate it
             cart = await Recalculate(cart);
+            
+            //SetShipping for the cart
             cart = await SetShipping(cart);
 
-            //TODO: need to create payment and add to cart
+            //CreatePaymentAndAddToCart
             cart = await CreatePaymentAndAddToCart(cart, "WIRECARD", "CREDIT_CARD", "wire73638", "pay82628");
 
+            //CreateOrder
             var order = await CreateOrder(cart);
             order = await ChangeOrderState(order, OrderState.Complete);
             order = await ChangeWorkflowState(order, orderPacked.ToReference());
@@ -90,18 +92,7 @@ namespace Training
         /// <returns></returns>
         private async Task<Cart> CreateCart(Customer customer)
         {
-            var defaultShippingAddress = customer.GetDefaultShippingAddress();
-            var cartDraft = new CartDraft
-            {
-                CustomerId = customer.Id,
-                CustomerEmail = customer.Email,
-                Currency = "EUR",
-                Country = defaultShippingAddress.Country,
-                ShippingAddress = defaultShippingAddress,
-                DeleteDaysAfterLastModification = 90,
-                InventoryMode = InventoryMode.ReserveOnOrder
-            };
-            return await _client.ExecuteAsync(new CreateCommand<Cart>(cartDraft));
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -113,19 +104,7 @@ namespace Training
         /// <returns></returns>
         private async Task<Cart> AddProductToCartBySkusAndChannel(Cart cart, Channel channel, params string[] skus)
         {
-            var lineItemsToAddActions = new List<UpdateAction<Cart>>();
-            foreach (var sku in skus)
-            {
-                lineItemsToAddActions.AddUpdate(new AddLineItemUpdateAction
-                {
-                    Sku = sku,
-                    Quantity = 1,
-                    SupplyChannel = new Reference<Channel> {Id = channel.Id}
-                });
-            }
-
-            return await _client.ExecuteAsync(
-                cart.UpdateById(actions => lineItemsToAddActions));
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -136,23 +115,13 @@ namespace Training
         /// <returns></returns>
         private async Task<Cart> AddDiscountToCart(Cart cart, string code)
         {
-            var action = new AddDiscountCodeUpdateAction
-            {
-                Code = code
-            };
-            return await _client.ExecuteAsync(
-                cart.UpdateById(actions =>
-                    actions.AddUpdate(action)));
+            throw new NotImplementedException();
         }
 
         //Recalculate a cart
         private async Task<Cart> Recalculate(Cart cart)
         {
-            var action = new RecalculateUpdateAction();
-
-            return await _client.ExecuteAsync(
-                cart.UpdateById(actions =>
-                    actions.AddUpdate(action)));
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -162,18 +131,7 @@ namespace Training
         /// <returns></returns>
         private async Task<Cart> SetShipping(Cart cart)
         {
-            var shippingMethodsResult = await _client
-                .ExecuteAsync(new GetShippingMethodsForCartCommand(cart.Id));
-
-            var shippingMethod = shippingMethodsResult.Results.FirstOrDefault();
-            var action = new SetShippingMethodUpdateAction
-            {
-                ShippingMethod = shippingMethod?.ToReference()
-            };
-
-            return await _client.ExecuteAsync(
-                cart.UpdateById(actions =>
-                    actions.AddUpdate(action)));
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -189,49 +147,18 @@ namespace Training
             string interfaceId, string interactionId)
         {
             // we create payment object
-            var paymentMethodInfo = new PaymentMethodInfo
-            {
-                Method = pspMethod, // PSP Provider Method: CreditCard
-                PaymentInterface = pspName, // PSP Provider Name: WireCard, ....
-            };
-            var paymentDraft = new PaymentDraft
-            {
-                PaymentMethodInfo = paymentMethodInfo,
-                InterfaceId = interfaceId,
-                AmountPlanned = cart.TotalPrice
-            };
-
-            var payment = await _client
-                .Builder().Payments().Create(paymentDraft).ExecuteAsync();
-            
-            Console.WriteLine($"Payment Created with Id {payment.Id}");
+         
 
             //Create the transaction
-            var transactionDraft = new TransactionDraft
-            {
-                Type = TransactionType.Charge,
-                Amount = cart.TotalPrice,
-                InteractionId = interactionId,
-                Timestamp = DateTime.Now,
-            };
-            var action = new AddTransactionUpdateAction
-            {
-                Transaction = transactionDraft
-            };
-
+         
             //payment with a transaction
-            payment = await _client.Builder().Payments().UpdateById(payment).AddAction(action).ExecuteAsync();
-
+         
             //set interface code and text
-            payment = await _client.Builder().Payments().UpdateById(payment)
-                .AddAction(new SetStatusInterfaceCodeUpdateAction {InterfaceCode = "SUCCESS"})
-                .AddAction(new SetStatusInterfaceTextUpdateAction {InterfaceText = "We got the money."})
-                .ExecuteAsync();
+         
             
             //then add ref of payment to the cart
-
-            return await _client.Builder().Carts().UpdateById(cart)
-                .AddAction(new AddPaymentUpdateAction { Payment = payment.ToReference() }).ExecuteAsync();
+            
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -241,15 +168,7 @@ namespace Training
         /// <returns></returns>
         private async Task<Order> CreateOrder(Cart cart)
         {
-            var orderFromCartDraft = new OrderFromCartDraft
-            {
-                Id = cart.Id,
-                Version = cart.Version,
-            };
-            return await _client
-                .Builder()
-                .Orders()
-                .Create(orderFromCartDraft).ExecuteAsync();
+            throw new NotImplementedException();
         }
 
 
@@ -261,24 +180,12 @@ namespace Training
         /// <returns></returns>
         private async Task<Order> ChangeOrderState(Order order, OrderState state)
         {
-            var action = new ChangeOrderStateUpdateAction
-            {
-                OrderState = state
-            };
-            return await _client.ExecuteAsync(
-                order.UpdateById(actions =>
-                    actions.AddUpdate(action)));
+            throw new NotImplementedException();
         }
 
         private async Task<Order> ChangeWorkflowState(Order order, IReference<State> state)
         {
-            var action = new TransitionStateUpdateAction
-            {
-                State = state
-            };
-            return await _client.ExecuteAsync(
-                order.UpdateById(actions =>
-                    actions.AddUpdate(action)));
+            throw new NotImplementedException();
         }
 
         #endregion

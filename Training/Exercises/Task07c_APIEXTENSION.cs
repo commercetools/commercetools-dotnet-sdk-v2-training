@@ -25,35 +25,15 @@ namespace Training
         public async Task ExecuteAsync()
         {
             //create a trigger on cart update
-            var trigger = new Trigger
-            {
-                ResourceTypeId = ExtensionResourceType.Cart,
-                Actions = new List<TriggerType>
-                {
-                    TriggerType.Update
-                }
-            };
+           
 
             //create AwsLambdaDestination
-            var destination = new AwsLambdaDestination
-            {
-                AccessKey = "key",
-                AccessSecret = "secert",
-                Arn = "arn"
-            };
             
             //create extensionDraft
-            var extensionDraft = new ExtensionDraft
-            {
-                Key = "AddLeafletsExtension",
-                Destination = destination,
-                Triggers = new List<Trigger> {trigger}
-            };
             
             //create the extension
-            var extension = await _client.ExecuteAsync(new CreateCommand<Extension>(extensionDraft));
-            
-            Console.WriteLine($"extension created with Id {extension.Id}");
+           
+            throw new NotImplementedException();
         }
     }
 }

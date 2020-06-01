@@ -35,50 +35,24 @@ namespace Training
         private async Task ExecuteByCommands()
         {
             //  Get customer by Key
-            var customer = await _client.ExecuteAsync(new
-                GetByKeyCommand<Customer>(_customerkey));
+           
 
             //  Get customer group by Key
-            var customerGroup = await _client.ExecuteAsync(new
-                GetByKeyCommand<CustomerGroup>(_customerGroupKey));
+           
 
             // set customerGroup for the customer (using SetCustomerGroupUpdateAction)
-            var action = new SetCustomerGroupUpdateAction
-            {
-                CustomerGroup = customerGroup.ToKeyResourceIdentifier()
-            };
-            var updatedCustomer = await _client
-                .ExecuteAsync(customer.UpdateByKey(
-                    actions => actions.AddUpdate(action))
-                    .Expand(c => c.CustomerGroup));
-
-            Console.WriteLine($"customer {updatedCustomer.Id} in customer group " +
-                              $"{updatedCustomer.CustomerGroup.Obj.Name}");
+           
         }
 
         private async Task ExecuteByBuilder()
         {
             //  Get customer by Key
-            var customer = await _client.Builder().Customers().GetByKey(_customerkey).ExecuteAsync();
+            
 
             //  Get customer group by Key
-            var customerGroup = await _client.Builder().CustomerGroups().GetByKey(_customerGroupKey).ExecuteAsync();
+            
 
             // set customerGroup for the customer
-            var action = new SetCustomerGroupUpdateAction
-            {
-                CustomerGroup = customerGroup.ToKeyResourceIdentifier()
-            };
-            var updatedCustomer =
-                await _client
-                    .Builder()
-                    .Customers()
-                    .UpdateByKey(customer)
-                    .AddAction(action)
-                    .ExecuteAsync();
-
-            Console.WriteLine($"customer {updatedCustomer.Id} in customer group " +
-                              $"{updatedCustomer.CustomerGroup.Id}");
         }
     }
 }

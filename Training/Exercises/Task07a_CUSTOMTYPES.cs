@@ -27,39 +27,21 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            TypeDraft typeDraft = this.CreateShoeSizeTypeDraft();
-            Type createdType = await _client
-                .Builder()
-                .Types()
-                .Create(typeDraft)
-                .ExecuteAsync();
-            
-            Console.WriteLine($"New custom type has been created with Id: {createdType.Id}");
+            throw new NotImplementedException();
         }
 
         public TypeDraft CreateShoeSizeTypeDraft()
         {
-            TypeDraft typeDraft = new TypeDraft();
-            typeDraft.Key = "shoe-size-key";
-            typeDraft.Name = new LocalizedString();
-            typeDraft.Name.Add("en", "Shoe Size Type");
-            typeDraft.Description = new LocalizedString();
-            typeDraft.Description.Add("en", "Store Customer's Shoe size");
-            typeDraft.ResourceTypeIds = new List<ResourceTypeId>() {ResourceTypeId.Customer};
-            typeDraft.FieldDefinitions = new List<FieldDefinition>();
-            typeDraft.FieldDefinitions.Add(this.CreateShoeSizeFieldDefinition());
-            return typeDraft;
+            throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Get ShoeSizeFieldDefinition
+        /// </summary>
+        /// <returns></returns>
         private FieldDefinition CreateShoeSizeFieldDefinition()
         {
-            FieldDefinition fieldDefinition = new FieldDefinition();
-            fieldDefinition.Name = "shoe-size-field";
-            fieldDefinition.Required = true;
-            fieldDefinition.Label = new LocalizedString();
-            fieldDefinition.Label.Add("en", "Shoe Size");
-            fieldDefinition.Type = new NumberFieldType();
-            return fieldDefinition;
+            throw new NotImplementedException();
         }
     }
 }

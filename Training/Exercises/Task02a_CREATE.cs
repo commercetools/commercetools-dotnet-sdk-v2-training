@@ -36,47 +36,20 @@ namespace Training
         private async Task ExecuteByCommands()
         {
             //  SignUp a customer
-            var signInResult = (CustomerSignInResult)
-                await _client.ExecuteAsync(
-                    new SignUpCustomerCommand(GetCustomerDraft())
-                );
-            var customer = signInResult.Customer;
-            Console.WriteLine($"Customer Created with Id : {customer.Id} and Key : {customer.Key}");
             
-            //CREATE a email verfification token
-            var customerTokenResult = await _client.ExecuteAsync(
-                new CreateTokenForCustomerEmailVerificationCommand(customer.Id, 10, customer.Version));
-
-            if (customerTokenResult is CustomerToken customerToken)
-            {
-                //Create VerifyCustomerEmailCommand and Execute it
-                Customer retrievedCustomer = await _client
-                    .ExecuteAsync(new VerifyCustomerEmailCommand(customerToken.Value, customer.Version));
-
-                Console.WriteLine($"Is Email Verified:{retrievedCustomer.IsEmailVerified}");
-            }
+            
+            //  CREATE a email verfification token
+            
         }
 
         private async Task ExecuteByBuilder()
         {
-            var signInResult = (CustomerSignInResult) await _client
-                .Builder()
-                .Customers()
-                .SignUp(GetCustomerDraft())
-                .ExecuteAsync();
-
-            var customer = signInResult.Customer;
+            //  SignUp a customer
             
-            Console.WriteLine($"Customer Created with Id : {customer.Id} and Key : {customer.Key}");
             
-            var verifiedCustomer = await _client
-                .Builder()
-                .Customers()
-                .CreateTokenForEmailVerification("94cc6969-3be3-45e9-ac54-f070d4cab61c", 10, 1)
-                .VerifyEmail()
-                .ExecuteAsync();
             
-            Console.WriteLine($"Is Email Verified:{verifiedCustomer.IsEmailVerified}");
+            // Verify the customer
+          
         }
 
         /// <summary>
