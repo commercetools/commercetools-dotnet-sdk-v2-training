@@ -8,7 +8,7 @@
 
     <ItemGroup>
       <!--<PackageReference Include="commercetools.Sdk.All" Version="1.0.0-alpha-455" />-->
-      <PackageReference Include="commercetools.Sdk.All" Version="1.0.0-rc-1-826" />
+      <PackageReference Include="commercetools.Sdk.All" Version="1.0.2" />
       <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="5.0.0-preview.2.20160.3" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0-preview.2.20160.3" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0-preview.2.20160.3" />
