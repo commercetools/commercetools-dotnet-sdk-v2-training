@@ -1,10 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using commercetools.Sdk.Client;
-using commercetools.Sdk.Domain.Carts;
-using commercetools.Sdk.Domain.Carts.UpdateActions;
-using commercetools.Sdk.Domain.Customers;
-using commercetools.Sdk.HttpApi.CommandBuilders;
+using commercetools.Api.Client;
+using commercetools.Api.Models.Carts;
+using commercetools.Api.Models.Customers;
+using commercetools.Base.Client;
 
 namespace Training
 {
@@ -15,40 +15,54 @@ namespace Training
     {
         private readonly IClient _client;
         
-        public Task04C(IClient commercetoolsClient)
+        public Task04C(IClient client)
         {
-            this._client =
-                commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
+            this._client = client;
         }
 
         public async Task ExecuteAsync()
         {
            // Create a customer
-           Customer customer = null;
+           var customer = await CreateACustomer();
            Console.WriteLine($"customer created with Id {customer.Id}");
            
            //Create Cart for this customer
 
-           Cart cart = null;
+           var cart = await CreateACart(null, customer.Id);
            Console.WriteLine($"cart for customer created with Id {cart.Id}");
 
            // Create Anonymous cart
-           Cart anonymousCart = null;
+           var anonymousCart = await CreateACart("123456789", null);
            Console.WriteLine($"anonymous cart created with Id {anonymousCart.Id}");
            
-           //AddProductToACartBySku
+           anonymousCart = await AddProductToACartBySku(anonymousCart, "9812", 4);
            
-
-           //Login Customer with anonymous cartId
-           
+           var result = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+               .Login()
+               .Post(new CustomerSignin
+               {
+                   AnonymousCartId = anonymousCart.Id,
+                   AnonymousCartSignInMode = IAnonymousCartSignInMode.MergeWithExistingCustomerCart
+               }).ExecuteAsync();
            
            //LineItems of the anonymous cart will be copied to the customer’s active cart that has been modified most recently.
-           
+           var currentCustomerCart = result?.Cart as Cart;
+           var lineItem = currentCustomerCart?.LineItems[0];
+           Console.WriteLine($"SKU: {lineItem.Variant.Sku}, Quantity: {lineItem.Quantity}");
         }
 
-        private async Task<Customer> CreateACustomer()
+        private async Task<ICustomer> CreateACustomer()
         {
-            throw new NotImplementedException();
+            var result = await _client
+                .WithApi()
+                .WithProjectKey(Settings.ProjectKey)
+                .Customers()
+                .Post(new CustomerDraft
+                {
+                    Email = "me@me4",
+                    Password = "password"
+                }).ExecuteAsync() as CustomerSignInResult;
+            return result?.Customer;
         }
         
         /// <summary>
@@ -59,12 +73,37 @@ namespace Training
         /// <returns></returns>
         private async Task<Cart> CreateACart(string anonymousId = null, string customerId = null)
         {
-            throw new NotImplementedException();
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Carts().Post(
+                new CartDraft
+                {
+                    CustomerId = customerId,
+                    AnonymousId = anonymousId,
+                    Currency = "EUR",
+                    Country = "DE",
+                    DeleteDaysAfterLastModification = 90
+                }).ExecuteAsync();
         }
         
         private async Task<Cart> AddProductToACartBySku(Cart cart, string sku, long quantity)
         {
-            throw new NotImplementedException();
+            var cartUpdate = new CartUpdate
+            {
+                Version = cart.Version,
+                Actions = new List<ICartUpdateAction>
+                {
+                    new CartAddLineItemAction
+                    {
+                        Sku = sku,
+                        Quantity = quantity
+                    }
+                }
+            };
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Carts()
+                .WithId(cart.Id)
+                .Post(cartUpdate)
+                .ExecuteAsync();
         }
     }
 }

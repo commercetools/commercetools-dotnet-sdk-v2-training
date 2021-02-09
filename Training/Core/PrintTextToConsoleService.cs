@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Threading;
-using System.Linq;
 using System.Threading.Tasks;
-using commercetools.Sdk.Client;
-using commercetools.Sdk.Domain;
 using Microsoft.Extensions.Hosting;
 
 namespace Training

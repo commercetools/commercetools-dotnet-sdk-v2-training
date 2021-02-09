@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using commercetools.Sdk.Client;
-using commercetools.Sdk.Domain.Customers;
-using commercetools.Sdk.HttpApi.CommandBuilders;
+using commercetools.Api.Client;
+using commercetools.Api.Models.Customers;
+using commercetools.Base.Client;
 
 namespace Training
 {
@@ -17,56 +15,67 @@ namespace Training
     {
         private readonly IClient _client;
 
-        public Task02A(IEnumerable<IClient> clients)
+        public Task02A(IClient client)
         {
-            if (clients == null || !clients.Any())
-            {
-                throw new ArgumentNullException(nameof(clients));
-            }
-
-            this._client = clients.FirstOrDefault(c => c.Name == "Client"); // the default client
+            this._client = client;
         }
 
         public async Task ExecuteAsync()
         {
-            await ExecuteByCommands();
-            //await ExecuteByBuilder();
-        }
-
-        private async Task ExecuteByCommands()
-        {
-            //  SignUp a customer
-            
-            
-            //  CREATE a email verfification token
-            
-        }
-
-        private async Task ExecuteByBuilder()
-        {
-            //  SignUp a customer
-            
-            
-            
-            // Verify the customer
-          
-        }
-
-        /// <summary>
-        /// Get Customer Draft
-        /// </summary>
-        /// <returns></returns>
-        private CustomerDraft GetCustomerDraft()
-        {
             var rand = Settings.RandomInt();
-            return new CustomerDraft
+            
+            //  Create customer draft
+            var customerDraft = new CustomerDraft
             {
-                Email = $"michael_{rand}@example.com",
+                Email = $"michele_{rand}@example.com",
                 Password = "password",
-                Key = $"customer-michael-{rand}",
-                FirstName = "michael",
-                LastName = "hartwig"
+                Key = $"customer-michele-{rand}",
+                FirstName = "michele",
+                LastName = "george"
             };
+            
+            //  SignUp a customer
+            var customerSignInResult = await _client
+                .WithApi()
+                .WithProjectKey(Settings.ProjectKey)
+                .Customers()
+                .Post(customerDraft)
+                .ExecuteAsync();
+            var customer = customerSignInResult.Customer;
+            Console.WriteLine($"Customer Created with Id : {customer.Id} and Key : {customer.Key} and Email Verified: {customer.IsEmailVerified}");
+            
+            //CREATE a email verfification token
+            var customerTokenResult = await _client
+                .WithApi()
+                .WithProjectKey(Settings.ProjectKey)
+                .Customers()
+                .EmailToken()
+                .Post(new CustomerCreateEmailToken
+                {
+                    Id = customer.Id,
+                    Version = customer.Version,
+                    TtlMinutes = 10
+                }).ExecuteAsync();
+            
+            //Create ConfirmCustomerEmail
+            await _client
+                .WithApi()
+                .WithProjectKey(Settings.ProjectKey)
+                .Customers()
+                .EmailConfirm()
+                .Post(new CustomerEmailVerify
+                {
+                    TokenValue = customerTokenResult.Value
+                }).ExecuteAsync();
+
+            var retrievedCustomer = await _client
+                .WithApi()
+                .WithProjectKey(Settings.ProjectKey)
+                .Customers()
+                .WithId(customer.Id)
+                .Get().ExecuteAsync();
+            
+            Console.WriteLine($"Is Email Verified:{retrievedCustomer.IsEmailVerified}");
         }
     }
 }

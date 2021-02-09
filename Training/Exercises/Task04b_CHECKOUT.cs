@@ -2,22 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using commercetools.Sdk.Client;
-using commercetools.Sdk.Domain;
-using commercetools.Sdk.Domain.Carts;
-using commercetools.Sdk.Domain.Carts.UpdateActions;
-using commercetools.Sdk.Domain.Channels;
-using commercetools.Sdk.Domain.Common;
-using commercetools.Sdk.Domain.Customers;
-using commercetools.Sdk.Domain.Orders;
-using commercetools.Sdk.Domain.Orders.UpdateActions;
-using commercetools.Sdk.Domain.Payments;
-using commercetools.Sdk.Domain.Payments.UpdateActions;
-using commercetools.Sdk.Domain.States;
-using commercetools.Sdk.HttpApi.CommandBuilders;
+using commercetools.Api.Client;
+using commercetools.Api.Models.Carts;
+using commercetools.Api.Models.Channels;
+using commercetools.Api.Models.Common;
+using commercetools.Api.Models.Customers;
+using commercetools.Api.Models.Orders;
+using commercetools.Api.Models.Payments;
+using commercetools.Api.Models.ShippingMethods;
+using commercetools.Api.Models.States;
+using commercetools.Base.Client;
+using commercetools.Base.Client.Error;
 using Training.Extensions;
-using AddPaymentUpdateAction = commercetools.Sdk.Domain.Carts.UpdateActions.AddPaymentUpdateAction;
-using TransitionStateUpdateAction = commercetools.Sdk.Domain.Orders.UpdateActions.TransitionStateUpdateAction;
 
 namespace Training
 {
@@ -27,59 +23,68 @@ namespace Training
     public class Task04B : IExercise
     {
         private readonly IClient _client;
+        private readonly string _channelKey = "sunrise-store-paris";
+        private readonly string _customerKey = "ronnieWood";
+        private readonly string _discountCode = "SUMMER";
+        private readonly string _stateOrderedPackedKey = "OrderPacked";
+        private readonly string _productSku = "A0E200000001WG3";
 
-        public Task04B(IClient commercetoolsClient)
+        public Task04B(IClient client)
         {
-            this._client =
-                commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
+            this._client = client;
         }
 
         public async Task ExecuteAsync()
         {
             //Fetch a channel if your inventory mode will not be NONE
             //Get Channel By Key (not supported yet)
-           
+            var channelResult = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Channels()
+                .Get()
+                .WithWhere($"key=\"{_channelKey}\"")
+                .ExecuteAsync();
+
             //check the result
-            Channel channel = null;
+            var channel = channelResult.Results.FirstOrDefault();
 
 
             //Fetch a state if you have a defined custom workflow
-            State orderPacked = null;
+            var orderPacked = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .States().WithKey(_stateOrderedPackedKey).Get().ExecuteAsync();
 
             // TODO: Perform cart operations:
             //      Get Customer, create cart, add products, add inventory mode
             //      add discount codes, perform a recalculation
             // TODO: Convert cart into an order, set order status, set state in custom work flow
 
-
-            // Get the customer By Key
-            Customer customer = null;
+            var customer = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Customers().WithKey(_customerKey).Get().ExecuteAsync();
 
             //create a cart for a customer
             var cart = await CreateCart(customer);
 
             Console.WriteLine($"Cart {cart.Id} for customer: {cart.CustomerId}");
+            
 
-            //AddProductToCartBySkusAndChannel
             cart = await
-                AddProductToCartBySkusAndChannel(cart, channel, "9812", "9812", "9812");
+                AddProductToCartBySkusAndChannel(cart, channel, _productSku, _productSku,_productSku);
 
-            //AddDiscountToCart
-            cart = await AddDiscountToCart(cart, "SUMMER");
-            
-            //Recalculate it
+            cart = await AddDiscountToCart(cart, _discountCode);
             cart = await Recalculate(cart);
-            
-            //SetShipping for the cart
             cart = await SetShipping(cart);
+            
+            cart = await CreatePaymentAndAddToCart(cart, "WIRECARD", "CREDIT_CARD", $"wire{Settings.RandomInt()}", $"pay{Settings.RandomInt()}");
 
-            //CreatePaymentAndAddToCart
-            cart = await CreatePaymentAndAddToCart(cart, "WIRECARD", "CREDIT_CARD", "wire73638", "pay82628");
-
-            //CreateOrder
             var order = await CreateOrder(cart);
-            order = await ChangeOrderState(order, OrderState.Complete);
-            order = await ChangeWorkflowState(order, orderPacked.ToReference());
+            Console.WriteLine($"Order Created with Id: {order.Id}");
+            
+            order = await ChangeOrderState(order, IOrderState.Complete);
+            Console.WriteLine($"Order state changed to: {order.OrderState.Value}");
+            
+            order = await ChangeWorkflowState(order,
+                new StateResourceIdentifier {Key = orderPacked.Key});
+            
+            Console.WriteLine($"Order Workflow State changed to: {order.State?.Obj?.Name["en"]}");
         }
 
 
@@ -92,7 +97,19 @@ namespace Training
         /// <returns></returns>
         private async Task<Cart> CreateCart(Customer customer)
         {
-            throw new NotImplementedException();
+            var defaultShippingAddress = customer.GetDefaultShippingAddress();
+            var cartDraft = new CartDraft
+            {
+                CustomerId = customer.Id,
+                CustomerEmail = customer.Email,
+                Currency = "EUR",
+                Country = defaultShippingAddress.Country,
+                ShippingAddress = defaultShippingAddress,
+                DeleteDaysAfterLastModification = 90,
+                InventoryMode = IInventoryMode.ReserveOnOrder
+            };
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Carts().Post(cartDraft).ExecuteAsync();
         }
 
         /// <summary>
@@ -102,9 +119,31 @@ namespace Training
         /// <param name="channel"></param>
         /// <param name="skus"></param>
         /// <returns></returns>
-        private async Task<Cart> AddProductToCartBySkusAndChannel(Cart cart, Channel channel, params string[] skus)
+        private async Task<Cart> AddProductToCartBySkusAndChannel(Cart cart, IChannel channel,
+            params string[] skus)
         {
-            throw new NotImplementedException();
+            var lineItemsToAddActions = new List<ICartUpdateAction>();
+            foreach (var sku in skus)
+            {
+                lineItemsToAddActions.Add(new CartAddLineItemAction
+                {
+                    Sku = sku,
+                    Quantity = 1,
+                    SupplyChannel = new ChannelResourceIdentifier {Id = channel.Id}
+                });
+            }
+
+            var cartUpdate = new CartUpdate
+            {
+                Version = cart.Version,
+                Actions = lineItemsToAddActions
+            };
+
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Carts()
+                .WithId(cart.Id)
+                .Post(cartUpdate)
+                .ExecuteAsync();
         }
 
         /// <summary>
@@ -115,13 +154,39 @@ namespace Training
         /// <returns></returns>
         private async Task<Cart> AddDiscountToCart(Cart cart, string code)
         {
-            throw new NotImplementedException();
+            var update = new CartUpdate
+            {
+                Version = cart.Version,
+                Actions = new List<ICartUpdateAction>
+                {
+                    new CartAddDiscountCodeAction {Code = code}
+                }
+            };
+            return await
+                _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                    .Carts()
+                    .WithId(cart.Id)
+                    .Post(update)
+                    .ExecuteAsync();
         }
 
         //Recalculate a cart
         private async Task<Cart> Recalculate(Cart cart)
         {
-            throw new NotImplementedException();
+            var update = new CartUpdate
+            {
+                Version = cart.Version,
+                Actions = new List<ICartUpdateAction>
+                {
+                    new CartRecalculateAction()
+                }
+            };
+            return await
+                _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                    .Carts()
+                    .WithId(cart.Id)
+                    .Post(update)
+                    .ExecuteAsync();
         }
 
         /// <summary>
@@ -131,7 +196,35 @@ namespace Training
         /// <returns></returns>
         private async Task<Cart> SetShipping(Cart cart)
         {
-            throw new NotImplementedException();
+            var shippingMethodsResult = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .ShippingMethods()
+                .MatchingCart()
+                .Get()
+                .WithCartId(cart.Id)
+                .ExecuteAsync();
+
+            var shippingMethod = shippingMethodsResult.Results.FirstOrDefault();
+            var update = new CartUpdate
+            {
+                Version = cart.Version,
+                Actions = new List<ICartUpdateAction>
+                {
+                    new CartSetShippingMethodAction
+                    {
+                        ShippingMethod = new ShippingMethodResourceIdentifier
+                        {
+                            Id = shippingMethod?.Id
+                        }
+                    }
+                }
+            };
+
+            return await
+                _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                    .Carts()
+                    .WithId(cart.Id)
+                    .Post(update)
+                    .ExecuteAsync();
         }
 
         /// <summary>
@@ -147,18 +240,97 @@ namespace Training
             string interfaceId, string interactionId)
         {
             // we create payment object
-         
+            var paymentMethodInfo = new PaymentMethodInfo
+            {
+                Method = pspMethod, // PSP Provider Method: CreditCard
+                PaymentInterface = pspName, // PSP Provider Name: WireCard, ....
+            };
+            var paymentDraft = new PaymentDraft
+            {
+                PaymentMethodInfo = paymentMethodInfo,
+                InterfaceId = interfaceId,
+                AmountPlanned = new CentPrecisionMoneyDraft
+                {
+                    CentAmount = cart.TotalPrice.CentAmount,
+                    CurrencyCode = cart.TotalPrice.CurrencyCode
+                }
+            };
+
+            var payment = await _client
+                .WithApi().WithProjectKey(Settings.ProjectKey)
+                .Payments()
+                .Post(paymentDraft).ExecuteAsync();
+
+            Console.WriteLine($"Payment Created with Id {payment.Id}");
 
             //Create the transaction
-         
+            var transactionDraft = new TransactionDraft
+            {
+                Type = ITransactionType.Charge,
+                Amount = new CentPrecisionMoneyDraft
+                {
+                    CentAmount = cart.TotalPrice.CentAmount,
+                    CurrencyCode = cart.TotalPrice.CurrencyCode
+                },
+                InteractionId = interactionId,
+                Timestamp = DateTime.Now,
+            };
+
+            var paymentUpdate = new PaymentUpdate
+            {
+                Version = payment.Version,
+                Actions = new List<IPaymentUpdateAction>
+                {
+                    new PaymentAddTransactionAction
+                    {
+                        Transaction = transactionDraft
+                    }
+                }
+            };
+
             //payment with a transaction
-         
+            payment = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Payments()
+                .WithId(payment.Id)
+                .Post(paymentUpdate)
+                .ExecuteAsync();
+
+            paymentUpdate = new PaymentUpdate
+            {
+                Version = payment.Version,
+                Actions = new List<IPaymentUpdateAction>
+                {
+                    new PaymentSetStatusInterfaceCodeAction {InterfaceCode = "SUCCESS"},
+                    new PaymentSetStatusInterfaceTextAction {InterfaceText = "We got the money."},
+                }
+            };
+
             //set interface code and text
-         
-            
+            payment = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Payments()
+                .WithId(payment.Id)
+                .Post(paymentUpdate)
+                .ExecuteAsync();
+
             //then add ref of payment to the cart
-            
-            throw new NotImplementedException();
+
+            var cartUpdate = new CartUpdate
+            {
+                Version = cart.Version,
+                Actions = new List<ICartUpdateAction>
+                {
+                    new CartAddPaymentAction
+                    {
+                        Payment = new PaymentResourceIdentifier {Id = payment.Id}
+                    }
+                }
+            };
+
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Carts()
+                .WithId(cart.Id)
+                .Post(cartUpdate)
+                .ExecuteAsync();
         }
 
         /// <summary>
@@ -168,7 +340,16 @@ namespace Training
         /// <returns></returns>
         private async Task<Order> CreateOrder(Cart cart)
         {
-            throw new NotImplementedException();
+            var orderFromCartDraft = new OrderFromCartDraft
+            {
+                Id = cart.Id,
+                Version = cart.Version,
+            };
+            return await _client
+                .WithApi()
+                .WithProjectKey(Settings.ProjectKey)
+                .Orders()
+                .Post(orderFromCartDraft).ExecuteAsync();
         }
 
 
@@ -178,14 +359,40 @@ namespace Training
         /// <param name="order"></param>
         /// <param name="state"></param>
         /// <returns></returns>
-        private async Task<Order> ChangeOrderState(Order order, OrderState state)
+        private async Task<Order> ChangeOrderState(Order order, IOrderState state)
         {
-            throw new NotImplementedException();
+            var orderUpdate = new OrderUpdate
+            {
+                Version = order.Version,
+                Actions = new List<IOrderUpdateAction>
+                {
+                    new OrderChangeOrderStateAction {OrderState = state}
+                }
+            };
+
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Orders()
+                .WithId(order.Id)
+                .Post(orderUpdate)
+                .ExecuteAsync();
         }
 
-        private async Task<Order> ChangeWorkflowState(Order order, IReference<State> state)
+        private async Task<Order> ChangeWorkflowState(Order order, IStateResourceIdentifier state)
         {
-            throw new NotImplementedException();
+            var orderUpdate = new OrderUpdate
+            {
+                Version = order.Version,
+                Actions = new List<IOrderUpdateAction>
+                {
+                    new OrderTransitionStateAction() {State = state}
+                }
+            };
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Orders()
+                .WithId(order.Id)
+                .Post(orderUpdate)
+                .WithExpand("state")
+                .ExecuteAsync();
         }
 
         #endregion

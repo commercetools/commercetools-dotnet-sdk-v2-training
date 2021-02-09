@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using commercetools.Sdk.Client;
-using commercetools.Sdk.Domain;
-using commercetools.Sdk.Domain.Common;
-using commercetools.Sdk.Domain.States;
-using commercetools.Sdk.Domain.States.UpdateActions;
-using commercetools.Sdk.HttpApi.CommandBuilders;
+using commercetools.Api.Client;
+using commercetools.Api.Models.Common;
+using commercetools.Api.Models.States;
+using commercetools.Base.Client;
 
 namespace Training
 {
@@ -17,68 +15,61 @@ namespace Training
     {
         private readonly IClient _client;
 
-        public Task04A(IClient commercetoolsClient)
+        public Task04A(IClient client)
         {
-            this._client =
-                commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
+            this._client = client;
         }
 
         public async Task ExecuteAsync()
         {
-            //await ExecuteByCommands();
-            await ExecuteByBuilder();
-        }
-
-        private async Task ExecuteByCommands()
-        {
             //create OrderPacked stateDraft, state
-           
-            //create OrderShipped stateDraft, state
-           
-            
-            //update packedState to transit to stateShipped
-        }
-
-        private async Task ExecuteByBuilder()
-        {
             var stateOrderPackedDraft = new StateDraft
             {
                 Key = "OrderPacked",
                 Initial = true,
                 Name = new LocalizedString {{"en", "Order Packed"}},
-                Type = StateType.OrderState
+                Type = IStateTypeEnum.OrderState
             };
-            var stateOrderPacked = await _client
-                .Builder()
+            var stateOrderPacked = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .States()
-                .Create(stateOrderPackedDraft)
+                .Post(stateOrderPackedDraft)
                 .ExecuteAsync();
             
+            //create OrderShipped stateDraft, state
             var stateOrderShippedDraft = new StateDraft
             {
                 Key = "OrderShipped",
                 Initial = false,
                 Name = new LocalizedString {{"en", "Order Shipped"}},
-                Type = StateType.OrderState
+                Type = IStateTypeEnum.OrderState
             };
-            var stateOrderShipped = await _client
-                .Builder()
+            var stateOrderShipped = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .States()
-                .Create(stateOrderShippedDraft)
+                .Post(stateOrderShippedDraft)
                 .ExecuteAsync();
             
-            var action = new SetTransitionsUpdateAction
+            //update packedState to transit to stateShipped
+            var update = new StateUpdate()
             {
-                Transitions = new List<IReference<State>>
+                Version = stateOrderPacked.Version,
+                Actions = new List<IStateUpdateAction>
                 {
-                    stateOrderShipped.ToKeyResourceIdentifier()
+                    new StateSetTransitionsAction
+                    {
+                        Transitions = new List<IStateResourceIdentifier>
+                        {
+                            new StateResourceIdentifier{ Key = stateOrderShipped.Key }
+                        }
+                    }
                 }
             };
 
-            var updatedStateOrderPacked = await _client
-                .ExecuteAsync(stateOrderPacked.UpdateByKey(
-                    actions => actions.AddUpdate(action)));
-            
+            var updatedStateOrderPacked = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .States()
+                .WithId(stateOrderPacked.Id)
+                .Post(update)
+                .ExecuteAsync();
+
             Console.WriteLine($"stateOrderShipped Id : {stateOrderShipped.Id}, stateOrderPacked transition to:  {updatedStateOrderPacked.Transitions[0].Id}");
         }
     }

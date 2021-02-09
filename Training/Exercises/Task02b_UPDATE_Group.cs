@@ -1,15 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using commercetools.Sdk.Client;
-using commercetools.Sdk.Domain;
-using commercetools.Sdk.Domain.CustomerGroups;
-using commercetools.Sdk.Domain.Customers;
-using commercetools.Sdk.Domain.Customers.UpdateActions;
-using commercetools.Sdk.HttpApi.CommandBuilders;
+using commercetools.Api.Client;
+using commercetools.Api.Models.CustomerGroups;
+using commercetools.Api.Models.Customers;
+using commercetools.Base.Client;
 
 namespace Training
 {
-    /// <summary>
+     /// <summary>
     /// GET a customer
     /// GET a customer group
     /// ASSIGN the customer to the customer group
@@ -17,42 +16,56 @@ namespace Training
     public class Task02B : IExercise
     {
         private readonly IClient _client;
-        private readonly string _customerkey = "customer-michael-888663958";
-        private readonly string _customerGroupKey = "diamond";
+        private readonly string _customerkey = "ronnieWood";
+        private readonly string _customerGroupKey = "gold";
 
-        public Task02B(IClient commercetoolsClient)
+        public Task02B(IClient client)
         {
-            this._client =
-                commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
+            this._client = client;
         }
 
         public async Task ExecuteAsync()
         {
-            //await ExecuteByCommands();
-            await ExecuteByBuilder();
-        }
-
-        private async Task ExecuteByCommands()
-        {
             //  Get customer by Key
-           
+            var customer = await _client.WithApi()
+                .WithProjectKey(Settings.ProjectKey)
+                .Customers()
+                .WithKey(_customerkey)
+                .Get()
+                .ExecuteAsync();
 
             //  Get customer group by Key
-           
-
-            // set customerGroup for the customer (using SetCustomerGroupUpdateAction)
-           
-        }
-
-        private async Task ExecuteByBuilder()
-        {
-            //  Get customer by Key
-            
-
-            //  Get customer group by Key
-            
+            var customerGroup = await _client.WithApi()
+                .WithProjectKey(Settings.ProjectKey)
+                .CustomerGroups()
+                .WithKey(_customerGroupKey)
+                .Get()
+                .ExecuteAsync();
 
             // set customerGroup for the customer
+            var update = new CustomerUpdate
+            {
+                Version = customer.Version,
+                Actions = new List<ICustomerUpdateAction>
+                {
+                    new CustomerSetCustomerGroupAction
+                    {
+                        CustomerGroup = new CustomerGroupResourceIdentifier
+                        {
+                            Key = customerGroup.Key
+                        }
+                    }
+                }
+            };
+            var updatedCustomer =
+                await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                    .Customers()
+                    .WithKey(customer.Key)
+                    .Post(update)
+                    .ExecuteAsync();
+
+            Console.WriteLine($"customer {updatedCustomer.Id} in customer group " +
+                              $"{updatedCustomer.CustomerGroup.Id}");
         }
     }
 }

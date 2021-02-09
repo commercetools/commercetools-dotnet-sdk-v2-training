@@ -1,12 +1,8 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
-using commercetools.Sdk.Client;
-using commercetools.Sdk.Domain;
-using commercetools.Sdk.Domain.Predicates;
-using commercetools.Sdk.Domain.ProductProjections;
-using commercetools.Sdk.Domain.Products.Attributes;
-using commercetools.Sdk.HttpApi.CommandBuilders;
+using commercetools.Api.Client;
+using commercetools.Api.Models.Products;
+using commercetools.Base.Client;
 
 namespace Training
 {
@@ -17,50 +13,61 @@ namespace Training
     {
         private readonly IClient _client;
         
-        public Task06A(IClient commercetoolsClient)
+        public Task06A(IClient client)
         {
-            this._client =
-                commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
+            this._client = client;
         }
 
         public async Task ExecuteAsync()
         {
             // GET plantSeedCategory
-            
+            var plantSeedCategory = await _client.WithApi()
+                .WithProjectKey(Settings.ProjectKey)
+                .Categories().WithKey("c3").Get().ExecuteAsync();
 
-            // GET All Products
-            
-            
-            //  GET all products for category plants
+            // the effective filter from the search response
+            // params found in the product projection search https://docs.commercetools.com/api/projects/products-search#search-productprojections
+            var response = await _client.WithApi()
+                .WithProjectKey(Settings.ProjectKey)
+                .ProductProjections()
+                .Search()
+                .Get()
+                .WithStaged(false)
+                .WithMarkMatchingVariants(true)//Restrict on category plant-seeds
+                .WithFilterQuery($"categories.id:\"{plantSeedCategory.Id}\"")
+                // TODO Get all Facets for Enum size and Number weight_in_kg
+                .WithFacet("variants.attributes.size as size")
 
-            
+                // TODO Give price range on products with no effect on facets
+                // .withFilter("variants.price.centAmount:range (100 to 100000)")
+                // TODO: with effect on facets
+                // .withFilterQuery("variants.price.centAmount:range (100 to 100000)")
 
-            //  GET all products for category plants, facets on size and weight
+                // TODO: Simulate click on facet box from attribute size
+                // .withFilterFacets("variants.attributes.size.label:\"box\"")
+                .ExecuteAsync();
 
+            var results = response.Results;
+            Console.WriteLine($"Nr. of products: {results.Count}");
             
-            
-            //variants.attributes.weight_in_kg:range (0 to *) as weight
-            
-            
-            //  GET all products for category plants, facets on size and weight, filter on products on price between 1 Euro and 100 Euro WITHOUT effects on facets
-            
-            ////  GET all products for category plants, facets on size and weight, filter on products on price between 1 Euro and 100 Euro WITHOUT effects on facets
-            //           click on a facet
-            
-            //filter.facets=variants.attributes.size.label:"package"
-            
+            ShowFacetResults(response);
+
+            Console.WriteLine("products searched: ");
+            results.ForEach(p => Console.WriteLine(p.Key));
         }
 
-        private void ShowFacetResults(PagedQueryResult<ProductProjection> searchResults)
+        private void ShowFacetResults(ProductProjectionPagedSearchResponse searchResponse)
         {
-            var sizeFacetResult = searchResults.Facets["size"] as TermFacetResult;
-            Console.WriteLine($"Count of Current Products in category plants: {searchResults.Count}");
+            Console.WriteLine($"Facets: {searchResponse.Facets.Count}");
+            
+            var sizeFacetResult = searchResponse.Facets["size"] as TermFacetResult;
+            Console.WriteLine($"Count of Current Products in category plants: {searchResponse.Count}");
             foreach (var term in sizeFacetResult.Terms)
             {
                 Console.WriteLine($"Term : {term.Term}, Count: {term.Count}");
             }
 
-            var weightFacetResult = searchResults.Facets["weight"] as RangeFacetResult;
+            var weightFacetResult = searchResponse.Facets["filtersize"] as RangeFacetResult;
             Console.WriteLine($"number of ranges: {weightFacetResult?.Ranges.Count}");
             var range = weightFacetResult?.Ranges[0];
             Console.WriteLine($"Min: {range.Min}, " +

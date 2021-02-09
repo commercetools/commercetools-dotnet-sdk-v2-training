@@ -8,6 +8,7 @@ namespace Training
     /// </summary>
     public static class Settings
     {
+        public static string ProjectKey { get; private set; } 
         private static Random random = new Random();
 
         public const string DEFAULTCLIENT = "Client";//Default client name in appsettings.test.json
@@ -48,6 +49,11 @@ namespace Training
         public static int RandomInt()
         {
             return random.Next();
+        }
+
+        public static void SetCurrentProjectKey(string projectKey)
+        {
+            ProjectKey = projectKey;
         }
     }
 }

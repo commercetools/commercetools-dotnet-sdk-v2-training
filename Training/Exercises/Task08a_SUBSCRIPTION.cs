@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using commercetools.Sdk.Client;
-using commercetools.Sdk.Domain.GraphQL;
-using commercetools.Sdk.Domain.Subscriptions;
-using commercetools.Sdk.Domain.Types;
-using Training.GraphQL;
+using commercetools.Api.Client;
+using commercetools.Api.Models;
+using commercetools.Api.Models.Subscriptions;
+using commercetools.Api.Models.Types;
+using commercetools.Base.Client;
 
 namespace Training
 {
@@ -16,21 +16,43 @@ namespace Training
     {
         private readonly IClient _client;
         
-        public Task08A(IClient commercetoolsClient)
+        public Task08A(IClient client)
         {
-            this._client =
-                commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
+            this._client = client;
         }
 
         public async Task ExecuteAsync()
         {
-           //create SqsDestination
+            //create SqsDestination
+            var destination = new SqsDestination
+            {
+                QueueUrl = "",
+                Region = "",
+                AccessKey = "",
+                AccessSecret = ""
+            };
            
-           //create a subscription draft
+            //create a subscription draft
+            var subscriptionDraft = new SubscriptionDraft
+            {
+                Key = "OnCustomerChangedSubscription",
+                Destination = destination,
+                Changes = new List<IChangeSubscription>
+                {
+                    new ChangeSubscription
+                    {
+                        ResourceTypeId = IResourceTypeId.Customer.JsonName
+                    }
+                }
+            };
            
-           //create a subscription
+            //create a subscription
+            var subscription = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Subscriptions()
+                .Post(subscriptionDraft)
+                .ExecuteAsync();
            
-           throw new NotImplementedException();
+            Console.WriteLine($"a new subscription created with Id {subscription.Id}");
         }
     }
 }

@@ -1,14 +1,8 @@
 using System.Collections.Generic;
-using commercetools.Sdk.Domain;
-using commercetools.Sdk.Domain.Customers;
+using commercetools.Api.Models.Customers;
 
 namespace Training.GraphQL
 {
-    public class GraphQLResult
-    {
-        public GraphResultData Data { get; set; }
-    }
-
     public class GraphResultData
     {
         public GraphCustomersResult Customers { get; set; }

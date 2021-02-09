@@ -1,13 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using commercetools.Sdk.Client;
-using commercetools.Sdk.Domain;
-using commercetools.Sdk.Domain.CustomObjects;
-using commercetools.Sdk.Domain.Types;
-using commercetools.Sdk.Domain.Types.FieldTypes;
-using Type = commercetools.Sdk.Domain.Types.Type;
-
+using commercetools.Api.Client;
+using commercetools.Api.Models.CustomObjects;
+using commercetools.Base.Client;
 
 namespace Training
 {
@@ -18,37 +13,39 @@ namespace Training
     {
         private readonly IClient _client;
         
-        public Task07B(IClient commercetoolsClient)
+        public Task07B(IClient client)
         {
-            this._client =
-                commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
+            this._client = client;
         }
 
         public async Task ExecuteAsync()
         {
-            //Create CustomObject of type FooBar
-           
-            //Creates a new custom object or updates an existing custom object.
-            //If an object with the given container/key exists, the object will be replaced with the new value and the version is incremented
-           
-            throw new NotImplementedException();
-        }
-    }
-    /// <summary>
-    /// A demo class for a value of a custom object
-    /// </summary>
-    public class FooBar
-    {
-        public string Bar { get; set; }
+            //Create CustomObjectDraft
+            var draft = new CustomObjectDraft
+            {
+                Container = "plantCheck",
+                Key = "tulip6736",
+                Value = new
+                {
+                    IncompatibleSKUs = "tulip6125",
+                    LeafletID = "leaflet_1234",
+                    Instructions = new
+                    {
+                        Title = "Flower Handling",
+                        Distance = "2 meter",
+                        Watering = "heavy"
+                    }
+                }
+            };
+            
+            //Creates a new custom object 
+            var customObject = await _client.WithApi()
+                .WithProjectKey(Settings.ProjectKey)
+                .CustomObjects()
+                .Post(draft)
+                .ExecuteAsync();
 
-        public FooBar()
-        {
-            this.Bar = "bar";
-        }
-
-        public FooBar(string bar)
-        {
-            this.Bar = bar;
+            Console.WriteLine($"custom object created with Id {customObject.Id} with version {customObject.Version}");
         }
     }
 }

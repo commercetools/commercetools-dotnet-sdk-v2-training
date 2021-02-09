@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using commercetools.Sdk.HttpApi.AdditionalParameters;
-using commercetools.Sdk.HttpApi.SearchParameters;
-using commercetools.Sdk.HttpApi.Tokens;
+using commercetools.Api;
+using commercetools.Base.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Training.MachineLearningExtensions;
 
 namespace Training
 {
@@ -37,15 +32,9 @@ namespace Training
         /// </summary>
         private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            var clients = new Dictionary<string, TokenFlow>()
-            {
-                { "MachineLearningClient", TokenFlow.ClientCredentials }, // Machine Learning Client
-                { "Client", TokenFlow.ClientCredentials } //default client
-            };
-            services.AddSingleton<IAdditionalParametersBuilder, GetGeneralCategoriesRecommendationsAdditionalParametersBuilder>();
-            //To Handle "withTotal:" querystring issue
-            //services.AddSingleton<IQueryParametersBuilder, MLQueryCommandParametersBuilder>();
-            services.UseCommercetools(configuration, clients);
+            services.UseCommercetoolsApi(configuration, "Client");
+            var clientConfiguration = configuration.GetSection("Client").Get<ClientConfiguration>();
+            Settings.SetCurrentProjectKey(clientConfiguration.ProjectKey);
         }
 
         private static void ConfigureExerciseService(IServiceCollection services, string[] args)

@@ -1,7 +1,11 @@
 using System;
+using System.Text.Json;
 using System.Threading.Tasks;
-using commercetools.Sdk.Client;
-using commercetools.Sdk.Domain.GraphQL;
+using commercetools.Api.Client;
+using commercetools.Api.Models.GraphQl;
+using commercetools.Base.Client;
+using commercetools.Base.Serialization;
+using Training.Extensions;
 using Training.GraphQL;
 
 namespace Training
@@ -13,17 +17,31 @@ namespace Training
     {
         private readonly IClient _client;
         
-        public Task06C(IClient commercetoolsClient)
+        public Task06C(IClient client)
         {
-            this._client =
-                commercetoolsClient ?? throw new ArgumentNullException(nameof(commercetoolsClient));
+            this._client = client;
         }
 
         public async Task ExecuteAsync()
         {
-            string graphQuery = "query {customers{count,results{email}}}";
+            var graphRequest = new GraphQLRequest
+            {
+                Query = "query {customers{count,results{email}}}"
+            };
+            var response = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Graphql()
+                .Post(graphRequest)
+                .ExecuteAsync();
+
+            var typedResult = ((JsonElement) response.Data).ToObject<GraphResultData>(_client.SerializerService);
+            var customersResult = typedResult.Customers;
+            Console.WriteLine($"Customers count: {customersResult.Count}");
+            Console.WriteLine("Showing Customers emails:");
+            foreach (var customer in customersResult.Results)
+            {
+                Console.WriteLine(customer.Email);
+            }
             
-            throw new NotImplementedException();
         }
     }
 }
