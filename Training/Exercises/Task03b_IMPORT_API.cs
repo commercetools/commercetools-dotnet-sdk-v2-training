@@ -9,7 +9,6 @@ namespace Training
 
         public Task03B(IClient client)
         {
-            this._client = client;
         }
 
         public async Task ExecuteAsync()

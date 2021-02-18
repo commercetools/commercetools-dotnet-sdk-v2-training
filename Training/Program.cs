@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using commercetools.Api;
 using commercetools.Base.Client;
+using commercetools.Base.Client.Tokens;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -33,10 +36,18 @@ namespace Training
         private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
             services.UseCommercetoolsApi(configuration, "Client");
+            //services.UseCommercetoolsApi(configuration, new List<string>{"Client", "BerlinStoreClient"}, CreateDefaultTokenProvider);
+            
             var clientConfiguration = configuration.GetSection("Client").Get<ClientConfiguration>();
             Settings.SetCurrentProjectKey(clientConfiguration.ProjectKey);
         }
-
+        
+        public static ITokenProvider CreateDefaultTokenProvider(string clientName, IConfiguration configuration, IServiceProvider serviceProvider)
+        {
+            var httpClientFactory = serviceProvider.GetService<IHttpClientFactory>();
+            var clientConfiguration = configuration.GetSection(clientName).Get<ClientConfiguration>();
+            return TokenProviderFactory.CreateClientCredentialsTokenProvider(clientConfiguration, httpClientFactory);
+        }
         private static void ConfigureExerciseService(IServiceCollection services, string[] args)
         {
             var runningEx = args != null && args.Length > 0 ? args[0] : "02A"; //Task02A is the default exercise

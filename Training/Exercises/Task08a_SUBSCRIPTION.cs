@@ -10,7 +10,7 @@ using commercetools.Base.Client;
 namespace Training
 {
     /// <summary>
-    /// Create a subscription for customer change requests.
+    /// Create a subscription
     /// </summary>
     public class Task08A : IExercise
     {
@@ -23,25 +23,25 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            //create SqsDestination
-            var destination = new SqsDestination
+            //create destination
+            var destination = new GoogleCloudPubSubDestination()
             {
-                QueueUrl = "",
-                Region = "",
-                AccessKey = "",
-                AccessSecret = ""
+                Type="GoogleCloudPubSub",
+                ProjectId = "ct-support",
+                Topic = "training-subscription-sample"
             };
            
             //create a subscription draft
             var subscriptionDraft = new SubscriptionDraft
             {
-                Key = "OnCustomerChangedSubscription",
+                Key = "subscriptionSampleForSendingConfirmationEmails",
                 Destination = destination,
-                Changes = new List<IChangeSubscription>
+                Messages = new List<IMessageSubscription>
                 {
-                    new ChangeSubscription
+                    new MessageSubscription
                     {
-                        ResourceTypeId = IResourceTypeId.Customer.JsonName
+                        ResourceTypeId = "order",
+                        Types = new List<string> { "OrderCreated" }
                     }
                 }
             };

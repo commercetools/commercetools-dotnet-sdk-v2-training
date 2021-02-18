@@ -5,7 +5,6 @@ using commercetools.Api.Client;
 using commercetools.Api.Models.Common;
 using commercetools.Api.Models.Types;
 using commercetools.Base.Client;
-using Type = System.Type;
 
 namespace Training
 {
@@ -23,7 +22,7 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            var typeDraft = this.CreatePlantCheckTypeDraft();
+            var typeDraft = this.CreateTypeDraft();
             var createdType = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .Types()
                 .Post(typeDraft)
@@ -32,28 +31,28 @@ namespace Training
             Console.WriteLine($"New custom type has been created with Id: {createdType.Id}");
         }
 
-        public TypeDraft CreatePlantCheckTypeDraft()
+        public TypeDraft CreateTypeDraft()
         {
             var typeDraft = new TypeDraft
             {
-                Key = "plantcheck-key",
-                Name = new LocalizedString {{"en", "plantCheck custom Type"}},
+                Key = "allowed-to-place-orders",
+                Name = new LocalizedString {{"de", "allowed-to-place-orders"}},
                 ResourceTypeIds = new List<IResourceTypeId> {IResourceTypeId.Customer},
                 FieldDefinitions = new List<IFieldDefinition>
                 {
-                    this.CreatePlantCheckFieldDefinition()
+                    this.CreateTypeFieldDefinition()
                 }
             };
             return typeDraft;
         }
 
-        private FieldDefinition CreatePlantCheckFieldDefinition()
+        private FieldDefinition CreateTypeFieldDefinition()
         {
             var fieldDefinition = new FieldDefinition
             {
-                Name = "plantCheck",
+                Name = "allowed-to-place-orders",
                 Required = false,
-                Label = new LocalizedString {{"EN", "plantCheck"}, {"DE", "plantCheck"}},
+                Label = new LocalizedString {{"de", "Allowed to place orders"}},
                 Type = new CustomFieldBooleanType()
             };
             return fieldDefinition;

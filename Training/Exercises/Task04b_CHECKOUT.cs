@@ -12,7 +12,6 @@ using commercetools.Api.Models.Payments;
 using commercetools.Api.Models.ShippingMethods;
 using commercetools.Api.Models.States;
 using commercetools.Base.Client;
-using commercetools.Base.Client.Error;
 using Training.Extensions;
 
 namespace Training

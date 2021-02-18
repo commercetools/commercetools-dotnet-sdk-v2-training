@@ -14,6 +14,7 @@ namespace Training
     public class Task04C : IExercise
     {
         private readonly IClient _client;
+        private readonly string _customerPassword = "password";
         
         public Task04C(IClient client)
         {
@@ -30,25 +31,38 @@ namespace Training
 
            var cart = await CreateACart(null, customer.Id);
            Console.WriteLine($"cart for customer created with Id {cart.Id}");
+           
+           //Add Product to cart
+           cart = await AddProductToACartBySku(cart, "A0E200000002E49", 1);
 
            // Create Anonymous cart
            var anonymousCart = await CreateACart("123456789", null);
            Console.WriteLine($"anonymous cart created with Id {anonymousCart.Id}");
            
-           anonymousCart = await AddProductToACartBySku(anonymousCart, "9812", 4);
+           //Add Product to the Anonymous cart
+           anonymousCart = await AddProductToACartBySku(anonymousCart, "A0E200000001WG3", 4);
            
+           //Decide on a merging strategy
            var result = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                .Login()
                .Post(new CustomerSignin
                {
                    AnonymousCartId = anonymousCart.Id,
-                   AnonymousCartSignInMode = IAnonymousCartSignInMode.MergeWithExistingCustomerCart
+                   AnonymousCartSignInMode = IAnonymousCartSignInMode.MergeWithExistingCustomerCart,
+                   Email = customer.Email,
+                   Password = _customerPassword
+                   
                }).ExecuteAsync();
            
            //LineItems of the anonymous cart will be copied to the customer’s active cart that has been modified most recently.
            var currentCustomerCart = result?.Cart as Cart;
-           var lineItem = currentCustomerCart?.LineItems[0];
-           Console.WriteLine($"SKU: {lineItem.Variant.Sku}, Quantity: {lineItem.Quantity}");
+           if (currentCustomerCart != null)
+           {
+               foreach (var lineItem in currentCustomerCart.LineItems)
+               {
+                   Console.WriteLine($"SKU: {lineItem.Variant.Sku}, Quantity: {lineItem.Quantity}");
+               }
+           }
         }
 
         private async Task<ICustomer> CreateACustomer()
@@ -59,8 +73,8 @@ namespace Training
                 .Customers()
                 .Post(new CustomerDraft
                 {
-                    Email = "me@me4",
-                    Password = "password"
+                    Email = $"me@me{Settings.RandomInt()}.com",
+                    Password = _customerPassword
                 }).ExecuteAsync() as CustomerSignInResult;
             return result?.Customer;
         }

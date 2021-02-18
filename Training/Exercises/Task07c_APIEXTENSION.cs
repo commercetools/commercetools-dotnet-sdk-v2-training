@@ -21,25 +21,24 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            //create a trigger on order create
+            //create a trigger
             var trigger = new ExtensionTrigger
             {
                 ResourceTypeId = IExtensionResourceTypeId.Order,
                 Actions = new List<IExtensionAction> { IExtensionAction.Create }
             };
 
-            //create AwsLambdaDestination
-            var destination = new ExtensionAWSLambdaDestination
+            //create destination
+            var destination = new ExtensionHttpDestination()
             {
-                AccessKey = "key",
-                AccessSecret = "secert",
-                Arn = "arn"
+                Type = "HTTP",
+                Url = "https://europe-west3-ct-support.cloudfunctions.net/training-extensions-sample"
             };
             
             //create extensionDraft
             var extensionDraft = new ExtensionDraft
             {
-                Key = "mhPlantCheck777",
+                Key = "orderChecker",
                 Destination = destination,
                 Triggers = new List<IExtensionTrigger> {trigger}
             };
