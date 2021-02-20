@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using commercetools.Api;
@@ -21,9 +20,8 @@ namespace Training
                 {
                     services.AddOptions();
                     services.AddSingleton<IHostedService, PrintTextToConsoleService>();
-                    //start training setup commercetools client with correct configuration values like: services.UseCommercetools(configuration, "Client");
+                    //start training setup commercetools clients with correct configuration
                     ConfigureServices(services, configuration);
-
                     // Inject Exercise as Service
                     ConfigureExerciseService(services, args);
                 });
@@ -36,6 +34,7 @@ namespace Training
         private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
             services.UseCommercetoolsApi(configuration, "Client");
+            //services.UseCommercetoolsImportApi(configuration, "ImportApiClient");
             //services.UseCommercetoolsApi(configuration, new List<string>{"Client", "BerlinStoreClient"}, CreateDefaultTokenProvider);
             
             var clientConfiguration = configuration.GetSection("Client").Get<ClientConfiguration>();

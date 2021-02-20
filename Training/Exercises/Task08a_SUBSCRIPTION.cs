@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using commercetools.Api.Client;
-using commercetools.Api.Models;
 using commercetools.Api.Models.Subscriptions;
-using commercetools.Api.Models.Types;
 using commercetools.Base.Client;
 
 namespace Training

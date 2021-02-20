@@ -21,10 +21,10 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            // GET plantSeedCategory
-            var category = await _client.WithApi()
+            // GET productType
+            var productType = await _client.WithApi()
                 .WithProjectKey(Settings.ProjectKey)
-                .Categories().WithKey("c3").Get().ExecuteAsync();
+                .ProductTypes().WithKey("PhonePT").Get().ExecuteAsync();
 
             var response = await _client.WithApi()
                 .WithProjectKey(Settings.ProjectKey)
@@ -33,41 +33,28 @@ namespace Training
                 .Get()
                 .WithStaged(false)
                 .WithMarkMatchingVariants(true)
-                .WithFilterQuery($"categories.id:\"{category.Id}\"")
-                .WithFacet("variants.attributes.size as size")
-                //.WithFacet("variants.price.centAmount:range (* to 20000), (20000 to 30000), (30000 to *) as ranges")
-                //.AddQueryParam("text.de", localizedName["de"])
+                .WithFilterQuery($"productType.id:\"{productType.Id}\"")
+                .WithFacet("variants.attributes.phonecolor as color")
+                //.AddQueryParam("text.en", "IPhome11")
+                //.WithFuzzy(true)
                 .ExecuteAsync();
-
-            var results = response.Results;
-            Console.WriteLine($"Nr. of products: {results.Count}");
-
+            
+            Console.WriteLine($"Nr. of products: {response.Count}");
+            Console.WriteLine("products in search result: ");
+            response.Results.ForEach(p => Console.WriteLine(p.Name["en"]));
+            
             ShowFacetResults(response);
-
-            Console.WriteLine("products searched: ");
-            results.ForEach(p => Console.WriteLine(p.Name["en"]));
         }
 
         private void ShowFacetResults(ProductProjectionPagedSearchResponse searchResponse)
         {
-            Console.WriteLine($"Facets: {searchResponse.Facets.Count}");
+            Console.WriteLine($"Number of Facets: {searchResponse.Facets.Count}");
 
-            var sizeFacetResult = searchResponse.Facets["size"] as TermFacetResult;
-            Console.WriteLine($"Count of Current Products in category plants: {searchResponse.Count}");
-            foreach (var term in sizeFacetResult.Terms)
+            var colorFacetResult = searchResponse.Facets["color"] as TermFacetResult;
+            foreach (var term in colorFacetResult.Terms)
             {
                 Console.WriteLine($"Term : {term.Term}, Count: {term.Count}");
             }
-
-            /*
-            var rangeFacetResult = searchResponse.Facets["ranges"] as RangeFacetResult;
-            Console.WriteLine($"number of ranges: {rangeFacetResult?.Ranges.Count}");
-            var range = rangeFacetResult?.Ranges[0];
-            Console.WriteLine($"Min: {range.Min}, " +
-                              $"Max:{range.Max}, " +
-                              $"Mean:{range.Mean}, " +
-                              $"ProductsCount:{range.ProductCount}");
-            */
         }
     }
 }

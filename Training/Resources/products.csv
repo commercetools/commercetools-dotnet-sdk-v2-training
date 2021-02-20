@@ -1,0 +1,3 @@
+ProductType,ProductId,InventoryId,ArticleId,ProductName,ProductDescription,BasePrice,CurrencyCode,ImageUrl,Weight,Color
+PhonePT,P1,SKU101,A101,Iphone11,You will look good in this,1123,EUR,https://s3-eu-west-1.amazonaws.com/commercetools-maximilian/products/081455_1_medium.jpg,120,Black
+PhonePT,P2,SKU102,A102,SamsungS20,You will look good in this,1000,EUR,https://s3-eu-west-1.amazonaws.com/commercetools-maximilian/products/081455_1_medium.jpg,150,Blue

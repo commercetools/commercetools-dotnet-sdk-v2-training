@@ -24,20 +24,32 @@ namespace Training
         public async Task ExecuteAsync()
         {
             string lastId = null ;int pageSize = 2;int currentPage = 1; bool lastPage = false;
+            ProductPagedQueryResponse response = null;
+
             while (!lastPage)
             {
-                var where = lastId != null ? $"id > :{lastId}" : null;
-
-                var response =
-                    await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                if (lastId == null)
+                {
+                    response = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                         .Products()
                         .Get()
                         .WithSort("id asc")
                         .WithLimit(pageSize)
-                        .WithWhere(where)
                         .WithWithTotal(false)
                         .ExecuteAsync();
-                
+                }
+                else
+                {
+                    response = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                        .Products()
+                        .Get()
+                        .WithSort("id asc")
+                        .WithLimit(pageSize)
+                        .WithWhere($"id>\"{lastId}\"")
+                        .WithWithTotal(false)
+                        .ExecuteAsync();
+                }
+
                 Console.WriteLine($"Show Results of Page {currentPage}");
                 foreach (var product in response.Results)
                 {

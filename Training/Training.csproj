@@ -18,10 +18,28 @@
             <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
+        <Content Include="Resources\products.csv">
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="MachineLearning" />
+      <Compile Remove="DLL\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="DLL\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="DLL\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="commercetools.Sdk.ImportApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>DLL\commercetools.Sdk.ImportApi.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using commercetools.Api.Client;
 using commercetools.Api.Models.Customers;
@@ -15,9 +17,9 @@ namespace Training
     {
         private readonly IClient _client;
 
-        public Task02A(IClient client)
+        public Task02A(IEnumerable<IClient> clients)
         {
-            this._client = client;
+            _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
         }
 
         public async Task ExecuteAsync()
