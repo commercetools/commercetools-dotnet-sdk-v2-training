@@ -43,40 +43,15 @@ namespace Training
            anonymousCart = await AddProductToACartBySku(anonymousCart, "A0E200000001WG3", 4);
            
            //Decide on a merging strategy
-           var result = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-               .Login()
-               .Post(new CustomerSignin
-               {
-                   AnonymousCartId = anonymousCart.Id,
-                   AnonymousCartSignInMode = IAnonymousCartSignInMode.MergeWithExistingCustomerCart,
-                   Email = customer.Email,
-                   Password = _customerPassword
-                   
-               }).ExecuteAsync();
+           
            
            //LineItems of the anonymous cart will be copied to the customer’s active cart that has been modified most recently.
-           var currentCustomerCart = result?.Cart as Cart;
-           if (currentCustomerCart != null)
-           {
-               foreach (var lineItem in currentCustomerCart.LineItems)
-               {
-                   Console.WriteLine($"SKU: {lineItem.Variant.Sku}, Quantity: {lineItem.Quantity}");
-               }
-           }
+           
         }
 
         private async Task<ICustomer> CreateACustomer()
         {
-            var result = await _client
-                .WithApi()
-                .WithProjectKey(Settings.ProjectKey)
-                .Customers()
-                .Post(new CustomerDraft
-                {
-                    Email = $"me@me{Settings.RandomInt()}.com",
-                    Password = _customerPassword
-                }).ExecuteAsync() as CustomerSignInResult;
-            return result?.Customer;
+            throw new NotImplementedException();
         }
         
         /// <summary>
@@ -87,37 +62,12 @@ namespace Training
         /// <returns></returns>
         private async Task<Cart> CreateACart(string anonymousId = null, string customerId = null)
         {
-            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .Carts().Post(
-                new CartDraft
-                {
-                    CustomerId = customerId,
-                    AnonymousId = anonymousId,
-                    Currency = "EUR",
-                    Country = "DE",
-                    DeleteDaysAfterLastModification = 90
-                }).ExecuteAsync();
+            throw new NotImplementedException();
         }
         
         private async Task<Cart> AddProductToACartBySku(Cart cart, string sku, long quantity)
         {
-            var cartUpdate = new CartUpdate
-            {
-                Version = cart.Version,
-                Actions = new List<ICartUpdateAction>
-                {
-                    new CartAddLineItemAction
-                    {
-                        Sku = sku,
-                        Quantity = quantity
-                    }
-                }
-            };
-            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .Carts()
-                .WithId(cart.Id)
-                .Post(cartUpdate)
-                .ExecuteAsync();
+            throw new NotImplementedException();
         }
     }
 }

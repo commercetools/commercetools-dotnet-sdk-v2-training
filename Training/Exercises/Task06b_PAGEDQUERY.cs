@@ -30,24 +30,11 @@ namespace Training
             {
                 if (lastId == null)
                 {
-                    response = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                        .Products()
-                        .Get()
-                        .WithSort("id asc")
-                        .WithLimit(pageSize)
-                        .WithWithTotal(false)
-                        .ExecuteAsync();
+                   
                 }
                 else
                 {
-                    response = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                        .Products()
-                        .Get()
-                        .WithSort("id asc")
-                        .WithLimit(pageSize)
-                        .WithWhere($"id>\"{lastId}\"")
-                        .WithWithTotal(false)
-                        .ExecuteAsync();
+                   
                 }
 
                 Console.WriteLine($"Show Results of Page {currentPage}");

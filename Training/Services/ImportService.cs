@@ -25,6 +25,7 @@ namespace Training.Services
             _csvHelper = new CSVHelper();
         }
 
+        /*
         public async Task<ImportSink> CreateImportSink(ImportSinkDraft draft)
         {
             var importSink = await _importClient.WithImportApi().WithProjectKey(_projectKey)
@@ -102,6 +103,7 @@ namespace Training.Services
         }
 
         #endregion
+        */
     }
 
     public class CSVProduct

@@ -27,45 +27,14 @@ namespace Training
         public async Task ExecuteAsync()
         {
             //  Get customer by Key
-            var customer = await _client.WithApi()
-                .WithProjectKey(Settings.ProjectKey)
-                .Customers()
-                .WithKey(_customerkey)
-                .Get()
-                .ExecuteAsync();
+            
 
             //  Get customer group by Key
-            var customerGroup = await _client.WithApi()
-                .WithProjectKey(Settings.ProjectKey)
-                .CustomerGroups()
-                .WithKey(_customerGroupKey)
-                .Get()
-                .ExecuteAsync();
+            
 
             // set customerGroup for the customer
-            var update = new CustomerUpdate
-            {
-                Version = customer.Version,
-                Actions = new List<ICustomerUpdateAction>
-                {
-                    new CustomerSetCustomerGroupAction
-                    {
-                        CustomerGroup = new CustomerGroupResourceIdentifier
-                        {
-                            Key = customerGroup.Key
-                        }
-                    }
-                }
-            };
-            var updatedCustomer =
-                await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                    .Customers()
-                    .WithKey(customer.Key)
-                    .Post(update)
-                    .ExecuteAsync();
-
-            Console.WriteLine($"customer {updatedCustomer.Id} in customer group " +
-                              $"{updatedCustomer.CustomerGroup.Id}");
+            
+            //Console.WriteLine($"customer {updatedCustomer.Id} in customer group {updatedCustomer.CustomerGroup.Id}");
         }
     }
 }

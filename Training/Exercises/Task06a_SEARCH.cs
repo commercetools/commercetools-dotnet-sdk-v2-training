@@ -21,28 +21,18 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            // GET productType
-            var productType = await _client.WithApi()
-                .WithProjectKey(Settings.ProjectKey)
-                .ProductTypes().WithKey("PhonePT").Get().ExecuteAsync();
-
-            var response = await _client.WithApi()
-                .WithProjectKey(Settings.ProjectKey)
-                .ProductProjections()
-                .Search()
-                .Get()
-                .WithStaged(false)
-                .WithMarkMatchingVariants(true)
-                .WithFilterQuery($"productType.id:\"{productType.Id}\"")
-                .WithFacet("variants.attributes.phonecolor as color")
-                //.AddQueryParam("text.en", "IPhome11")
-                //.WithFuzzy(true)
-                .ExecuteAsync();
+            // GET the productType by Key
             
+
+            //Search ProductProjections and Add Facet
+            ProductProjectionPagedSearchResponse response = null;
+            
+            //Show Search Results
             Console.WriteLine($"Nr. of products: {response.Count}");
             Console.WriteLine("products in search result: ");
             response.Results.ForEach(p => Console.WriteLine(p.Name["en"]));
             
+            //Show Facets
             ShowFacetResults(response);
         }
 

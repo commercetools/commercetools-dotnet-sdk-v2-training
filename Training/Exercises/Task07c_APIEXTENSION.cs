@@ -21,12 +21,8 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            //create a trigger
-            var trigger = new ExtensionTrigger
-            {
-                ResourceTypeId = IExtensionResourceTypeId.Order,
-                Actions = new List<IExtensionAction> { IExtensionAction.Create }
-            };
+            //create an Extension trigger (on Order Create)
+            
 
             //create destination
             var destination = new ExtensionHttpDestination()
@@ -36,20 +32,12 @@ namespace Training
             };
             
             //create extensionDraft
-            var extensionDraft = new ExtensionDraft
-            {
-                Key = "orderChecker",
-                Destination = destination,
-                Triggers = new List<IExtensionTrigger> {trigger}
-            };
+            
             
             //create the extension
-            var extension = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .Extensions()
-                .Post(extensionDraft)
-                .ExecuteAsync();
             
-            Console.WriteLine($"extension created with Id {extension.Id}");
+            
+            //Console.WriteLine($"extension created with Id {extension.Id}");
         }
     }
 }

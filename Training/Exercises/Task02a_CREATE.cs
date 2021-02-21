@@ -37,47 +37,15 @@ namespace Training
             };
             
             //  SignUp a customer
-            var customerSignInResult = await _client
-                .WithApi()
-                .WithProjectKey(Settings.ProjectKey)
-                .Customers()
-                .Post(customerDraft)
-                .ExecuteAsync();
-            var customer = customerSignInResult.Customer;
-            Console.WriteLine($"Customer Created with Id : {customer.Id} and Key : {customer.Key} and Email Verified: {customer.IsEmailVerified}");
+            
+            //Console.WriteLine($"Customer Created with Id : {customer.Id} and Key : {customer.Key} and Email Verified: {customer.IsEmailVerified}");
             
             //CREATE a email verfification token
-            var customerTokenResult = await _client
-                .WithApi()
-                .WithProjectKey(Settings.ProjectKey)
-                .Customers()
-                .EmailToken()
-                .Post(new CustomerCreateEmailToken
-                {
-                    Id = customer.Id,
-                    Version = customer.Version,
-                    TtlMinutes = 10
-                }).ExecuteAsync();
+            
             
             //Create ConfirmCustomerEmail
-            await _client
-                .WithApi()
-                .WithProjectKey(Settings.ProjectKey)
-                .Customers()
-                .EmailConfirm()
-                .Post(new CustomerEmailVerify
-                {
-                    TokenValue = customerTokenResult.Value
-                }).ExecuteAsync();
 
-            var retrievedCustomer = await _client
-                .WithApi()
-                .WithProjectKey(Settings.ProjectKey)
-                .Customers()
-                .WithId(customer.Id)
-                .Get().ExecuteAsync();
-            
-            Console.WriteLine($"Is Email Verified:{retrievedCustomer.IsEmailVerified}");
+            //Console.WriteLine($"Is Email Verified:{retrievedCustomer.IsEmailVerified}");
         }
     }
 }

@@ -27,11 +27,10 @@ namespace Training
             {
                 Query = "query {customers{count,results{email}}}"
             };
-            var response = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .Graphql()
-                .Post(graphRequest)
-                .ExecuteAsync();
+            //Execute the graphQL Request
+            GraphQLResponse response = null;
 
+            //Map Response to the typed result and show it
             var typedResult = ((JsonElement) response.Data).ToObject<GraphResultData>(_client.SerializerService);
             var customersResult = typedResult.Customers;
             Console.WriteLine($"Customers count: {customersResult.Count}");

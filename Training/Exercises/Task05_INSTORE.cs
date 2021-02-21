@@ -19,11 +19,9 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            var customers = await _berlinStoreClient.WithApi()
-                .WithProjectKey(Settings.ProjectKey)
-                .InStoreKeyWithStoreKeyValue("Berlin-Store")
-                .Customers().Get().ExecuteAsync();
-            Console.WriteLine($"Global customers and customers in Berlin Store: {customers.Count}");
+            // use Store Client to Get Customers in Store By Key
+            
+            //Console.WriteLine($"Global customers and customers in Berlin Store: {customers.Count}");
         }
     }
 }

@@ -22,13 +22,13 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
+            //create type Draft
             var typeDraft = this.CreateTypeDraft();
-            var createdType = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .Types()
-                .Post(typeDraft)
-                .ExecuteAsync();
             
-            Console.WriteLine($"New custom type has been created with Id: {createdType.Id}");
+            //create custom type
+             
+            
+            //Console.WriteLine($"New custom type has been created with Id: {createdType.Id}");
         }
 
         public TypeDraft CreateTypeDraft()

@@ -29,28 +29,13 @@ namespace Training
                 Topic = "training-subscription-sample"
             };
            
-            //create a subscription draft
-            var subscriptionDraft = new SubscriptionDraft
-            {
-                Key = "subscriptionSampleForSendingConfirmationEmails",
-                Destination = destination,
-                Messages = new List<IMessageSubscription>
-                {
-                    new MessageSubscription
-                    {
-                        ResourceTypeId = "order",
-                        Types = new List<string> { "OrderCreated" }
-                    }
-                }
-            };
+            //create a subscription draft (orderCreated)
+            
            
             //create a subscription
-            var subscription = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .Subscriptions()
-                .Post(subscriptionDraft)
-                .ExecuteAsync();
+            
            
-            Console.WriteLine($"a new subscription created with Id {subscription.Id}");
+            //Console.WriteLine($"a new subscription created with Id {subscription.Id}");
         }
     }
 }

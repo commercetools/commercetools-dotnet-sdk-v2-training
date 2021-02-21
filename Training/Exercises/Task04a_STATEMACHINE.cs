@@ -30,10 +30,7 @@ namespace Training
                 Name = new LocalizedString {{"en", "Order Packed"}},
                 Type = IStateTypeEnum.OrderState
             };
-            var stateOrderPacked = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .States()
-                .Post(stateOrderPackedDraft)
-                .ExecuteAsync();
+            
             
             //create OrderShipped stateDraft, state
             var stateOrderShippedDraft = new StateDraft
@@ -43,34 +40,11 @@ namespace Training
                 Name = new LocalizedString {{"en", "Order Shipped"}},
                 Type = IStateTypeEnum.OrderState
             };
-            var stateOrderShipped = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .States()
-                .Post(stateOrderShippedDraft)
-                .ExecuteAsync();
+            
             
             //update packedState to transit to stateShipped
-            var update = new StateUpdate()
-            {
-                Version = stateOrderPacked.Version,
-                Actions = new List<IStateUpdateAction>
-                {
-                    new StateSetTransitionsAction
-                    {
-                        Transitions = new List<IStateResourceIdentifier>
-                        {
-                            new StateResourceIdentifier{ Key = stateOrderShipped.Key }
-                        }
-                    }
-                }
-            };
-
-            var updatedStateOrderPacked = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .States()
-                .WithId(stateOrderPacked.Id)
-                .Post(update)
-                .ExecuteAsync();
-
-            Console.WriteLine($"stateOrderShipped Id : {stateOrderShipped.Id}, stateOrderPacked transition to:  {updatedStateOrderPacked.Transitions[0].Id}");
+            
+            //Console.WriteLine($"stateOrderShipped Id : {stateOrderShipped.Id}, stateOrderPacked transition to:  {updatedStateOrderPacked.Transitions[0].Id}");
         }
     }
 }

@@ -24,17 +24,11 @@ namespace Training
             var sinkKey = $"productsImport{Settings.RandomInt()}";
             var csvFile = "Resources/products.csv";
 
-            var importSink = await _importService.CreateImportSink(new ImportSinkDraft
-            {
-                Key = sinkKey,
-                ResourceType = IImportResourceType.ProductDraft
-            });
+            //Create importSink for ResourceType ProductDraft and copy the SinkKey
             
-            Console.WriteLine($"ImportSink created with key: {importSink.Key}");
 
-            var importResponse = await _importService.ImportProducts(sinkKey, csvFile);
-            Console.WriteLine($"Import ProductsDraft operation has been created, operation status count: {importResponse.OperationStatus.Count}");
-            importResponse.OperationStatus.ForEach(o => Console.WriteLine(o.OperationId));
+            //Import Product Drafts from the csv file and Copy Operation Ids
+            
             var opertaion1 = "";
             var opertaion2 = "";
 

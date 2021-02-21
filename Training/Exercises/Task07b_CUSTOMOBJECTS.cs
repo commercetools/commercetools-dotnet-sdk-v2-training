@@ -39,13 +39,9 @@ namespace Training
             };
             
             //Creates a new custom object 
-            var customObject = await _client.WithApi()
-                .WithProjectKey(Settings.ProjectKey)
-                .CustomObjects()
-                .Post(draft)
-                .ExecuteAsync();
+            
 
-            Console.WriteLine($"custom object created with Id {customObject.Id} with version {customObject.Version}");
+            //Console.WriteLine($"custom object created with Id {customObject.Id} with version {customObject.Version}");
         }
     }
 }

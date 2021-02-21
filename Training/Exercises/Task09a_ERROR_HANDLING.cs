@@ -20,11 +20,7 @@ namespace Training
             var customerKeyMayOrMayNotExist = "customer-michele-WRONG-KEY";
             try
             {
-                var optionalCustomer = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                    .Customers()
-                    .WithKey(customerKeyMayOrMayNotExist)
-                    .Get()
-                    .ExecuteAsync();
+                //get non existing customer by key
             }
             catch (NotFoundException e)
             {
