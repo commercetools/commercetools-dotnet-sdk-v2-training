@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using commercetools.Api;
 using commercetools.Base.Client;
 using commercetools.Base.Client.Tokens;
+using commercetools.Sdk.ImportApi;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

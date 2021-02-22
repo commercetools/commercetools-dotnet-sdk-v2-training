@@ -15,7 +15,6 @@ namespace Training
     {
         private readonly IClient _client;
         
-
         public Task06B(IClient client)
         {
             this._client = client;
@@ -28,14 +27,7 @@ namespace Training
 
             while (!lastPage)
             {
-                if (lastId == null)
-                {
-                   
-                }
-                else
-                {
-                   
-                }
+                var where = lastId != null ? $"id>\"{lastId}\"" : null;
 
                 Console.WriteLine($"Show Results of Page {currentPage}");
                 foreach (var product in response.Results)
