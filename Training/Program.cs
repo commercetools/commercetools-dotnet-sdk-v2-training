@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using commercetools.Api;
@@ -36,17 +37,10 @@ namespace Training
         {
             services.UseCommercetoolsApi(configuration, "Client");
             //services.UseCommercetoolsImportApi(configuration, "ImportApiClient");
-            //services.UseCommercetoolsApi(configuration, new List<string>{"Client", "BerlinStoreClient"}, CreateDefaultTokenProvider);
+            //services.UseCommercetoolsApi(configuration, new List<string>{"Client", "BerlinStoreClient"});
             
             var clientConfiguration = configuration.GetSection("Client").Get<ClientConfiguration>();
             Settings.SetCurrentProjectKey(clientConfiguration.ProjectKey);
-        }
-        
-        public static ITokenProvider CreateDefaultTokenProvider(string clientName, IConfiguration configuration, IServiceProvider serviceProvider)
-        {
-            var httpClientFactory = serviceProvider.GetService<IHttpClientFactory>();
-            var clientConfiguration = configuration.GetSection(clientName).Get<ClientConfiguration>();
-            return TokenProviderFactory.CreateClientCredentialsTokenProvider(clientConfiguration, httpClientFactory);
         }
         private static void ConfigureExerciseService(IServiceCollection services, string[] args)
         {
