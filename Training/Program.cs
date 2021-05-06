@@ -41,6 +41,9 @@ namespace Training
             
             var clientConfiguration = configuration.GetSection("Client").Get<ClientConfiguration>();
             Settings.SetCurrentProjectKey(clientConfiguration.ProjectKey);
+            
+            //For Me endpoint exercise
+            services.AddSingleton(configuration);
         }
         private static void ConfigureExerciseService(IServiceCollection services, string[] args)
         {
