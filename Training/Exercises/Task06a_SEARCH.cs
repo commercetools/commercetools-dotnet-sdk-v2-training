@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using commercetools.Api.Client;
+using commercetools.Sdk.Api.Extensions;
 using commercetools.Api.Models.Products;
 using commercetools.Base.Client;
 
@@ -28,7 +28,7 @@ namespace Training
             ProductProjectionPagedSearchResponse response = null;
             
             //Show Search Results
-            Console.WriteLine($"Nr. of products: {response.Count}");
+            Console.WriteLine($"No. of products: {response.Count}");
             Console.WriteLine("products in search result: ");
             response.Results.ForEach(p => Console.WriteLine(p.Name["en"]));
             

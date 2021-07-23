@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using commercetools.Api.Client;
+using commercetools.Sdk.Api.Extensions;
 using commercetools.Api.Models.Products;
 using commercetools.Base.Client;
 
@@ -32,7 +32,12 @@ namespace Training
                 Console.WriteLine($"Show Results of Page {currentPage}");
                 foreach (var product in response.Results)
                 {
-                    Console.WriteLine($"{product.MasterData.Current.Name["en"]}");
+                    if (product.MasterData.Current.Name.ContainsKey("en")){
+                        Console.WriteLine($"{product.MasterData.Current.Name["en"]}");
+                    }
+                    else {
+                        Console.WriteLine($"{product.MasterData.Current.Name["de"]}");
+                    }
                 }
                 Console.WriteLine("///////////////////////");
                 currentPage++;

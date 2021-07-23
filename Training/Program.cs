@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using commercetools.Api;
+using commercetools.Sdk.Api;
 using commercetools.Base.Client;
 using commercetools.Base.Client.Tokens;
 using commercetools.Sdk.ImportApi;
@@ -34,9 +34,9 @@ namespace Training
         /// </summary>
         private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            //services.UseCommercetoolsApi(configuration, "Client");
-            //services.UseCommercetoolsImportApi(configuration, "ImportApiClient");
-            //services.UseCommercetoolsApi(configuration, new List<string>{"Client", "BerlinStoreClient"}, CreateDefaultTokenProvider);
+            // services.UseCommercetoolsApi(configuration, "Client");
+            // services.UseCommercetoolsImportApi(configuration, "ImportApiClient");
+            // services.UseCommercetoolsApi(configuration, new List<string>{"Client", "BerlinStoreClient"}, CreateDefaultTokenProvider);
             
             var clientConfiguration = configuration.GetSection("Client").Get<ClientConfiguration>();
             Settings.SetCurrentProjectKey(clientConfiguration.ProjectKey);

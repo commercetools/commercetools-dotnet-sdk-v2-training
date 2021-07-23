@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using commercetools.Api.Client;
+using commercetools.Sdk.Api.Extensions;
 using commercetools.Base.Client;
 using commercetools.Base.Client.Error;
 

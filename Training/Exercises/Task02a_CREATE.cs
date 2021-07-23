@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using commercetools.Api.Client;
+using commercetools.Sdk.Api.Extensions;
+using commercetools.Api.Models.Common;
 using commercetools.Api.Models.Customers;
 using commercetools.Base.Client;
 
@@ -33,7 +34,13 @@ namespace Training
                 Password = "password",
                 Key = $"customer-michele-{rand}",
                 FirstName = "michele",
-                LastName = "george"
+                LastName = "george",
+                Addresses = new List<IBaseAddress>{
+                        new AddressDraft {
+                            Country = "DE",
+                    }
+                },
+                DefaultShippingAddress = 0
             };
             
             //  SignUp a customer

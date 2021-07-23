@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using commercetools.Api.Client;
+using commercetools.Sdk.Api.Extensions;
 using commercetools.Api.Models.Common;
 using commercetools.Api.Models.Types;
 using commercetools.Base.Client;
@@ -36,7 +36,7 @@ namespace Training
             var typeDraft = new TypeDraft
             {
                 Key = "allowed-to-place-orders",
-                Name = new LocalizedString {{"de", "allowed-to-place-orders"}},
+                Name = new LocalizedString {{"de", "allowed-to-place-orders"},{"en", "allowed-to-place-orders"}},
                 ResourceTypeIds = new List<IResourceTypeId> {IResourceTypeId.Customer},
                 FieldDefinitions = new List<IFieldDefinition>
                 {
@@ -52,7 +52,7 @@ namespace Training
             {
                 Name = "allowed-to-place-orders",
                 Required = false,
-                Label = new LocalizedString {{"de", "Allowed to place orders"}},
+                Label = new LocalizedString {{"de", "Allowed to place orders"},{"en", "Allowed to place orders"}},
                 Type = new CustomFieldBooleanType()
             };
             return fieldDefinition;

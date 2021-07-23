@@ -29,10 +29,11 @@ namespace Training
 
             //Import Product Drafts from the csv file and Copy Operation Ids
             
+            /*
+            // check the status of operations by using the operation Ids
             var opertaion1 = "";
             var opertaion2 = "";
 
-            /*
             var importOperation1 = await _importService.CheckImportOperationStatus(sinkKey, opertaion1);
             var importOperation2 = await _importService.CheckImportOperationStatus(sinkKey, opertaion2);
             Console.WriteLine($"Operation {opertaion1} : {importOperation1.State.JsonName}");
