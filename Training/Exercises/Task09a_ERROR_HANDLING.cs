@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using commercetools.Api.Client;
 using commercetools.Base.Client;
 using commercetools.Base.Client.Error;
+using commercetools.Sdk.Api.Extensions;
 
 namespace Training
 {

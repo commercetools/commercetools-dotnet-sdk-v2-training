@@ -35,10 +35,11 @@ namespace Training
             var importResponse = await _importService.ImportProducts(sinkKey, csvFile);
             Console.WriteLine($"Import ProductsDraft operation has been created, operation status count: {importResponse.OperationStatus.Count}");
             importResponse.OperationStatus.ForEach(o => Console.WriteLine(o.OperationId));
-            var opertaion1 = "";
-            var opertaion2 = "";
+            
 
             /*
+            var opertaion1 = "";
+            var opertaion2 = "";
             var importOperation1 = await _importService.CheckImportOperationStatus(sinkKey, opertaion1);
             var importOperation2 = await _importService.CheckImportOperationStatus(sinkKey, opertaion2);
             Console.WriteLine($"Operation {opertaion1} : {importOperation1.State.JsonName}");

@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using commercetools.Api.Client;
+using commercetools.Api.Models.Common;
 using commercetools.Api.Models.Customers;
 using commercetools.Base.Client;
+using commercetools.Sdk.Api.Extensions;
 
 namespace Training
 {
@@ -25,15 +26,21 @@ namespace Training
         public async Task ExecuteAsync()
         {
             var rand = Settings.RandomInt();
-            
+
             //  Create customer draft
             var customerDraft = new CustomerDraft
             {
                 Email = $"michele_{rand}@example.com",
                 Password = "password",
-                Key = $"customer-michele-{rand}",
+                Key = "michele-george-{rand}",
                 FirstName = "michele",
-                LastName = "george"
+                LastName = "george",
+                Addresses = new List<IBaseAddress>{
+                        new AddressDraft {
+                            Country = "DE",
+                    }
+                },
+                DefaultShippingAddress = 0
             };
             
             //  SignUp a customer

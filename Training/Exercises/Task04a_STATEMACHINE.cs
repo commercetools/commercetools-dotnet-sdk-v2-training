@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using commercetools.Api.Client;
 using commercetools.Api.Models.Common;
 using commercetools.Api.Models.States;
 using commercetools.Base.Client;
+using commercetools.Sdk.Api.Extensions;
 
 namespace Training
 {

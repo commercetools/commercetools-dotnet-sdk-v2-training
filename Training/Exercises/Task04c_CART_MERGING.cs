@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using commercetools.Api.Client;
 using commercetools.Api.Models.Carts;
 using commercetools.Api.Models.Customers;
 using commercetools.Base.Client;
+using commercetools.Sdk.Api.Extensions;
 
 namespace Training
 {
@@ -34,6 +34,7 @@ namespace Training
            
            //Add Product to cart
            cart = await AddProductToACartBySku(cart, "A0E200000002E49", 1);
+           cart = await AddProductToACartBySku(cart, "A0E200000001WG3", 1);
 
            // Create Anonymous cart
            var anonymousCart = await CreateACart("123456789", null);
@@ -47,7 +48,9 @@ namespace Training
                .Login()
                .Post(new CustomerSignin
                {
-                   AnonymousCartId = anonymousCart.Id,
+                   AnonymousCart = new CartResourceIdentifier {
+                       Id = anonymousCart.Id
+                    },
                    AnonymousCartSignInMode = IAnonymousCartSignInMode.MergeWithExistingCustomerCart,
                    Email = customer.Email,
                    Password = _customerPassword

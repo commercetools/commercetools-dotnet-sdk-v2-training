@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using commercetools.Api.Client;
 using commercetools.Api.Models.Carts;
 using commercetools.Api.Models.Channels;
 using commercetools.Api.Models.Common;
@@ -12,6 +11,7 @@ using commercetools.Api.Models.Payments;
 using commercetools.Api.Models.ShippingMethods;
 using commercetools.Api.Models.States;
 using commercetools.Base.Client;
+using commercetools.Sdk.Api.Extensions;
 using Training.Extensions;
 
 namespace Training
@@ -42,22 +42,29 @@ namespace Training
                 .Get()
                 .WithWhere($"key=\"{_channelKey}\"")
                 .ExecuteAsync();
-
+            
             //check the result
             var channel = channelResult.Results.FirstOrDefault();
-
+            Console.WriteLine($"{channel.Id}");
 
             //Fetch a state if you have a defined custom workflow
             var orderPacked = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .States().WithKey(_stateOrderedPackedKey).Get().ExecuteAsync();
-
+                .States()
+                .WithKey(_stateOrderedPackedKey)
+                .Get()
+                .ExecuteAsync();
+            Console.WriteLine($"{orderPacked.Id}");
             // TODO: Perform cart operations:
             //      Get Customer, create cart, add products, add inventory mode
             //      add discount codes, perform a recalculation
             // TODO: Convert cart into an order, set order status, set state in custom work flow
 
             var customer = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .Customers().WithKey(_customerKey).Get().ExecuteAsync();
+                .Customers()
+                .WithKey(_customerKey)
+                .Get()
+                .ExecuteAsync();
+            Console.WriteLine($"{customer.Id}");
 
             //create a cart for a customer
             var cart = await CreateCart(customer);
@@ -341,14 +348,17 @@ namespace Training
         {
             var orderFromCartDraft = new OrderFromCartDraft
             {
-                Id = cart.Id,
+                Cart = new CartResourceIdentifier {
+                    Id = cart.Id
+                },
                 Version = cart.Version,
             };
             return await _client
                 .WithApi()
                 .WithProjectKey(Settings.ProjectKey)
                 .Orders()
-                .Post(orderFromCartDraft).ExecuteAsync();
+                .Post(orderFromCartDraft)
+                .ExecuteAsync();
         }
 
 

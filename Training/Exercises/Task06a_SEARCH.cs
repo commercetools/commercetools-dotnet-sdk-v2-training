@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using commercetools.Api.Client;
 using commercetools.Api.Models.Products;
 using commercetools.Base.Client;
+using commercetools.Sdk.Api.Extensions;
 
 namespace Training
 {
@@ -31,7 +31,7 @@ namespace Training
                 .ProductProjections()
                 .Search()
                 .Get()
-                .WithStaged(false)
+                .WithStaged(true)
                 .WithMarkMatchingVariants(true)
                 .WithFilterQuery($"productType.id:\"{productType.Id}\"")
                 .WithFacet("variants.attributes.phonecolor as color")
@@ -39,7 +39,7 @@ namespace Training
                 //.WithFuzzy(true)
                 .ExecuteAsync();
             
-            Console.WriteLine($"Nr. of products: {response.Count}");
+            Console.WriteLine($"No. of products: {response.Count}");
             Console.WriteLine("products in search result: ");
             response.Results.ForEach(p => Console.WriteLine(p.Name["en"]));
             

@@ -1,12 +1,12 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using commercetools.Api.Client;
-using commercetools.Api.Serialization;
+using commercetools.Sdk.Api.Serialization;
 using commercetools.Base.Client;
 using commercetools.Base.Client.Tokens;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using commercetools.Sdk.Api.Extensions;
 
 namespace Training
 {
@@ -45,23 +45,32 @@ namespace Training
                 passwordTokenProvider);
     
             //Get Customer Profile
-            var myProfile = await meClient.WithApi().WithProjectKey(Settings.ProjectKey)
+            var myProfile = await meClient
+                .WithApi()
+                .WithProjectKey(Settings.ProjectKey)
                 .Me()
                 .Get()
                 .ExecuteAsync();
+            
+            Console.WriteLine($"My Profile, firstName:{myProfile.FirstName}, lastName:{myProfile.LastName}");
             
             /*
             //Get my Orders
             var myOrders = await
                 meClient.WithApi()
-                    .WithProjectKey("project-key")
+                    .WithProjectKey(Settings.ProjectKey)
                     .Me()
                     .Orders()
                     .Get()
                     .ExecuteAsync();
+            
+            Console.WriteLine($"Orders count: {myOrders.Count}");
+            foreach (var order in myOrders.Results)
+            {
+                Console.WriteLine($"{order.Id}");
+            }
             */
             
-            Console.WriteLine($"My Profile, firstName:{myProfile.FirstName}, lastName:{myProfile.LastName}");
         }
     }
 }

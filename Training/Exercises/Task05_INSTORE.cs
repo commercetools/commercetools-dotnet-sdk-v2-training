@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using commercetools.Api.Client;
 using commercetools.Base.Client;
+using commercetools.Sdk.Api.Extensions;
 
 namespace Training
 {
@@ -21,7 +21,7 @@ namespace Training
         {
             var customers = await _berlinStoreClient.WithApi()
                 .WithProjectKey(Settings.ProjectKey)
-                .InStoreKeyWithStoreKeyValue("Berlin-Store")
+                .InStoreKeyWithStoreKeyValue("berlin-store")
                 .Customers().Get().ExecuteAsync();
             Console.WriteLine($"Global customers and customers in Berlin Store: {customers.Count}");
         }
