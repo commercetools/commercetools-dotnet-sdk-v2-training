@@ -8,11 +8,11 @@ using commercetools.Sdk.Api.Extensions;
 namespace Training
 {
     //Get Customers in specific Store
-    public class Task05 : IExercise
+    public class Task05A : IExercise
     {
         private readonly IClient _berlinStoreClient;
 
-        public Task05(IEnumerable<IClient> clients)
+        public Task05A(IEnumerable<IClient> clients)
         {
             this._berlinStoreClient = clients.FirstOrDefault(c => c.Name.Equals("BerlinStoreClient"));
         }
