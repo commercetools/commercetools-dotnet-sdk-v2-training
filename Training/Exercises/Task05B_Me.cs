@@ -10,7 +10,7 @@ using commercetools.Sdk.Api.Extensions;
 
 namespace Training
 {
-    public class Task08B : IExercise
+    public class Task05B : IExercise
     {
         private readonly IServiceProvider serviceProvider;
 
