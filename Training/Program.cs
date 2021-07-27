@@ -40,6 +40,9 @@ namespace Training
             
             var clientConfiguration = configuration.GetSection("Client").Get<ClientConfiguration>();
             Settings.SetCurrentProjectKey(clientConfiguration.ProjectKey);
+            
+            //For Me endpoint exercise
+            //services.AddSingleton(configuration);
         }
         
         public static ITokenProvider CreateDefaultTokenProvider(string clientName, IConfiguration configuration, IServiceProvider serviceProvider)
