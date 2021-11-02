@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using commercetools.Base.Client;
-using commercetools.ImportApi.Models.Common;
-using commercetools.ImportApi.Models.Importsinks;
+using commercetools.ImportApi.Models.Importcontainers;
 using Training.Services;
 
 namespace Training
@@ -21,18 +20,17 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            var sinkKey = $"productsImport{Settings.RandomInt()}";
+            var containerKey = $"productsImport{Settings.RandomInt()}";
             var csvFile = "Resources/products.csv";
 
-            var importSink = await _importService.CreateImportSink(new ImportSinkDraft
+            var importContainer = await _importService.CreateImportContainer(new ImportContainerDraft
             {
-                Key = sinkKey,
-                ResourceType = IImportResourceType.ProductDraft
+                Key = containerKey
             });
             
-            Console.WriteLine($"ImportSink created with key: {importSink.Key}");
+            Console.WriteLine($"ImportContainer created with key: {importContainer.Key}");
 
-            var importResponse = await _importService.ImportProducts(sinkKey, csvFile);
+            var importResponse = await _importService.ImportProducts(containerKey, csvFile);
             Console.WriteLine($"Import ProductsDraft operation has been created, operation status count: {importResponse.OperationStatus.Count}");
             importResponse.OperationStatus.ForEach(o => Console.WriteLine(o.OperationId));
             
@@ -40,8 +38,8 @@ namespace Training
             /*
             var opertaion1 = "";
             var opertaion2 = "";
-            var importOperation1 = await _importService.CheckImportOperationStatus(sinkKey, opertaion1);
-            var importOperation2 = await _importService.CheckImportOperationStatus(sinkKey, opertaion2);
+            var importOperation1 = await _importService.CheckImportOperationStatus(containerKey, opertaion1);
+            var importOperation2 = await _importService.CheckImportOperationStatus(containerKey, opertaion2);
             Console.WriteLine($"Operation {opertaion1} : {importOperation1.State.JsonName}");
             Console.WriteLine($"Operation {opertaion2} : {importOperation2.State.JsonName}");
             */

@@ -88,7 +88,7 @@ namespace Training
         /// <param name="anonymousId"></param>
         /// <param name="customerId"></param>
         /// <returns></returns>
-        private async Task<Cart> CreateACart(string anonymousId = null, string customerId = null)
+        private async Task<ICart> CreateACart(string anonymousId = null, string customerId = null)
         {
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .Carts().Post(
@@ -102,7 +102,7 @@ namespace Training
                 }).ExecuteAsync();
         }
         
-        private async Task<Cart> AddProductToACartBySku(Cart cart, string sku, long quantity)
+        private async Task<ICart> AddProductToACartBySku(ICart cart, string sku, long quantity)
         {
             var cartUpdate = new CartUpdate
             {

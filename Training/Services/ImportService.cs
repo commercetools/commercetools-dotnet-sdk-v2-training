@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using commercetools.Base.Client;
 using commercetools.ImportApi.Models.Common;
+using commercetools.ImportApi.Models.Importcontainers;
 using commercetools.ImportApi.Models.Importoperations;
 using commercetools.ImportApi.Models.Importrequests;
-using commercetools.ImportApi.Models.Importsinks;
 using commercetools.ImportApi.Models.Productdrafts;
 using commercetools.ImportApi.Models.Productvariants;
 using commercetools.Sdk.ImportApi.Extensions;
@@ -25,27 +25,25 @@ namespace Training.Services
             _csvHelper = new CSVHelper();
         }
 
-        public async Task<ImportSink> CreateImportSink(ImportSinkDraft draft)
+        public async Task<ImportContainer> CreateImportContainer(ImportContainerDraft draft)
         {
-            var importSink = await _importClient.WithImportApi().WithProjectKey(_projectKey)
-                .ImportSinks()
+            var importContainer = await _importClient.WithImportApi().WithProjectKeyValue(Settings.ProjectKey)
+                .ImportContainers()
                 .Post(draft)
-                .ExecuteAsync();
-            return importSink;
+                .ExecuteAsync() as ImportContainer;
+            return importContainer;
         }
 
-        public async Task<ImportOperation> CheckImportOperationStatus(string importSinkKey, string id)
+        public async Task<ImportOperation> CheckImportOperationStatus(string importContainerKey, string id)
         {
-            var importOperation = await _importClient.WithImportApi().WithProjectKey(_projectKey)
-                .ProductDrafts()
-                .ImportSinkKeyWithImportSinkKeyValue(importSinkKey)
+            var importOperation = await _importClient.WithImportApi().WithProjectKeyValue(_projectKey)
                 .ImportOperations()
                 .WithIdValue(id)
-                .Get().ExecuteAsync();
+                .Get().ExecuteAsync() as ImportOperation;
             return importOperation;
         }
 
-        public async Task<ImportResponse> ImportProducts(string importSinkKey, string csvFile)
+        public async Task<ImportResponse> ImportProducts(string importContainerKey, string csvFile)
         {
             var productDraftImportList = GetProductDraftImportList(csvFile);
             var productDraftImportRequest = new ProductDraftImportRequest()
@@ -53,11 +51,12 @@ namespace Training.Services
                 Type = IImportResourceType.ProductDraft,
                 Resources = productDraftImportList
             };
-            var importResponse = await _importClient.WithImportApi().WithProjectKey(_projectKey)
+            var importResponse = await _importClient.WithImportApi().WithProjectKeyValue(_projectKey)
                 .ProductDrafts()
-                .ImportSinkKeyWithImportSinkKeyValue(importSinkKey)
+                .ImportContainers()
+                .WithImportContainerKeyValue(importContainerKey)
                 .Post(productDraftImportRequest)
-                .ExecuteAsync();
+                .ExecuteAsync() as ImportResponse;
             return importResponse;
         }
 
@@ -77,7 +76,8 @@ namespace Training.Services
                     Slug = new LocalizedString {{"en", PREFIX + "-" + product.ProductName}, {"de", PREFIX + "-" + product.ProductName}},
                     MasterVariant = new ProductVariantDraftImport
                     {
-                        Sku = product.InventoryId,
+                        Sku = PREFIX + "-" + product.InventoryId,
+                        Key = (PREFIX + "-" + product.ProductName).ToLower(),
                         Images = new List<IImage>
                         {
                             new Image {Url = product.ImageUrl, Dimensions = new AssetDimensions {W = 177, H = 237}}

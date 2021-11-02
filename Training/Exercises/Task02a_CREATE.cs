@@ -32,7 +32,7 @@ namespace Training
             {
                 Email = $"michele_{rand}@example.com",
                 Password = "password",
-                Key = "michele-george-{rand}",
+                Key = $"michele-george-{rand}",
                 FirstName = "michele",
                 LastName = "george",
                 Addresses = new List<IBaseAddress>{

@@ -35,7 +35,7 @@ namespace Training
         /// </summary>
         private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.UseCommercetoolsApi(configuration, "Client");
+            // services.UseCommercetoolsApi(configuration, "Client");
             // services.UseCommercetoolsImportApi(configuration, "ImportApiClient");
             // services.UseCommercetoolsApi(configuration, new List<string>{"Client", "BerlinStoreClient"});
             
@@ -43,7 +43,7 @@ namespace Training
             Settings.SetCurrentProjectKey(clientConfiguration.ProjectKey);
             
             //For Me endpoint exercise
-            services.AddSingleton(configuration);
+            // services.AddSingleton(configuration);
         }
         private static void ConfigureExerciseService(IServiceCollection services, string[] args)
         {

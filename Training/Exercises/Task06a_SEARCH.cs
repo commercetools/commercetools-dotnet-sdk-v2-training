@@ -46,7 +46,7 @@ namespace Training
             ShowFacetResults(response);
         }
 
-        private void ShowFacetResults(ProductProjectionPagedSearchResponse searchResponse)
+        private void ShowFacetResults(IProductProjectionPagedSearchResponse searchResponse)
         {
             Console.WriteLine($"Number of Facets: {searchResponse.Facets.Count}");
 

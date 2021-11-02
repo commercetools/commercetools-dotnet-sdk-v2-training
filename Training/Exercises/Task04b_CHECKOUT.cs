@@ -101,7 +101,7 @@ namespace Training
         /// </summary>
         /// <param name="customer"></param>
         /// <returns></returns>
-        private async Task<Cart> CreateCart(Customer customer)
+        private async Task<ICart> CreateCart(ICustomer customer)
         {
             var defaultShippingAddress = customer.GetDefaultShippingAddress();
             var cartDraft = new CartDraft
@@ -125,7 +125,7 @@ namespace Training
         /// <param name="channel"></param>
         /// <param name="skus"></param>
         /// <returns></returns>
-        private async Task<Cart> AddProductToCartBySkusAndChannel(Cart cart, IChannel channel,
+        private async Task<ICart> AddProductToCartBySkusAndChannel(ICart cart, IChannel channel,
             params string[] skus)
         {
             var lineItemsToAddActions = new List<ICartUpdateAction>();
@@ -158,7 +158,7 @@ namespace Training
         /// <param name="cart"></param>
         /// <param name="code"></param>
         /// <returns></returns>
-        private async Task<Cart> AddDiscountToCart(Cart cart, string code)
+        private async Task<ICart> AddDiscountToCart(ICart cart, string code)
         {
             var update = new CartUpdate
             {
@@ -177,7 +177,7 @@ namespace Training
         }
 
         //Recalculate a cart
-        private async Task<Cart> Recalculate(Cart cart)
+        private async Task<ICart> Recalculate(ICart cart)
         {
             var update = new CartUpdate
             {
@@ -200,7 +200,7 @@ namespace Training
         /// </summary>
         /// <param name="cart"></param>
         /// <returns></returns>
-        private async Task<Cart> SetShipping(Cart cart)
+        private async Task<ICart> SetShipping(ICart cart)
         {
             var shippingMethodsResult = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .ShippingMethods()
@@ -242,7 +242,7 @@ namespace Training
         /// <param name="interfaceId"></param>
         /// <param name="interactionId"></param>
         /// <returns></returns>
-        private async Task<Cart> CreatePaymentAndAddToCart(Cart cart, string pspName, string pspMethod,
+        private async Task<ICart> CreatePaymentAndAddToCart(ICart cart, string pspName, string pspMethod,
             string interfaceId, string interactionId)
         {
             // we create payment object
@@ -344,7 +344,7 @@ namespace Training
         /// </summary>
         /// <param name="cart"></param>
         /// <returns></returns>
-        private async Task<Order> CreateOrder(Cart cart)
+        private async Task<IOrder> CreateOrder(ICart cart)
         {
             var orderFromCartDraft = new OrderFromCartDraft
             {
@@ -368,7 +368,7 @@ namespace Training
         /// <param name="order"></param>
         /// <param name="state"></param>
         /// <returns></returns>
-        private async Task<Order> ChangeOrderState(Order order, IOrderState state)
+        private async Task<IOrder> ChangeOrderState(IOrder order, IOrderState state)
         {
             var orderUpdate = new OrderUpdate
             {
@@ -386,7 +386,7 @@ namespace Training
                 .ExecuteAsync();
         }
 
-        private async Task<Order> ChangeWorkflowState(Order order, IStateResourceIdentifier state)
+        private async Task<IOrder> ChangeWorkflowState(IOrder order, IStateResourceIdentifier state)
         {
             var orderUpdate = new OrderUpdate
             {
