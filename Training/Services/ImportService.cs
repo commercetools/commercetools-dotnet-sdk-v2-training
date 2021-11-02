@@ -25,25 +25,23 @@ namespace Training.Services
             _csvHelper = new CSVHelper();
         }
 
-        public async Task<ImportContainer> CreateImportContainer(ImportContainerDraft draft)
+        public async Task<IImportContainer> CreateImportContainer(ImportContainerDraft draft)
         {
-            var importContainer = await _importClient.WithImportApi().WithProjectKeyValue(Settings.ProjectKey)
+            return await _importClient.WithImportApi().WithProjectKeyValue(Settings.ProjectKey)
                 .ImportContainers()
                 .Post(draft)
-                .ExecuteAsync() as ImportContainer;
-            return importContainer;
+                .ExecuteAsync();
         }
 
-        public async Task<ImportOperation> CheckImportOperationStatus(string importContainerKey, string id)
+        public async Task<IImportOperation> CheckImportOperationStatus(string importContainerKey, string id)
         {
-            var importOperation = await _importClient.WithImportApi().WithProjectKeyValue(_projectKey)
+            return await _importClient.WithImportApi().WithProjectKeyValue(_projectKey)
                 .ImportOperations()
                 .WithIdValue(id)
-                .Get().ExecuteAsync() as ImportOperation;
-            return importOperation;
+                .Get().ExecuteAsync();
         }
 
-        public async Task<ImportResponse> ImportProducts(string importContainerKey, string csvFile)
+        public async Task<IImportResponse> ImportProducts(string importContainerKey, string csvFile)
         {
             var productDraftImportList = GetProductDraftImportList(csvFile);
             var productDraftImportRequest = new ProductDraftImportRequest()
@@ -51,13 +49,12 @@ namespace Training.Services
                 Type = IImportResourceType.ProductDraft,
                 Resources = productDraftImportList
             };
-            var importResponse = await _importClient.WithImportApi().WithProjectKeyValue(_projectKey)
+            return await _importClient.WithImportApi().WithProjectKeyValue(_projectKey)
                 .ProductDrafts()
                 .ImportContainers()
                 .WithImportContainerKeyValue(importContainerKey)
                 .Post(productDraftImportRequest)
-                .ExecuteAsync() as ImportResponse;
-            return importResponse;
+                .ExecuteAsync();
         }
 
         #region Helpers
