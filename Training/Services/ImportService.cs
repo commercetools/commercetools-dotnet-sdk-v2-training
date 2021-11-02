@@ -38,7 +38,8 @@ namespace Training.Services
             return await _importClient.WithImportApi().WithProjectKeyValue(_projectKey)
                 .ImportOperations()
                 .WithIdValue(id)
-                .Get().ExecuteAsync();
+                .Get()
+                .ExecuteAsync();
         }
 
         public async Task<IImportResponse> ImportProducts(string importContainerKey, string csvFile)
