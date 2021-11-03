@@ -31,6 +31,7 @@ namespace Training
             
 
             /*
+            // check the status of operations by using the operation Ids
             var opertaion1 = "";
             var opertaion2 = "";
             var importOperation1 = await _importService.CheckImportOperationStatus(containerKey, opertaion1);
