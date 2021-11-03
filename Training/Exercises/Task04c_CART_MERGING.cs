@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using commercetools.Api.Client;
 using commercetools.Api.Models.Carts;
 using commercetools.Api.Models.Customers;
 using commercetools.Base.Client;
+using commercetools.Sdk.Api.Extensions;
 
 namespace Training
 {
@@ -34,6 +34,7 @@ namespace Training
            
            //Add Product to cart
            cart = await AddProductToACartBySku(cart, "A0E200000002E49", 1);
+           cart = await AddProductToACartBySku(cart, "A0E200000001WG3", 1);
 
            // Create Anonymous cart
            var anonymousCart = await CreateACart("123456789", null);
@@ -42,11 +43,18 @@ namespace Training
            //Add Product to the Anonymous cart
            anonymousCart = await AddProductToACartBySku(anonymousCart, "A0E200000001WG3", 4);
            
-           //Decide on a merging strategy
-           
+           //Decide on a merging strategy for customer login
+           var result = null;
            
            //LineItems of the anonymous cart will be copied to the customer’s active cart that has been modified most recently.
-           
+           var currentCustomerCart = result?.Cart as Cart;
+           if (currentCustomerCart != null)
+           {
+               foreach (var lineItem in currentCustomerCart.LineItems)
+               {
+                   Console.WriteLine($"SKU: {lineItem.Variant.Sku}, Quantity: {lineItem.Quantity}");
+               }
+           }
         }
 
         private async Task<ICustomer> CreateACustomer()
@@ -60,12 +68,12 @@ namespace Training
         /// <param name="anonymousId"></param>
         /// <param name="customerId"></param>
         /// <returns></returns>
-        private async Task<Cart> CreateACart(string anonymousId = null, string customerId = null)
+        private async Task<ICart> CreateACart(string anonymousId = null, string customerId = null)
         {
             throw new NotImplementedException();
         }
         
-        private async Task<Cart> AddProductToACartBySku(Cart cart, string sku, long quantity)
+        private async Task<ICart> AddProductToACartBySku(ICart cart, string sku, long quantity)
         {
             throw new NotImplementedException();
         }

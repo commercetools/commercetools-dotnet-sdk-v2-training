@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using commercetools.Api.Client;
 using commercetools.Api.Models.CustomObjects;
 using commercetools.Base.Client;
+using commercetools.Sdk.Api.Extensions;
 
 namespace Training
 {
@@ -23,7 +23,7 @@ namespace Training
             //Create CustomObjectDraft
             var draft = new CustomObjectDraft
             {
-                Container = "plantCheck",
+                Container = "compatibility-info",
                 Key = "tulip6736",
                 Value = new
                 {

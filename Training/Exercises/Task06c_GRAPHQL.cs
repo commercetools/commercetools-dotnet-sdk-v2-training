@@ -1,10 +1,10 @@
 using System;
 using System.Text.Json;
 using System.Threading.Tasks;
-using commercetools.Api.Client;
 using commercetools.Api.Models.GraphQl;
 using commercetools.Base.Client;
 using commercetools.Base.Serialization;
+using commercetools.Sdk.Api.Extensions;
 using Training.GraphQL;
 
 namespace Training

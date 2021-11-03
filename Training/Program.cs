@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using commercetools.Api;
+using commercetools.Sdk.Api;
 using commercetools.Base.Client;
 using commercetools.Base.Client.Tokens;
 using commercetools.Sdk.ImportApi;
@@ -34,19 +35,15 @@ namespace Training
         /// </summary>
         private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            //services.UseCommercetoolsApi(configuration, "Client");
-            //services.UseCommercetoolsImportApi(configuration, "ImportApiClient");
-            //services.UseCommercetoolsApi(configuration, new List<string>{"Client", "BerlinStoreClient"}, CreateDefaultTokenProvider);
+            // services.UseCommercetoolsApi(configuration, "Client");
+            // services.UseCommercetoolsImportApi(configuration, "ImportApiClient");
+            // services.UseCommercetoolsApi(configuration, new List<string>{"Client", "BerlinStoreClient"});
             
             var clientConfiguration = configuration.GetSection("Client").Get<ClientConfiguration>();
             Settings.SetCurrentProjectKey(clientConfiguration.ProjectKey);
-        }
-        
-        public static ITokenProvider CreateDefaultTokenProvider(string clientName, IConfiguration configuration, IServiceProvider serviceProvider)
-        {
-            var httpClientFactory = serviceProvider.GetService<IHttpClientFactory>();
-            var clientConfiguration = configuration.GetSection(clientName).Get<ClientConfiguration>();
-            return TokenProviderFactory.CreateClientCredentialsTokenProvider(clientConfiguration, httpClientFactory);
+
+            //For Me endpoint exercise
+            // services.AddSingleton(configuration);
         }
         private static void ConfigureExerciseService(IServiceCollection services, string[] args)
         {

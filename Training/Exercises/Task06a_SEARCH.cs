@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using commercetools.Api.Client;
 using commercetools.Api.Models.Products;
 using commercetools.Base.Client;
+using commercetools.Sdk.Api.Extensions;
 
 namespace Training
 {
@@ -28,7 +28,7 @@ namespace Training
             ProductProjectionPagedSearchResponse response = null;
             
             //Show Search Results
-            Console.WriteLine($"Nr. of products: {response.Count}");
+            Console.WriteLine($"No. of products: {response.Count}");
             Console.WriteLine("products in search result: ");
             response.Results.ForEach(p => Console.WriteLine(p.Name["en"]));
             
@@ -36,7 +36,7 @@ namespace Training
             ShowFacetResults(response);
         }
 
-        private void ShowFacetResults(ProductProjectionPagedSearchResponse searchResponse)
+        private void ShowFacetResults(IProductProjectionPagedSearchResponse searchResponse)
         {
             Console.WriteLine($"Number of Facets: {searchResponse.Facets.Count}");
 
