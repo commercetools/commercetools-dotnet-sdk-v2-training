@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using commercetools.Api.Models.Common;
 using commercetools.Api.Models.Customers;
 using commercetools.Base.Client;
-using commercetools.Sdk.Api.Extensions;
+using Training.Services;
 
 namespace Training
 {
@@ -17,22 +17,25 @@ namespace Training
     public class Task02A : IExercise
     {
         private readonly IClient _client;
+        private readonly CustomerService _customerService;
+        private readonly string _customerKey = "michele-george";
 
         public Task02A(IEnumerable<IClient> clients)
         {
             _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
+            _customerService = new CustomerService(_client, Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()
         {
             var rand = Settings.RandomInt();
-
+            
             //  Create customer draft
             var customerDraft = new CustomerDraft
             {
-                Email = $"michele_{rand}@example.com",
+                Email = "michele3@example.com",
                 Password = "password",
-                Key = $"michele-george-{rand}",
+                Key = _customerKey,
                 FirstName = "michele",
                 LastName = "george",
                 Addresses = new List<IBaseAddress>{
@@ -40,51 +43,25 @@ namespace Training
                             Country = "DE",
                     }
                 },
-                DefaultShippingAddress = 0
+                DefaultShippingAddress = 0,
+                DefaultBillingAddress = 0
             };
             
             //  SignUp a customer
-            var customerSignInResult = await _client
-                .WithApi()
-                .WithProjectKey(Settings.ProjectKey)
-                .Customers()
-                .Post(customerDraft)
-                .ExecuteAsync();
-            var customer = customerSignInResult.Customer;
+            var customer = await _customerService.CreateCustomer(customerDraft);
             Console.WriteLine($"Customer Created with Id : {customer.Id} and Key : {customer.Key} and Email Verified: {customer.IsEmailVerified}");
-            
-            //CREATE a email verfification token
-            var customerTokenResult = await _client
-                .WithApi()
-                .WithProjectKey(Settings.ProjectKey)
-                .Customers()
-                .EmailToken()
-                .Post(new CustomerCreateEmailToken
-                {
-                    Id = customer.Id,
-                    Version = customer.Version,
-                    TtlMinutes = 10
-                }).ExecuteAsync();
-            
-            //Create ConfirmCustomerEmail
-            await _client
-                .WithApi()
-                .WithProjectKey(Settings.ProjectKey)
-                .Customers()
-                .EmailConfirm()
-                .Post(new CustomerEmailVerify
-                {
-                    TokenValue = customerTokenResult.Value
-                }).ExecuteAsync();
 
-            var retrievedCustomer = await _client
-                .WithApi()
-                .WithProjectKey(Settings.ProjectKey)
-                .Customers()
-                .WithId(customer.Id)
-                .Get().ExecuteAsync();
+            // fetch a customer by the key
+            // var customer = await _customerService.GetCustomerByKey(_customerKey);    
+            // Console.WriteLine($"Customer Id : {customer.Id} and Key : {customer.Key} and Email Verified: {customer.IsEmailVerified}");
             
-            Console.WriteLine($"Is Email Verified:{retrievedCustomer.IsEmailVerified}");
+            // CREATE a email verfification token
+            // var customerToken = await _customerService.CreateCustomerToken(customer);
+            
+            // Confirm Customer Email
+            // var retrievedCustomer = await _customerService.ConfirmCustomerEmail(customerToken);
+
+            // Console.WriteLine($"Is Email Verified:{retrievedCustomer.IsEmailVerified}");
         }
     }
 }
