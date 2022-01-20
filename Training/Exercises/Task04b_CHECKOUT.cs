@@ -28,9 +28,14 @@ namespace Training
         private readonly string _stateOrderedPackedKey = "OrderPacked";
         private readonly string _productSku = "A0E200000001WG3";
 
-        public Task04B(IClient client)
+        private readonly CartService _cartService;
+        private readonly OrderService _orderService;
+
+        public Task04B(IEnumerable<IClient> clients)
         {
-            this._client = client;
+            _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
+            _orderService = new OrderService(_client, Settings.ProjectKey);
+            _cartService = new CartService(_client, Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()

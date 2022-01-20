@@ -35,6 +35,7 @@ namespace Training
                 Type = IStateTypeEnum.OrderState
             };
             var stateOrderPacked = await _stateMachineService.CreateState(stateOrderPackedDraft);
+            Console.WriteLine($"New state created: {stateOrderPacked.Id}");
             
             // create OrderShipped stateDraft, state
             var stateOrderShippedDraft = new StateDraft
@@ -45,17 +46,17 @@ namespace Training
                 Type = IStateTypeEnum.OrderState
             };
             var stateOrderShipped = await _stateMachineService.CreateState(stateOrderShippedDraft);
+            Console.WriteLine($"New state created: {stateOrderShipped.Id}");
             
             // update statePacked to transit to stateShipped
 
             var updatedStateOrderPacked = await _stateMachineService.AddTransition(stateOrderPackedDraft.Key,new List<string>{stateOrderShippedDraft.Key});
-
-            Console.WriteLine($"stateOrderPacked Id : {stateOrderPacked.Id}, transition set to:  {updatedStateOrderPacked.Transitions[0].Id}");
+            Console.WriteLine($"stateOrderPacked Id : {updatedStateOrderPacked.Id}, transition set to:  {updatedStateOrderPacked.Transitions[0].Id}");
             
             // update stateShipped to be the last state
             
             var updatedStateOrderShipped = await _stateMachineService.AddTransition(stateOrderShippedDraft.Key,new List<string>());
-            Console.WriteLine($"stateOrderShipped Id : {stateOrderPacked.Id}, transition set to:  {(updatedStateOrderPacked.Transitions.Count >= 0?updatedStateOrderPacked.Transitions[0].Id : "none")}");
+            Console.WriteLine($"stateOrderShipped Id : {updatedStateOrderShipped.Id}, transition set to:  {(updatedStateOrderShipped.Transitions.Any()?updatedStateOrderShipped.Transitions[0].Id:"none")}");
         }
     }
 }
