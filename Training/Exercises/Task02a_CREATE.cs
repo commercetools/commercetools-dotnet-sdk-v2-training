@@ -18,7 +18,7 @@ namespace Training
     {
         private readonly IClient _client;
         private readonly CustomerService _customerService;
-        private readonly string _customerKey = "michele-george";
+        private readonly string _customerKey = "customer-michele-george";
 
         public Task02A(IEnumerable<IClient> clients)
         {
@@ -33,7 +33,7 @@ namespace Training
             //  Create customer draft
             var customerDraft = new CustomerDraft
             {
-                Email = "michele3@example.com",
+                Email = "michele@example.com",
                 Password = "password",
                 Key = _customerKey,
                 FirstName = "michele",

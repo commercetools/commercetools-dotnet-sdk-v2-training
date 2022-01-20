@@ -12,6 +12,7 @@ namespace Training
     {
         private readonly IClient _importClient;
         private readonly ImportService _importService;
+        private readonly string containerKey = "mg-import-container";
         public Task03B(IEnumerable<IClient> clients)
         {
             _importClient = clients.FirstOrDefault(c => c.Name.Equals("ImportApiClient"));
@@ -20,7 +21,6 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            var containerKey = $"productsImport{Settings.RandomInt()}";
             var csvFile = "Resources/products.csv";
 
             var importContainer = await _importService.CreateImportContainer(new ImportContainerDraft
