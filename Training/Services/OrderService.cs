@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using commercetools.Api.Models.Carts;
 using commercetools.Api.Models.Orders;
@@ -19,6 +19,25 @@ namespace Training.Services
             _projectKey = projectKey;
         }
 
+        /// <summary>
+        /// Get an Order with Id
+        /// </summary>
+        /// <param name="Order Id"></param>
+        /// <returns></returns>
+        public async Task<IOrder> GetOrderById(string orderId)
+        {
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Orders()
+                .WithId(orderId)
+                .Get()
+                .ExecuteAsync();
+        }
+
+        /// <summary>
+        /// Create an Order From the cart
+        /// </summary>
+        /// <param name="cart"></param>
+        /// <returns></returns>
         public async Task<IOrder> CreateOrder(ICart cart)
         {
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
@@ -34,12 +53,46 @@ namespace Training.Services
                 .ExecuteAsync();
         }
 
-        public async Task<IOrder> GetOrderById(string orderId)
+
+        /// <summary>
+        /// Change Order State
+        /// </summary>
+        /// <param name="order"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        public async Task<IOrder> ChangeOrderState(IOrder order, IOrderState state)
         {
+            var orderUpdate = new OrderUpdate
+            {
+                Version = order.Version,
+                Actions = new List<IOrderUpdateAction>
+                {
+                    new OrderChangeOrderStateAction {OrderState = state}
+                }
+            };
+
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .Orders()
-                .WithId(orderId)
-                .Get()
+                .WithId(order.Id)
+                .Post(orderUpdate)
+                .ExecuteAsync();
+        }
+
+        public async Task<IOrder> ChangeWorkflowState(IOrder order, IStateResourceIdentifier state)
+        {
+            var orderUpdate = new OrderUpdate
+            {
+                Version = order.Version,
+                Actions = new List<IOrderUpdateAction>
+                {
+                    new OrderTransitionStateAction() {State = state}
+                }
+            };
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Orders()
+                .WithId(order.Id)
+                .Post(orderUpdate)
+                .WithExpand("state")
                 .ExecuteAsync();
         }
         

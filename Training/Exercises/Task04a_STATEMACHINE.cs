@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using commercetools.Api.Models.Common;
 using commercetools.Api.Models.States;
 using commercetools.Base.Client;
-using commercetools.Sdk.Api.Extensions;
 using Training.Services;
 
 namespace Training

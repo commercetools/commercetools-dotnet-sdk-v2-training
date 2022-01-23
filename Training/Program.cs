@@ -35,8 +35,8 @@ namespace Training
         /// </summary>
         private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.UseCommercetoolsApi(configuration, "Client");
-            // services.UseCommercetoolsImportApi(configuration, "ImportApiClient");
+            // services.UseCommercetoolsApi(configuration, "Client");
+            services.UseCommercetoolsImportApi(configuration, "ImportApiClient");
             // services.UseCommercetoolsApi(configuration, new List<string>{"Client", "BerlinStoreClient"});
             
             var clientConfiguration = configuration.GetSection("Client").Get<ClientConfiguration>();

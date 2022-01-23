@@ -5,6 +5,7 @@ using commercetools.ImportApi.Models.Common;
 using commercetools.ImportApi.Models.Importcontainers;
 using commercetools.ImportApi.Models.Importoperations;
 using commercetools.ImportApi.Models.Importrequests;
+using commercetools.ImportApi.Models.Importsummaries;
 using commercetools.ImportApi.Models.Productdrafts;
 using commercetools.ImportApi.Models.Productvariants;
 using commercetools.Sdk.ImportApi.Extensions;
@@ -33,11 +34,32 @@ namespace Training.Services
                 .ExecuteAsync();
         }
 
-        public async Task<IImportOperation> CheckImportOperationStatus(string importContainerKey, string id)
+        public async Task<IImportSummary> GetImportContainerSummary(string importContainerKey)
+        {
+            return await _importClient.WithImportApi().WithProjectKeyValue(_projectKey)
+                .ImportContainers()
+                .WithImportContainerKeyValue(importContainerKey)
+                .ImportSummaries()
+                .Get()
+                .ExecuteAsync();
+        }
+
+        public async Task<IImportOperationPagedResponse> GetImportOperationsByImportContainer(string importContainerKey, bool debug)
+        {
+            return await _importClient.WithImportApi().WithProjectKeyValue(_projectKey)
+                .ImportContainers()
+                .WithImportContainerKeyValue(importContainerKey)
+                .ImportOperations()    
+                .Get()
+                .WithDebug(debug)
+                .ExecuteAsync();
+        }
+
+        public async Task<IImportOperation> CheckImportOperationStatus(string id)
         {
             return await _importClient.WithImportApi().WithProjectKeyValue(_projectKey)
                 .ImportOperations()
-                .WithIdValue(id)
+                .WithIdValue(id)             
                 .Get()
                 .ExecuteAsync();
         }
