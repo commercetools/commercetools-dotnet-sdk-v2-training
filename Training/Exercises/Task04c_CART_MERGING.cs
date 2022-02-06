@@ -44,7 +44,7 @@ namespace Training
            anonymousCart = await AddProductToACartBySku(anonymousCart, "A0E200000001WG3", 4);
            
            //Decide on a merging strategy for customer login
-           var result = null;
+           ICustomerSignInResult result = null;
            
            //LineItems of the anonymous cart will be copied to the customer’s active cart that has been modified most recently.
            var currentCustomerCart = result?.Cart as Cart;
