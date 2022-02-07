@@ -26,14 +26,24 @@ namespace Training.Services
             _csvHelper = new CSVHelper();
         }
 
-        public async Task<IImportContainer> CreateImportContainer(ImportContainerDraft draft)
+        /// <summary>
+        /// Creates an ImportContainer
+        /// </summary>
+        /// <param name="importContainerDraft"></param>
+        /// <returns></returns>
+        public async Task<IImportContainer> CreateImportContainer(ImportContainerDraft importContainerDraft)
         {
             return await _importClient.WithImportApi().WithProjectKeyValue(Settings.ProjectKey)
                 .ImportContainers()
-                .Post(draft)
+                .Post(importContainerDraft)
                 .ExecuteAsync();
         }
 
+        /// <summary>
+        /// GET import summary for the import container
+        /// </summary>
+        /// <param name="importContainerKey"></param>
+        /// <returns></returns>
         public async Task<IImportSummary> GetImportContainerSummary(string importContainerKey)
         {
             return await _importClient.WithImportApi().WithProjectKeyValue(_projectKey)
@@ -44,7 +54,14 @@ namespace Training.Services
                 .ExecuteAsync();
         }
 
-        public async Task<IImportOperationPagedResponse> GetImportOperationsByImportContainer(string importContainerKey, bool debug)
+        /// <summary>
+        /// GET import operations for the import container
+        /// </summary>
+        /// <param name="importContainerKey"></param>
+        /// <param name="debug"></param>
+        /// <returns></returns>
+        public async Task<IImportOperationPagedResponse> GetImportOperationsByImportContainer(string importContainerKey, 
+            bool debug)
         {
             return await _importClient.WithImportApi().WithProjectKeyValue(_projectKey)
                 .ImportContainers()
@@ -55,15 +72,26 @@ namespace Training.Services
                 .ExecuteAsync();
         }
 
-        public async Task<IImportOperation> CheckImportOperationStatus(string id)
+        /// <summary>
+        /// GET import operation status for the import operation by id
+        /// </summary>
+        /// <param name="operationId"></param>
+        /// <returns></returns>
+        public async Task<IImportOperation> CheckImportOperationStatus(string operationId)
         {
             return await _importClient.WithImportApi().WithProjectKeyValue(_projectKey)
                 .ImportOperations()
-                .WithIdValue(id)             
+                .WithIdValue(operationId)             
                 .Get()
                 .ExecuteAsync();
         }
 
+        /// <summary>
+        /// Import products from the csv file
+        /// </summary>
+        /// <param name="importContainerKey"></param>
+        /// <param name="csvFile"></param>
+        /// <returns></returns>
         public async Task<IImportResponse> ImportProducts(string importContainerKey, string csvFile)
         {
             var productDraftImportList = GetProductDraftImportList(csvFile);

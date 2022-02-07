@@ -22,13 +22,12 @@ namespace Training.Services
         }
 
         /// <summary>
-        /// Create A Payment and Add it to the cart
+        /// Creates A Payment
         /// </summary>
         /// <param name="cart"></param>
         /// <param name="pspName"></param>
         /// <param name="pspMethod"></param>
         /// <param name="interfaceId"></param>
-        /// <param name="interactionId"></param>
         /// <returns></returns>
         public async Task<IPayment> CreatePayment(ICart cart, string pspName, string pspMethod,
             string interfaceId)
@@ -55,6 +54,14 @@ namespace Training.Services
                 .Payments()
                 .Post(paymentDraft).ExecuteAsync();
         }
+
+        /// <summary>
+        /// POST Add Transaction for the payment
+        /// </summary>
+        /// <param name="cart"></param>
+        /// <param name="payment"></param>
+        /// <param name="interfaceId"></param>
+        /// <returns></returns>
         public async Task<IPayment> AddTransactionToPayment(ICart cart, IPayment payment, string interactionId)
         {
             //Create the transaction

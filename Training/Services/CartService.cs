@@ -23,6 +23,11 @@ namespace Training.Services
             _projectKey = projectKey;
         }
 
+        /// <summary>
+        /// GET a cart by Key
+        /// </summary>
+        /// <param name="cartKey"></param>
+        /// <returns></returns>
         public async Task<ICart> GetCartByKey(string cartKey)
         {
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
@@ -32,6 +37,11 @@ namespace Training.Services
                 .ExecuteAsync();
         }
 
+        /// <summary>
+        /// GET a cart by id
+        /// </summary>
+        /// <param name="cartId"></param>
+        /// <returns></returns>
         public async Task<ICart> GetCartById(string cartId)
         {
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
@@ -122,7 +132,7 @@ namespace Training.Services
         }
 
         /// <summary>
-        /// Add DiscountCode to Cart
+        /// POST Add Discount Code update to the Cart
         /// </summary>
         /// <param name="cart"></param>
         /// <param name="code"></param>
@@ -146,6 +156,11 @@ namespace Training.Services
         }
 
         //Recalculate a cart
+        /// <summary>
+        /// POST Recalculate update for the cart
+        /// </summary>
+        /// <param name="cart"></param>
+        /// <returns></returns>
         public async Task<ICart> Recalculate(ICart cart)
         {
             var update = new CartUpdate
@@ -165,7 +180,7 @@ namespace Training.Services
         }
 
         /// <summary>
-        /// Set ShippingMethod for a cart
+        /// POST Set ShippingMethod update for the cart
         /// </summary>
         /// <param name="cart"></param>
         /// <returns></returns>
@@ -203,7 +218,7 @@ namespace Training.Services
         }
 
         /// <summary>
-        /// Add Payment to a cart
+        /// POST Add Payment to a cart
         /// </summary>
         /// <param name="cart"></param>
         /// <param name="payment"></param>

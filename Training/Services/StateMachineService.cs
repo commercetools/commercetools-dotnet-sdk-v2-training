@@ -17,6 +17,11 @@ namespace Training.Services
             _projectKey = projectKey;
         }
 
+        /// <summary>
+        /// Creates a workflow state
+        /// </summary>
+        /// <param name="stateDraft"></param>
+        /// <returns></returns>
         public async Task<IState> CreateState(IStateDraft stateDraft)
         {
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
@@ -25,6 +30,12 @@ namespace Training.Services
                 .ExecuteAsync();
         }
 
+
+        /// <summary>
+        /// GET a state by key
+        /// </summary>
+        /// <param name="stateKey"></param>
+        /// <returns></returns>
         public async Task<IState> GetStateByKey(string stateKey)
         {
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
@@ -34,6 +45,12 @@ namespace Training.Services
                 .ExecuteAsync();
         }
 
+        /// <summary>
+        /// POST a set transition update for the state
+        /// </summary>
+        /// <param name="stateKey"></param>
+        /// <param name="transitionStateKeys"></param>
+        /// <returns></returns>
         public async Task<IState> AddTransition(string stateKey, List<string> transitionStateKeys)
         {
             IState state = await GetStateByKey(stateKey);

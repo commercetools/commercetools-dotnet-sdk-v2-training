@@ -28,7 +28,10 @@ namespace Training.Services
         /// <param name="resourceTypeIds"></param>
         /// <param name="fields"></param>
         /// <returns></returns>
-        public async Task<IType> CreateCustomType(string key,LocalizedString name, List<IResourceTypeId> resourceTypeIds, List<IFieldDefinition> fields)
+        public async Task<IType> CreateCustomType(string key,
+            LocalizedString name, 
+            List<IResourceTypeId> resourceTypeIds, 
+            List<IFieldDefinition> fields)
         {
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .Types()

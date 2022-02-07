@@ -37,7 +37,8 @@ namespace Training.Services
         /// <param name="filterQuery"></param>
         /// <param name="facet"></param>
         /// <returns></returns>
-        public async Task<IProductProjectionPagedSearchResponse> GetSearchResults(string filterQuery = null, string facet = null)
+        public async Task<IProductProjectionPagedSearchResponse> GetSearchResults(string filterQuery = null, 
+            string facet = null)
         {
             return await _client.WithApi()
                 .WithProjectKey(Settings.ProjectKey)

@@ -24,7 +24,9 @@ namespace Training.Services
         /// <param name="destination"></param>
         /// <param name="messages"></param>
         /// <returns></returns>
-        public async Task<ISubscription> createSubscription(string key, IDestination destination, List<IMessageSubscription> messages)
+        public async Task<ISubscription> createSubscription(string key, 
+            IDestination destination, 
+            List<IMessageSubscription> messages)
         {
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .Subscriptions()

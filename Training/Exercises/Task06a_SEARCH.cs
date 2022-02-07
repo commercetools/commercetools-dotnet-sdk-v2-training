@@ -33,12 +33,14 @@ namespace Training
 
             var filterQuery = $"productType.id:\"{productType.Id}\"";
             var facet = "variants.attributes.phonecolor as color";
-            var response = await _searchService.GetSearchResults(filterQuery, facet);
+
+            // GET product projections paged search response and facets
+            IProductProjectionPagedSearchResponse response = await _searchService.GetSearchResults(filterQuery, facet);
             
             Console.WriteLine($"No. of products: {response.Count}");
             Console.WriteLine("products in search result: ");
-            response.Results.ForEach(p => Console.WriteLine(p.Name["de"]));
-            
+            response.Results.ForEach(p => Console.WriteLine(p.Name["en"]));
+
             ShowFacetResults(response);
         }
 

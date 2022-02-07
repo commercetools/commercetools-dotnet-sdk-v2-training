@@ -17,7 +17,11 @@ namespace Training.Services
             _client = client;
             _projectKey = projectKey;
         }
-
+        /// <summary>
+        /// GET Customer by key
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
         public async Task<ICustomer> GetCustomerByKey(string customerKey)
         {
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
@@ -27,6 +31,11 @@ namespace Training.Services
                 .ExecuteAsync();
         }
 
+        /// <summary>
+        /// POST a Customer sign-up
+        /// </summary>
+        /// <param name="customerDraft"></param>
+        /// <returns></returns>
         public async Task<ICustomer> CreateCustomer(ICustomerDraft customerDraft)
         {
             var customerSignInResult =  await _client.WithApi().WithProjectKey(Settings.ProjectKey)
@@ -36,6 +45,11 @@ namespace Training.Services
             return customerSignInResult.Customer;
         }
 
+        /// <summary>
+        /// Create a Customer Token
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
         public async Task<ICustomerToken> CreateCustomerToken(ICustomer customer)
         {
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
@@ -50,6 +64,12 @@ namespace Training.Services
                 )
                 .ExecuteAsync();
         }
+
+        /// <summary>
+        /// Confirm a Customer Email
+        /// </summary>
+        /// <param name="customerToken"></param>
+        /// <returns></returns>
         public async Task<ICustomer> ConfirmCustomerEmail(ICustomerToken customerToken)
         {
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
@@ -63,6 +83,11 @@ namespace Training.Services
                 .ExecuteAsync();
         }
 
+        /// <summary>
+        /// GET Customer Group by key
+        /// </summary>
+        /// <param name="customerGroupKey"></param>
+        /// <returns></returns>
         public async Task<ICustomerGroup> GetCustomerGroupByKey(string customerGroupKey)
         {
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
@@ -72,6 +97,12 @@ namespace Training.Services
                 .ExecuteAsync();
         }
 
+        /// <summary>
+        /// POST Set Customer Group update for the customer
+        /// </summary>
+        /// <param name="customerKey"></param>
+        /// <param name="customerGroupKey"></param>
+        /// <returns></returns>
         public async Task<ICustomer> AssignCustomerToCustomerGroup(string customerKey, string customerGroupKey)
         {
             ICustomer customer = await GetCustomerByKey(customerKey);
