@@ -1,8 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using commercetools.Api.Models.CustomObjects;
 using commercetools.Base.Client;
-using commercetools.Sdk.Api.Extensions;
+using Training.Services;
 
 namespace Training
 {
@@ -12,38 +13,20 @@ namespace Training
     public class Task07B : IExercise
     {
         private readonly IClient _client;
+         private readonly CustomObjectsService _customObjectsService;
         
-        public Task07B(IClient client)
+        public Task07B(IEnumerable<IClient> clients)
         {
-            this._client = client;
+            _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
+            _customObjectsService = new CustomObjectsService(_client, Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()
         {
-            //Create CustomObjectDraft
-            var draft = new CustomObjectDraft
-            {
-                Container = "compatibility-info",
-                Key = "tulip6736",
-                Value = new
-                {
-                    IncompatibleSKUs = "tulip6125",
-                    LeafletID = "leaflet_1234",
-                    Instructions = new
-                    {
-                        Title = "Flower Handling",
-                        Distance = "2 meter",
-                        Watering = "heavy"
-                    }
-                }
-            };
+            var jsonFile = "Resources/compatibility-info.json";
             
             //Creates a new custom object 
-            var customObject = await _client.WithApi()
-                .WithProjectKey(Settings.ProjectKey)
-                .CustomObjects()
-                .Post(draft)
-                .ExecuteAsync();
+            var customObject = await _customObjectsService.createCustomObject("compatibility-info", "tulip-seed-product",jsonFile);
 
             Console.WriteLine($"custom object created with Id {customObject.Id} with version {customObject.Version}");
         }

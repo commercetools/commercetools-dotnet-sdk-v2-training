@@ -17,11 +17,11 @@ namespace Training
     public class Task04B : IExercise
     {
         private readonly IClient _client;
-        private readonly string _channelKey = "berlin-supply-channel";
-        private readonly string _customerKey = "customer-michele-george";
-        private readonly string _discountCode = "BOGO";
-        private readonly string _stateOrderedPackedKey = "mg-OrderPacked";
-        private readonly string _productSku = "tulip-seed-sack";
+        private const string _channelKey = "berlin-supply-channel";
+        private const string _customerKey = "customer-michele-george";
+        private const string _discountCode = "BOGO";
+        private const string _stateOrderedPackedKey = "mg-OrderPacked";
+        private const string _productSku = "tulip-seed-sack";
 
         private readonly CustomerService _customerService;
         private readonly CartService _cartService;
@@ -92,7 +92,7 @@ namespace Training
             cart = await _cartService.AddPaymentToCart( cart, payment );
 
             var order = await _orderService.CreateOrder(cart);
-            Console.WriteLine($"Order Created with Id: {order.Id}");
+            Console.WriteLine($"Order Created with order number: {order.OrderNumber}");
             
             order = await _orderService.ChangeOrderState(order, IOrderState.Complete);
             Console.WriteLine($"Order state changed to: {order.OrderState.Value}");

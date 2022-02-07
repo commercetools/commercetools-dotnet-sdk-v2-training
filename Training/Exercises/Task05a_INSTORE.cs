@@ -15,8 +15,8 @@ namespace Training
         private readonly IClient _berlinStoreClient;
         private readonly StoreService _storeService;
         private readonly CustomerService _customerService;
-        private readonly string _storeKey = "berlin-store";
-        private readonly string _customerKey = "customer-michele-george";
+        private const string _storeKey = "berlin-store";
+        private const string _customerKey = "customer-michele-george";
 
         public Task05A(IEnumerable<IClient> clients)
         {
@@ -30,12 +30,7 @@ namespace Training
             // var customers = await _storeService.GetCustomersInStore(_storeKey);
             // Console.WriteLine($"Store customers (including global): {customers.Total}");
 
-            var customer = await _berlinStoreClient.WithApi().WithProjectKey(Settings.ProjectKey)
-                .InStoreKeyWithStoreKeyValue(_storeKey)
-                .Customers()
-                .WithKey(_customerKey)
-                .Get()
-                .ExecuteAsync();
+            var customer = await _customerService.GetCustomerByKey(_customerKey);
             var storeCart = await _storeService.CreateInStoreCart(customer,_storeKey);
             System.Console.WriteLine($"Cart {storeCart.Id} created in store {_storeKey} for customer {_customerKey}");
         }

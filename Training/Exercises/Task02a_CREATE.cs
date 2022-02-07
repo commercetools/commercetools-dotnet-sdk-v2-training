@@ -18,7 +18,7 @@ namespace Training
     {
         private readonly IClient _client;
         private readonly CustomerService _customerService;
-        private readonly string _customerKey = "customer-michele-george";
+        private const string _customerKey = "customer-michele-george";
 
         public Task02A(IEnumerable<IClient> clients)
         {

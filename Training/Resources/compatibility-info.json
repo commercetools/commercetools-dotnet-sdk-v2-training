@@ -1,0 +1,10 @@
+{ 
+    "IncompatibleSKUs": ["tulip6125"], 
+    "LeafletID": "leaflet_1234", 
+    "Instructions": 
+    { 
+        "Title": "Flower Handling", 
+        "Distance": "2 meter", 
+        "Watering": "heavy" 
+        } 
+    }

@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using commercetools.Api.Models.Products;
 using commercetools.Base.Client;
-using commercetools.Sdk.Api.Extensions;
+using Training.Services;
 
 namespace Training
 {
@@ -13,35 +15,29 @@ namespace Training
     public class Task06A : IExercise
     {
         private readonly IClient _client;
+        private readonly SearchService _searchService;
 
-        public Task06A(IClient client)
+        private const string _productTypeKey = "PhonePT";
+        
+
+        public Task06A(IEnumerable<IClient> clients)
         {
-            this._client = client;
+            _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
+            _searchService = new SearchService(_client, Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()
         {
             // GET productType
-            var productType = await _client.WithApi()
-                .WithProjectKey(Settings.ProjectKey)
-                .ProductTypes().WithKey("PhonePT").Get().ExecuteAsync();
+            var productType = await _searchService.GetProductTypeByKey(_productTypeKey);
 
-            var response = await _client.WithApi()
-                .WithProjectKey(Settings.ProjectKey)
-                .ProductProjections()
-                .Search()
-                .Get()
-                .WithStaged(true)
-                .WithMarkMatchingVariants(true)
-                .WithFilterQuery($"productType.id:\"{productType.Id}\"")
-                .WithFacet("variants.attributes.phonecolor as color")
-                //.AddQueryParam("text.en", "IPhome11")
-                //.WithFuzzy(true)
-                .ExecuteAsync();
+            var filterQuery = $"productType.id:\"{productType.Id}\"";
+            var facet = "variants.attributes.phonecolor as color";
+            var response = await _searchService.GetSearchResults(filterQuery, facet);
             
             Console.WriteLine($"No. of products: {response.Count}");
             Console.WriteLine("products in search result: ");
-            response.Results.ForEach(p => Console.WriteLine(p.Name["en"]));
+            response.Results.ForEach(p => Console.WriteLine(p.Name["de"]));
             
             ShowFacetResults(response);
         }

@@ -16,9 +16,9 @@ namespace Training
     public class Task04C : IExercise
     {
         private readonly IClient _client;
-        private readonly string _channelKey = "berlin-supply-channel";
-        private readonly string _customerKey = "customer-michele-george";
-        private readonly string _customerPassword = "password";
+        private const string _channelKey = "berlin-supply-channel";
+        private const string _customerKey = "customer-michele-george";
+        private const string _customerPassword = "password";
         private readonly CustomerService _customerService;
         private readonly CartService _cartService;
         

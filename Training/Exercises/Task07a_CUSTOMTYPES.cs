@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using commercetools.Api.Models.Common;
 using commercetools.Api.Models.Types;
 using commercetools.Base.Client;
-using commercetools.Sdk.Api.Extensions;
+using Training.Services;
 
 namespace Training
 {
@@ -14,25 +15,17 @@ namespace Training
     public class Task07A : IExercise
     {
         private readonly IClient _client;
+        private readonly TypeService _typeService;
 
-        public Task07A(IClient client)
+        public Task07A(IEnumerable<IClient> clients)
         {
-            this._client = client;
+            _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
+            _typeService = new TypeService(_client, Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()
         {
-            var typeDraft = this.CreateTypeDraft();
-            var createdType = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .Types()
-                .Post(typeDraft)
-                .ExecuteAsync();
-            
-            Console.WriteLine($"New custom type has been created with Id: {createdType.Id}");
-        }
 
-        public TypeDraft CreateTypeDraft()
-        {
             var typeDraft = new TypeDraft
             {
                 Key = "allowed-to-place-orders",
@@ -43,7 +36,16 @@ namespace Training
                     this.CreateTypeFieldDefinition()
                 }
             };
-            return typeDraft;
+
+            var createdType = await _typeService.CreateCustomType("allowed-to-place-orders", 
+                new LocalizedString {{"de", "allowed-to-place-orders"},{"en", "allowed-to-place-orders"}},
+                new List<IResourceTypeId> {IResourceTypeId.Customer},
+                new List<IFieldDefinition>
+                {
+                    this.CreateTypeFieldDefinition()
+                }
+            );
+            Console.WriteLine($"New custom type has been created with Id: {createdType.Id}");
         }
 
         private FieldDefinition CreateTypeFieldDefinition()

@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using commercetools.Api.Models.Subscriptions;
 using commercetools.Base.Client;
-using commercetools.Sdk.Api.Extensions;
+using Training.Services;
 
 namespace Training
 {
@@ -13,10 +14,12 @@ namespace Training
     public class Task08A : IExercise
     {
         private readonly IClient _client;
+        SubscriptionService _subscriptionService;
         
-        public Task08A(IClient client)
+        public Task08A(IEnumerable<IClient> clients)
         {
-            this._client = client;
+            _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
+            _subscriptionService = new SubscriptionService(_client, Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()
@@ -29,26 +32,18 @@ namespace Training
                 Topic = "training-subscription-sample"
             };
            
-            //create a subscription draft
-            var subscriptionDraft = new SubscriptionDraft
-            {
-                Key = "subscriptionSampleForSendingConfirmationEmails",
-                Destination = destination,
-                Messages = new List<IMessageSubscription>
+            //create a subscription
+            var subscription = await _subscriptionService.createSubscription(
+                "subscriptionOrderConfirmationEmails",
+                destination,
+                new List<IMessageSubscription>
                 {
                     new MessageSubscription
                     {
                         ResourceTypeId = "order",
                         Types = new List<string> { "OrderCreated" }
                     }
-                }
-            };
-           
-            //create a subscription
-            var subscription = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .Subscriptions()
-                .Post(subscriptionDraft)
-                .ExecuteAsync();
+                });
            
             Console.WriteLine($"a new subscription created with Id {subscription.Id}");
         }

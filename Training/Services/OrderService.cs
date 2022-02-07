@@ -20,15 +20,15 @@ namespace Training.Services
         }
 
         /// <summary>
-        /// Get an Order with Id
+        /// Get an Order with order number
         /// </summary>
-        /// <param name="Order Id"></param>
+        /// <param name="orderNumber"></param>
         /// <returns></returns>
-        public async Task<IOrder> GetOrderById(string orderId)
+        public async Task<IOrder> GetOrderByOrderNumber(string orderNumber)
         {
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .Orders()
-                .WithId(orderId)
+                .WithOrderNumber(orderNumber)
                 .Get()
                 .ExecuteAsync();
         }
@@ -46,8 +46,8 @@ namespace Training.Services
                     new OrderFromCartDraft
                     {
                         Cart = new CartResourceIdentifier{Id = cart.Id},
-                        Version = cart.Version
-
+                        Version = cart.Version,
+                        OrderNumber = "HAPG" + Settings.RandomString()
                     }
                 )
                 .ExecuteAsync();
@@ -73,11 +73,16 @@ namespace Training.Services
 
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .Orders()
-                .WithId(order.Id)
+                .WithOrderNumber(order.OrderNumber)
                 .Post(orderUpdate)
                 .ExecuteAsync();
         }
-
+        /// <summary>
+        /// Change Order Workflow State
+        /// </summary>
+        /// <param name="order"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
         public async Task<IOrder> ChangeWorkflowState(IOrder order, IStateResourceIdentifier state)
         {
             var orderUpdate = new OrderUpdate
@@ -90,7 +95,7 @@ namespace Training.Services
             };
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .Orders()
-                .WithId(order.Id)
+                .WithOrderNumber(order.OrderNumber)
                 .Post(orderUpdate)
                 .WithExpand("state")
                 .ExecuteAsync();

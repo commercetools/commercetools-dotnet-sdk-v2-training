@@ -1,8 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using commercetools.Base.Client;
-using commercetools.Sdk.Api.Extensions;
+using Training.Services;
 
 namespace Training
 {
@@ -13,10 +14,12 @@ namespace Training
     public class Task06B : IExercise
     {
         private readonly IClient _client;
+        private readonly SearchService _searchService;
         
-        public Task06B(IClient client)
+        public Task06B(IEnumerable<IClient> clients)
         {
-            this._client = client;
+            _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
+            _searchService = new SearchService(_client, Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()
@@ -27,14 +30,7 @@ namespace Training
             {
                 var where = lastId != null ? $"id>\"{lastId}\"" : null;
                 
-                var response = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                    .Products()
-                    .Get()
-                    .WithSort("id asc")
-                    .WithLimit(pageSize)
-                    .WithWhere(where)
-                    .WithWithTotal(false)
-                    .ExecuteAsync();
+                var response = await _searchService.GetPagedResults(where,pageSize);
 
                 Console.WriteLine($"Show Results of Page {currentPage}");
                 foreach (var product in response.Results)

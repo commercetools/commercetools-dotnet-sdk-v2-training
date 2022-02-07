@@ -13,7 +13,7 @@ namespace Training
     {
         private readonly IClient _importClient;
         private readonly ImportService _importService;
-        private readonly string containerKey = "mg1-import-container";
+        private const string containerKey = "mg1-import-container";
         public Task03B(IEnumerable<IClient> clients)
         {
             _importClient = clients.FirstOrDefault(c => c.Name.Equals("ImportApiClient"));

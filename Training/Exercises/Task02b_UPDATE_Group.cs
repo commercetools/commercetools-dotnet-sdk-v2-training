@@ -15,8 +15,8 @@ namespace Training
     public class Task02B : IExercise
     {
         private readonly IClient _client;
-        private readonly string _customerKey = "customer-michele-george";
-        private readonly string _customerGroupKey = "indoor-customer-group";
+        private const string _customerKey = "customer-michele-george";
+        private const string _customerGroupKey = "indoor-customer-group";
 
         private readonly CustomerService _customerService;
 
