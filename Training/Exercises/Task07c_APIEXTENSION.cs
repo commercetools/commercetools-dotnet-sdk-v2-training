@@ -40,7 +40,7 @@ namespace Training
             
             //create the extension
             var extension = await _extensionService.createExtension(
-                "nd-order-checker",
+                "order-checker",
                 destination,
                 new List<IExtensionTrigger> {trigger}
             );

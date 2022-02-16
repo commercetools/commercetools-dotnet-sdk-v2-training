@@ -54,7 +54,7 @@ namespace Training
            cart = await _cartService.AddProductToCartBySkusAndChannel(cart, channel, "tulip-seed-package", "tulip-seed-sack");
 
            // Create Anonymous cart
-           var anonymousCart = await _cartService.CreateAnonymousCart("123456789");
+           var anonymousCart = await _cartService.CreateAnonymousCart("mg123456789");
            Console.WriteLine($"anonymous cart created with Id {anonymousCart.Id}");
            
            //Add Product to the Anonymous cart

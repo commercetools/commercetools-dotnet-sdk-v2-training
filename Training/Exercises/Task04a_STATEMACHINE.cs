@@ -28,7 +28,7 @@ namespace Training
             // create OrderPacked stateDraft, state
             var stateOrderPackedDraft = new StateDraft
             {
-                Key = "mg-OrderPacked",
+                Key = "OrderPacked",
                 Initial = true,
                 Name = new LocalizedString {{"en", "MG Order Packed"}},
                 Type = IStateTypeEnum.OrderState
@@ -39,7 +39,7 @@ namespace Training
             // create OrderShipped stateDraft, state
             var stateOrderShippedDraft = new StateDraft
             {
-                Key = "mg-OrderShipped",
+                Key = "OrderShipped",
                 Initial = false,
                 Name = new LocalizedString {{"en", "MG Order Shipped"}},
                 Type = IStateTypeEnum.OrderState

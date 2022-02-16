@@ -20,7 +20,7 @@ namespace Training
         private const string _channelKey = "berlin-supply-channel";
         private const string _customerKey = "customer-michele-george";
         private const string _discountCode = "BOGO";
-        private const string _stateOrderedPackedKey = "mg-OrderPacked";
+        private const string _stateOrderedPackedKey = "OrderPacked";
         private const string _productSku = "tulip-seed-sack";
 
         private readonly CustomerService _customerService;

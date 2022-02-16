@@ -13,12 +13,12 @@ namespace Training
     public class Task07B : IExercise
     {
         private readonly IClient _client;
-         private readonly CustomObjectsService _customObjectsService;
+         private readonly CustomObjectService _customObjectsService;
         
         public Task07B(IEnumerable<IClient> clients)
         {
             _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
-            _customObjectsService = new CustomObjectsService(_client, Settings.ProjectKey);
+            _customObjectsService = new CustomObjectService(_client, Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()
