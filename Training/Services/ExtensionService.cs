@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using commercetools.Api.Models.Extensions;
@@ -27,17 +28,7 @@ namespace Training.Services
         public async Task<IExtension> createExtension(string key,IExtensionDestination destination, 
             List<IExtensionTrigger> triggers)
         {
-            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .Extensions()
-                .Post(
-                    new ExtensionDraft
-                    {
-                        Key = key,
-                        Destination = destination,
-                        Triggers = triggers
-                    }
-                )
-                .ExecuteAsync();
+            throw new NotImplementedException();
         }
     }
 }

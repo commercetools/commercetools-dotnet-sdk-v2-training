@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using commercetools.Api.Models.Common;
 using commercetools.Api.Models.Customers;
 using commercetools.Base.Client;
-using commercetools.Sdk.Api.Extensions;
+using Training.Services;
 
 namespace Training
 {
@@ -17,40 +17,42 @@ namespace Training
     public class Task02A : IExercise
     {
         private readonly IClient _client;
+        private readonly CustomerService _customerService;
+        private const string _customerKey = "";
 
         public Task02A(IEnumerable<IClient> clients)
         {
             _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
+            _customerService = new CustomerService(_client, Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()
         {
-            var rand = Settings.RandomInt();
-            
-            //  Create customer draft
+            // CREATE customer draft
             var customerDraft = new CustomerDraft
             {
-                Email = $"michele_{rand}@example.com",
+                Email = "michele@example.com",
                 Password = "password",
-                Key = $"michele-george-{rand}",
-                FirstName = "michele",
-                LastName = "george",
+                Key = _customerKey,
+                FirstName = "",
+                LastName = "",
                 Addresses = new List<IBaseAddress>{
                         new AddressDraft {
                             Country = "DE",
                     }
                 },
-                DefaultShippingAddress = 0
+                DefaultShippingAddress = 0,
+                DefaultBillingAddress = 0
             };
             
-            //  SignUp a customer
+            // TODO: SIGNUP a customer
             
             //Console.WriteLine($"Customer Created with Id : {customer.Id} and Key : {customer.Key} and Email Verified: {customer.IsEmailVerified}");
             
-            //CREATE a email verfification token
+            // TODO: CREATE a email verfification token
             
             
-            //Create ConfirmCustomerEmail
+            // TODO: CONFIRM CustomerEmail
 
             //Console.WriteLine($"Is Email Verified:{retrievedCustomer.IsEmailVerified}");
         }

@@ -12,6 +12,7 @@ namespace Training
     {
         private readonly IClient _importClient;
         private readonly ImportService _importService;
+        private const string containerKey = "";
         public Task03B(IEnumerable<IClient> clients)
         {
             _importClient = clients.FirstOrDefault(c => c.Name.Equals("ImportApiClient"));
@@ -20,25 +21,29 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            var containerKey = $"productsImport{Settings.RandomInt()}";
             var csvFile = "Resources/products.csv";
 
-            // Create importContainer
-            
-//            Console.WriteLine($"ImportContainer created with key: {importContainer.Key}");
+            // TODO: CREATE importContainer
+                
+            // Console.WriteLine($"ImportContainer created with key: {importContainer.Key}");
 
-            // Import Product Drafts from the csv file and get Operation Ids from the response
-            
+            //  TODO: IMPORT products    
+            //    Console.WriteLine($"Import ProductsDraft operation has been created, operation status count: {importResponse.OperationStatus.Count}");
+            //    importResponse.OperationStatus.ForEach(o => Console.WriteLine(o.OperationId));
+                
+            // TODO: GET import summary for the container
+            //    var importSummary = await _importService.GetImportContainerSummary(containerKey);
+            //    Console.WriteLine(JsonConvert.SerializeObject(importSummary,Formatting.Indented));
 
-            /*
-            // check the status of operations by using the operation Ids
-            var opertaion1 = "";
-            var opertaion2 = "";
-            var importOperation1 = await _importService.CheckImportOperationStatus(containerKey, opertaion1);
-            var importOperation2 = await _importService.CheckImportOperationStatus(containerKey, opertaion2);
-            Console.WriteLine($"Operation {opertaion1} : {importOperation1.State.JsonName}");
-            Console.WriteLine($"Operation {opertaion2} : {importOperation2.State.JsonName}");
-            */
+            // TODO: GET operation status updates
+            //    var operations = await _importService.GetImportOperationsByImportContainer(containerKey,true);
+            //    Console.WriteLine(JsonConvert.SerializeObject(operations,Formatting.Indented));
+
+            // TODO: CHECK operation status by id
+            //     var opertaionId = "";
+
+            //     var op = await _importService.CheckImportOperationStatus(opertaionId);
+            //     Console.WriteLine($"Operation {opertaionId} : {op.State}");
         }
     }
 }

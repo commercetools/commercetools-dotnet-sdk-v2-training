@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using commercetools.Sdk.Api.Extensions;
 using commercetools.Api.Models.Common;
 using commercetools.Api.Models.States;
 using commercetools.Base.Client;
+using Training.Services;
 
 namespace Training
 {
@@ -14,15 +15,17 @@ namespace Training
     public class Task04A : IExercise
     {
         private readonly IClient _client;
+        private readonly StateMachineService _stateMachineService;
 
-        public Task04A(IClient client)
+        public Task04A(IEnumerable<IClient> clients)
         {
-            this._client = client;
+            _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
+            _stateMachineService = new StateMachineService(_client, Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()
         {
-            //create OrderPacked stateDraft, state
+            // TODO: CREATE OrderPacked stateDraft, state
             var stateOrderPackedDraft = new StateDraft
             {
                 Key = "OrderPacked",
@@ -32,7 +35,7 @@ namespace Training
             };
             
             
-            //create OrderShipped stateDraft, state
+            // TODO: CREATE OrderShipped stateDraft, state
             var stateOrderShippedDraft = new StateDraft
             {
                 Key = "OrderShipped",
@@ -42,7 +45,7 @@ namespace Training
             };
             
             
-            //update packedState to transit to stateShipped
+            // TODO: UPDATE packedState to transit to stateShipped
             
             //Console.WriteLine($"stateOrderShipped Id : {stateOrderShipped.Id}, stateOrderPacked transition to:  {updatedStateOrderPacked.Transitions[0].Id}");
         }

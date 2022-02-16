@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using commercetools.Api.Models.Carts;
 using commercetools.Api.Models.Customers;
@@ -26,12 +27,7 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<ICustomerPagedQueryResponse> GetCustomersInStore(string storeKey)
         {
-            return await _berlinStoreClient.WithApi()
-                .WithProjectKey(Settings.ProjectKey)
-                .InStoreKeyWithStoreKeyValue(storeKey)
-                .Customers()
-                .Get()
-                .ExecuteAsync();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -54,11 +50,7 @@ namespace Training.Services
                 InventoryMode = IInventoryMode.ReserveOnOrder,
                 // Store = new StoreResourceIdentifier { Key = storeKey}
             };
-            return await _berlinStoreClient.WithApi().WithProjectKey(Settings.ProjectKey)
-                .InStoreKeyWithStoreKeyValue(storeKey)
-                .Carts()
-                .Post(cartDraft)
-                .ExecuteAsync();
+            throw new NotImplementedException();
         }
         
     }

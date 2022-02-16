@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using commercetools.Api.Models.Extensions;
 using commercetools.Base.Client;
-using commercetools.Sdk.Api.Extensions;
+using Training.Services;
 
 namespace Training
 {
@@ -13,10 +14,12 @@ namespace Training
     public class Task07C : IExercise
     {
         private readonly IClient _client;
-        
-        public Task07C(IClient client)
+        private readonly ExtensionService _extensionService;
+
+        public Task07C(IEnumerable<IClient> clients)
         {
-            this._client = client;
+            _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
+            _extensionService = new ExtensionService(_client, Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()
@@ -30,11 +33,8 @@ namespace Training
                 Type = "HTTP",
                 Url = "https://europe-west3-ct-support.cloudfunctions.net/training-extensions-sample"
             };
-            
-            //create extensionDraft
-            
-            
-            //create the extension
+
+            // TODO: CREATE the extension
             
             
             //Console.WriteLine($"extension created with Id {extension.Id}");

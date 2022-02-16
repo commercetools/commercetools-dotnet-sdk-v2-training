@@ -2,17 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using commercetools.Api.Models.Carts;
 using commercetools.Api.Models.Channels;
-using commercetools.Api.Models.Common;
-using commercetools.Api.Models.Customers;
 using commercetools.Api.Models.Orders;
-using commercetools.Api.Models.Payments;
-using commercetools.Api.Models.ShippingMethods;
 using commercetools.Api.Models.States;
+using commercetools.Api.Models.Subscriptions;
 using commercetools.Base.Client;
 using commercetools.Sdk.Api.Extensions;
-using Training.Extensions;
+
+using Training.Services;
 
 namespace Training
 {
@@ -22,172 +19,65 @@ namespace Training
     public class Task04B : IExercise
     {
         private readonly IClient _client;
-        private readonly string _channelKey = "";
-        private readonly string _customerKey = "";
-        private readonly string _discountCode = "SUMMER";
-        private readonly string _stateOrderedPackedKey = "OrderPacked";
-        private readonly string _productSku = "";
+        private const string _channelKey = "";
+        private const string _customerKey = "";
+        private const string _discountCode = "";
+        private const string _stateOrderedPackedKey = "";
+        private const string _productSku = "";
 
-        public Task04B(IClient client)
+        private readonly CustomerService _customerService;
+        private readonly CartService _cartService;
+        private readonly PaymentService _paymentService;
+        private readonly OrderService _orderService;
+
+
+        public Task04B(IEnumerable<IClient> clients)
         {
-            this._client = client;
+            _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
+            _customerService = new CustomerService(_client, Settings.ProjectKey);
+            _cartService = new CartService(_client, Settings.ProjectKey);
+            _paymentService = new PaymentService(_client, Settings.ProjectKey);
+            _orderService = new OrderService(_client, Settings.ProjectKey);
+
         }
 
         public async Task ExecuteAsync()
         {
-            //Fetch a channel if your inventory mode will not be NONE
-            
-            //check the result
-            Channel channel = null;
+            // TODO: GET customer
 
+            // TODO: CREATE a cart for the customer
 
-            //Fetch orderPacked state if you have a defined custom workflow
-            State orderPacked = null;
+            // Console.WriteLine($"Cart {cart.Id} for customer: {cart.CustomerId}");
             
-            // Get Customer by Key
-            Customer customer = null;
+            // TODO: GET a channel if your inventory mode will not be NONE
 
-            //create a cart for a customer
-            var cart = await CreateCart(customer);
+            // TODO: ADD items to the cart
+            
+            // TODO: ADD discount coupon code to the cart
+            
+            // TODO: RECALCULATE the cart
 
-            Console.WriteLine($"Cart {cart.Id} for customer: {cart.CustomerId}");
+            // TODO: ADD default shipping to the cart
             
-            //AddProductToCartBySkusAndChannel
-            cart = await
-                AddProductToCartBySkusAndChannel(cart, channel, _productSku, _productSku,_productSku);
+            // TODO: CREATE a payment 
+            
+            // Console.WriteLine($"Payment Created with Id: {payment.Id}");
 
-            //AddDiscountToCart
-            cart = await AddDiscountToCart(cart, _discountCode);
-            //Recalculate it
-            cart = await Recalculate(cart);
-            //SetShipping for the cart
-            cart = await SetShipping(cart);
+            // TODO: ADD transaction to the payment
             
-            //CreatePaymentAndAddToCart
-            cart = await CreatePaymentAndAddToCart(cart, "WIRECARD", "CREDIT_CARD", $"wire{Settings.RandomInt()}", $"pay{Settings.RandomInt()}");
-
-            //CreateOrder
-            var order = await CreateOrder(cart);
-            Console.WriteLine($"Order Created with Id: {order.Id}");
+            // TODO: ADD payment to the cart
             
-            //Change Order State
-            order = await ChangeOrderState(order, IOrderState.Complete);
-            Console.WriteLine($"Order state changed to: {order.OrderState.Value}");
+            // TODO: CREATE order
+            // Console.WriteLine($"Order Created with order number: {order.OrderNumber}");
             
-            //Change Workflow State
-            order = await ChangeWorkflowState(order,
-                new StateResourceIdentifier {Key = orderPacked.Key});
+            // TODO: UPDATE order state to Confirmed
+            // Console.WriteLine($"Order state changed to: {order.OrderState.Value}");
             
-            Console.WriteLine($"Order Workflow State changed to: {order.State?.Obj?.Name["en"]}");
+            // TODO: GET custom workflow state for Order
+            // TODO: UPDATE order custom workflow state
+            
+            // Console.WriteLine($"Order Workflow State changed to: {order.State?.Obj?.Name["en"]}");
         }
 
-
-        #region HelperFunctions
-
-        /// <summary>
-        /// Create Cart for a customer with DefaultShipping Address
-        /// </summary>
-        /// <param name="customer"></param>
-        /// <returns></returns>
-        private async Task<ICart> CreateCart(ICustomer customer)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Add Product to Cart by SKU and Supply Channel
-        /// </summary>
-        /// <param name="cart"></param>
-        /// <param name="channel"></param>
-        /// <param name="skus"></param>
-        /// <returns></returns>
-        private async Task<ICart> AddProductToCartBySkusAndChannel(ICart cart, IChannel channel,
-            params string[] skus)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Add DiscountCode to Cart
-        /// </summary>
-        /// <param name="cart"></param>
-        /// <param name="code"></param>
-        /// <returns></returns>
-        private async Task<ICart> AddDiscountToCart(ICart cart, string code)
-        {
-            throw new NotImplementedException();
-        }
-
-        //Recalculate a cart
-        private async Task<ICart> Recalculate(ICart cart)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Set ShippingMethod for a cart
-        /// </summary>
-        /// <param name="cart"></param>
-        /// <returns></returns>
-        private async Task<ICart> SetShipping(ICart cart)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Create A Payment and Add it to the cart
-        /// </summary>
-        /// <param name="cart"></param>
-        /// <param name="pspName"></param>
-        /// <param name="pspMethod"></param>
-        /// <param name="interfaceId"></param>
-        /// <param name="interactionId"></param>
-        /// <returns></returns>
-        private async Task<ICart> CreatePaymentAndAddToCart(ICart cart, string pspName, string pspMethod,
-            string interfaceId, string interactionId)
-        {
-            // we create payment object
-            // Create PaymentMethodInfo, PaymentDraft then Payment
-            
-
-            //Create the transactionDraft, Update Payment to Transaction to it
-
-            
-            //set interface code and text
-            
-
-            //then add ref of payment to the cart
-            
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Create an Order From the cart
-        /// </summary>
-        /// <param name="cart"></param>
-        /// <returns></returns>
-        private async Task<IOrder> CreateOrder(ICart cart)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        /// <summary>
-        /// Change Order State
-        /// </summary>
-        /// <param name="order"></param>
-        /// <param name="state"></param>
-        /// <returns></returns>
-        private async Task<IOrder> ChangeOrderState(IOrder order, IOrderState state)
-        {
-            throw new NotImplementedException();
-        }
-
-        private async Task<IOrder> ChangeWorkflowState(IOrder order, IStateResourceIdentifier state)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
     }
 }

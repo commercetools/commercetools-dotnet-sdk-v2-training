@@ -1,38 +1,33 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using commercetools.Api.Models.CustomerGroups;
-using commercetools.Api.Models.Customers;
 using commercetools.Base.Client;
-using commercetools.Sdk.Api.Extensions;
+using Training.Services;
 
 namespace Training
 {
      /// <summary>
-    /// GET a customer
-    /// GET a customer group
     /// ASSIGN the customer to the customer group
     /// </summary>
     public class Task02B : IExercise
     {
         private readonly IClient _client;
-        private readonly string _customerkey = "ronnieWood";
-        private readonly string _customerGroupKey = "gold";
+        private const string _customerKey = "";
+        private const string _customerGroupKey = "";
 
-        public Task02B(IClient client)
+        private readonly CustomerService _customerService;
+
+        public Task02B(IEnumerable<IClient> clients)
         {
-            this._client = client;
+            _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
+            _customerService = new CustomerService(_client, Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()
         {
-            //  Get customer by Key
-            
 
-            //  Get customer group by Key
-            
-
-            // set customerGroup for the customer
+            // TODO: SET customerGroup for the customer
             
             //Console.WriteLine($"customer {updatedCustomer.Id} in customer group {updatedCustomer.CustomerGroup.Id}");
         }

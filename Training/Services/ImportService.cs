@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using commercetools.Base.Client;
@@ -5,6 +6,7 @@ using commercetools.ImportApi.Models.Common;
 using commercetools.ImportApi.Models.Importcontainers;
 using commercetools.ImportApi.Models.Importoperations;
 using commercetools.ImportApi.Models.Importrequests;
+using commercetools.ImportApi.Models.Importsummaries;
 using commercetools.ImportApi.Models.Productdrafts;
 using commercetools.ImportApi.Models.Productvariants;
 using commercetools.Sdk.ImportApi.Extensions;
@@ -25,38 +27,58 @@ namespace Training.Services
             _csvHelper = new CSVHelper();
         }
 
-        /*
-        public async Task<IImportContainer> CreateImportContainer(ImportContainerDraft draft)
+        
+        /// <summary>
+        /// Creates an ImportContainer
+        /// </summary>
+        /// <param name="importContainerDraft"></param>
+        /// <returns></returns>
+        public async Task<IImportContainer> CreateImportContainer(ImportContainerDraft importContainerDraft)
         {
-            return await _importClient.WithImportApi().WithProjectKeyValue(Settings.ProjectKey)
-                .ImportContainers()
-                .Post(draft)
-                .ExecuteAsync();
+            throw new NotImplementedException();
         }
 
-        public async Task<IImportOperation> CheckImportOperationStatus(string importContainerKey, string id)
+        /// <summary>
+        /// GET import summary for the import container
+        /// </summary>
+        /// <param name="importContainerKey"></param>
+        /// <returns></returns>
+        public async Task<IImportSummary> GetImportContainerSummary(string importContainerKey)
         {
-            return await _importClient.WithImportApi().WithProjectKeyValue(_projectKey)
-                .ImportOperations()
-                .WithIdValue(id)
-                .Get()
-                .ExecuteAsync();
+            throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// GET import operations for the import container
+        /// </summary>
+        /// <param name="importContainerKey"></param>
+        /// <param name="debug"></param>
+        /// <returns></returns>
+        public async Task<IImportOperationPagedResponse> GetImportOperationsByImportContainer(string importContainerKey, 
+            bool debug)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// GET import operation status for the import operation by id
+        /// </summary>
+        /// <param name="operationId"></param>
+        /// <returns></returns>
+        public async Task<IImportOperation> CheckImportOperationStatus(string operationId)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Import products from the csv file
+        /// </summary>
+        /// <param name="importContainerKey"></param>
+        /// <param name="csvFile"></param>
+        /// <returns></returns>
         public async Task<IImportResponse> ImportProducts(string importContainerKey, string csvFile)
         {
-            var productDraftImportList = GetProductDraftImportList(csvFile);
-            var productDraftImportRequest = new ProductDraftImportRequest()
-            {
-                Type = IImportResourceType.ProductDraft,
-                Resources = productDraftImportList
-            };
-            return await _importClient.WithImportApi().WithProjectKeyValue(_projectKey)
-                .ProductDrafts()
-                .ImportContainers()
-                .WithImportContainerKeyValue(importContainerKey)
-                .Post(productDraftImportRequest)
-                .ExecuteAsync();
+            throw new NotImplementedException();
         }
 
         #region Helpers
@@ -101,7 +123,7 @@ namespace Training.Services
         }
 
         #endregion
-        */
+        
     }
 
     public class CSVProduct

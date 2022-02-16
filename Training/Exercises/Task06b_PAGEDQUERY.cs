@@ -1,9 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using commercetools.Api.Models.Products;
 using commercetools.Base.Client;
-using commercetools.Sdk.Api.Extensions;
+using Training.Services;
 
 namespace Training
 {
@@ -14,20 +15,24 @@ namespace Training
     public class Task06B : IExercise
     {
         private readonly IClient _client;
-        
-        public Task06B(IClient client)
+        private readonly SearchService _searchService;
+
+        public Task06B(IEnumerable<IClient> clients)
         {
-            this._client = client;
+            _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
+            _searchService = new SearchService(_client, Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()
         {
             string lastId = null ;int pageSize = 2;int currentPage = 1; bool lastPage = false;
-            ProductPagedQueryResponse response = null;
+            IProductPagedQueryResponse response;
 
             while (!lastPage)
             {
                 var where = lastId != null ? $"id>\"{lastId}\"" : null;
+                // TODO: GET paged response sorted on id
+                response = null;
 
                 Console.WriteLine($"Show Results of Page {currentPage}");
                 foreach (var product in response.Results)

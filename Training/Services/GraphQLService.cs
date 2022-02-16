@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using commercetools.Api.Models.GraphQl;
 using commercetools.Api.Models.Products;
@@ -24,10 +25,7 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<IGraphQLResponse> GetGraphQLQueryResponse(IGraphQLRequest graphRequest)
         {
-            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .Graphql()
-                .Post(graphRequest)
-                .ExecuteAsync();
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Unicode;
 using System.Threading.Tasks;
 using commercetools.Api.Models.CustomObjects;
 using commercetools.Base.Client;
@@ -8,12 +11,12 @@ using commercetools.Sdk.Api.Extensions;
 
 namespace Training.Services
 {
-    public class CustomObjectsService
+    public class CustomObjectService
     {
         private readonly IClient _client;
         private readonly string _projectKey;
         
-        public CustomObjectsService(IClient client, string projectKey)
+        public CustomObjectService(IClient client, string projectKey)
         {
             _client = client;
             _projectKey = projectKey;
@@ -28,19 +31,7 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<ICustomObject> createCustomObject(string container, string key, string jsonFile)
         {
-            CompatibilityInfo tulipCompatInfo = JsonSerializer.Deserialize<CompatibilityInfo>(File.ReadAllText(jsonFile));
-            var options = new JsonSerializerOptions { WriteIndented = true };
-            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .CustomObjects()
-                .Post(
-                    new CustomObjectDraft
-                    {
-                        Container = container,
-                        Key = key,
-                        Value = JsonSerializer.Serialize(tulipCompatInfo, options)
-                    }
-                )
-                .ExecuteAsync();
+            throw new NotImplementedException();
         }
     }
 

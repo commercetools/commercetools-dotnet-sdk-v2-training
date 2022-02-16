@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using commercetools.Api.Models.Subscriptions;
 using commercetools.Base.Client;
-using commercetools.Sdk.Api.Extensions;
+using Training.Services;
 
 namespace Training
 {
@@ -13,10 +14,12 @@ namespace Training
     public class Task08A : IExercise
     {
         private readonly IClient _client;
-        
-        public Task08A(IClient client)
+        SubscriptionService _subscriptionService;
+
+        public Task08A(IEnumerable<IClient> clients)
         {
-            this._client = client;
+            _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
+            _subscriptionService = new SubscriptionService(_client, Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()
@@ -28,11 +31,9 @@ namespace Training
                 ProjectId = "ct-support",
                 Topic = "training-subscription-sample"
             };
-           
-            //create a subscription draft (orderCreated)
             
            
-            //create a subscription
+            // TODO: CREATE the subscription
             
            
             //Console.WriteLine($"a new subscription created with Id {subscription.Id}");

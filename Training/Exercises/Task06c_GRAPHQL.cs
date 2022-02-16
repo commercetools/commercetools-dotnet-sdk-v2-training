@@ -1,11 +1,13 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using commercetools.Api.Models.GraphQl;
 using commercetools.Base.Client;
 using commercetools.Base.Serialization;
-using commercetools.Sdk.Api.Extensions;
 using Training.GraphQL;
+using Training.Services;
 
 namespace Training
 {
@@ -15,10 +17,12 @@ namespace Training
     public class Task06C : IExercise
     {
         private readonly IClient _client;
-        
-        public Task06C(IClient client)
+        private readonly GraphQLService _graphQLService;
+
+        public Task06C(IEnumerable<IClient> clients)
         {
-            this._client = client;
+            _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
+            _graphQLService = new GraphQLService(_client, Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()
@@ -27,7 +31,7 @@ namespace Training
             {
                 Query = "query {customers{count,results{email}}}"
             };
-            //Execute the graphQL Request
+            // TODO: graphQL Request
             GraphQLResponse response = null;
 
             //Map Response to the typed result and show it

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using commercetools.Api.Models.States;
@@ -18,20 +19,6 @@ namespace Training.Services
         }
 
         /// <summary>
-        /// Creates a workflow state
-        /// </summary>
-        /// <param name="stateDraft"></param>
-        /// <returns></returns>
-        public async Task<IState> CreateState(IStateDraft stateDraft)
-        {
-            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .States()
-                .Post(stateDraft)
-                .ExecuteAsync();
-        }
-
-
-        /// <summary>
         /// GET a state by key
         /// </summary>
         /// <param name="stateKey"></param>
@@ -45,6 +32,17 @@ namespace Training.Services
                 .ExecuteAsync();
         }
 
+
+        /// <summary>
+        /// Creates a workflow state
+        /// </summary>
+        /// <param name="stateDraft"></param>
+        /// <returns></returns>
+        public async Task<IState> CreateState(IStateDraft stateDraft)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// POST a set transition update for the state
         /// </summary>
@@ -53,28 +51,7 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<IState> AddTransition(string stateKey, List<string> transitionStateKeys)
         {
-            IState state = await GetStateByKey(stateKey);
-            var transitionStateIdentifiers = new List<IStateResourceIdentifier>(); 
-            foreach (var transitionStateKey in transitionStateKeys)
-            {
-                transitionStateIdentifiers.Add(new StateResourceIdentifier{ Key = transitionStateKey } );
-            };
-            var stateUpdate = new StateUpdate
-            {
-                Version = state.Version,
-                Actions = new List<IStateUpdateAction>
-                {
-                    new StateSetTransitionsAction
-                    {
-                        Transitions = transitionStateIdentifiers
-                    }
-                }
-            };
-            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                    .States()
-                    .WithKey(state.Key)
-                    .Post(stateUpdate)
-                    .ExecuteAsync();
+            throw new NotImplementedException();
         }
         
     }

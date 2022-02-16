@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using commercetools.Api.Models.CustomerGroups;
@@ -24,11 +25,7 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<ICustomer> GetCustomerByKey(string customerKey)
         {
-            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .Customers()
-                .WithKey(customerKey)
-                .Get()
-                .ExecuteAsync();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -38,11 +35,7 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<ICustomer> CreateCustomer(ICustomerDraft customerDraft)
         {
-            var customerSignInResult =  await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .Customers()
-                .Post(customerDraft)
-                .ExecuteAsync();
-            return customerSignInResult.Customer;
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -52,17 +45,7 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<ICustomerToken> CreateCustomerToken(ICustomer customer)
         {
-            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .Customers()
-                .EmailToken()
-                .Post(
-                    new CustomerCreateEmailToken{
-                        Id = customer.Id,
-                        Version = customer.Version,
-                        TtlMinutes = 10
-                    }
-                )
-                .ExecuteAsync();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -72,15 +55,7 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<ICustomer> ConfirmCustomerEmail(ICustomerToken customerToken)
         {
-            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .Customers()
-                .EmailConfirm()
-                .Post(
-                    new CustomerEmailVerify{
-                        TokenValue = customerToken.Value
-                    }
-                )
-                .ExecuteAsync();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -105,27 +80,7 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<ICustomer> AssignCustomerToCustomerGroup(string customerKey, string customerGroupKey)
         {
-            ICustomer customer = await GetCustomerByKey(customerKey);
-
-            var customerUpdate = new CustomerUpdate
-            {
-                Version = customer.Version,
-                Actions = new List<ICustomerUpdateAction>
-                {
-                    new CustomerSetCustomerGroupAction
-                    {
-                        CustomerGroup = new CustomerGroupResourceIdentifier
-                        {
-                            Key = customerGroupKey
-                        }
-                    }
-                }
-            };
-            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                    .Customers()
-                    .WithKey(customer.Key)
-                    .Post(customerUpdate)
-                    .ExecuteAsync();
+            throw new NotImplementedException();
         }
         
     }

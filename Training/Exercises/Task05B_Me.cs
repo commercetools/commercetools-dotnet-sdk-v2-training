@@ -44,12 +44,12 @@ namespace Training
                 serializerService,
                 passwordTokenProvider);
     
-            // Use meClient to get my Customer Profile
+            // // TODO: USE meClient to get my Customer Profile
             
             //Console.WriteLine($"My Profile, firstName:{myProfile.FirstName}, lastName:{myProfile.LastName}");
             
             /*
-            // Use meClient to get my Orders
+            // // TODO: USE meClient to get my Orders
             
             
             Console.WriteLine($"Orders count: {myOrders.Count}");

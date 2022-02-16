@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using commercetools.Api.Models.Products;
 using commercetools.Api.Models.ProductTypes;
@@ -37,21 +38,11 @@ namespace Training.Services
         /// <param name="filterQuery"></param>
         /// <param name="facet"></param>
         /// <returns></returns>
-        public async Task<IProductProjectionPagedSearchResponse> GetSearchResults(string filterQuery = null, 
+        public async Task<IProductProjectionPagedSearchResponse> GetSearchResults(
+            string filterQuery = null, 
             string facet = null)
         {
-            return await _client.WithApi()
-                .WithProjectKey(Settings.ProjectKey)
-                .ProductProjections()
-                .Search()
-                .Get()
-                .WithStaged(true)
-                .WithMarkMatchingVariants(true)
-                .WithFilterQuery(filterQuery)
-                .WithFacet(facet)
-                //.AddQueryParam("text.en", "IPhome11")
-                //.WithFuzzy(true)
-                .ExecuteAsync();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -60,16 +51,11 @@ namespace Training.Services
         /// <param name="where"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public async Task<IProductPagedQueryResponse> GetPagedResults(string where, int pageSize)
+        public async Task<IProductPagedQueryResponse> GetPagedResults(
+            string where,
+            int pageSize)
         {
-            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .Products()
-                .Get()
-                .WithSort("id asc")
-                .WithLimit(pageSize)
-                .WithWhere(where)
-                .WithWithTotal(false)
-                .ExecuteAsync();
+            throw new NotImplementedException();
         }
         
     }

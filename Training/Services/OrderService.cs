@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using commercetools.Api.Models.Carts;
@@ -40,17 +41,7 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<IOrder> CreateOrder(ICart cart)
         {
-            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .Orders()
-                .Post(
-                    new OrderFromCartDraft
-                    {
-                        Cart = new CartResourceIdentifier{Id = cart.Id},
-                        Version = cart.Version,
-                        OrderNumber = "HAPG" + Settings.RandomString()
-                    }
-                )
-                .ExecuteAsync();
+            throw new NotImplementedException();
         }
 
 
@@ -62,20 +53,7 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<IOrder> ChangeOrderState(IOrder order, IOrderState state)
         {
-            var orderUpdate = new OrderUpdate
-            {
-                Version = order.Version,
-                Actions = new List<IOrderUpdateAction>
-                {
-                    new OrderChangeOrderStateAction {OrderState = state}
-                }
-            };
-
-            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .Orders()
-                .WithOrderNumber(order.OrderNumber)
-                .Post(orderUpdate)
-                .ExecuteAsync();
+            throw new NotImplementedException();
         }
         /// <summary>
         /// Change Order Workflow State
@@ -85,20 +63,7 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<IOrder> ChangeWorkflowState(IOrder order, IStateResourceIdentifier state)
         {
-            var orderUpdate = new OrderUpdate
-            {
-                Version = order.Version,
-                Actions = new List<IOrderUpdateAction>
-                {
-                    new OrderTransitionStateAction() {State = state}
-                }
-            };
-            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .Orders()
-                .WithOrderNumber(order.OrderNumber)
-                .Post(orderUpdate)
-                .WithExpand("state")
-                .ExecuteAsync();
+            throw new NotImplementedException();
         }
         
     }

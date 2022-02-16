@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using commercetools.Api.Models.Common;
 using commercetools.Api.Models.Types;
 using commercetools.Base.Client;
-using commercetools.Sdk.Api.Extensions;
+using Training.Services;
 
 namespace Training
 {
@@ -14,48 +15,19 @@ namespace Training
     public class Task07A : IExercise
     {
         private readonly IClient _client;
+        private readonly TypeService _typeService;
 
-        public Task07A(IClient client)
+        public Task07A(IEnumerable<IClient> clients)
         {
-            this._client = client;
+            _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
+            _typeService = new TypeService(_client, Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()
         {
-            //create type Draft
-            var typeDraft = this.CreateTypeDraft();
+            // TODO: CREATE custom type with one field 'allowed-to-place-orders'
             
-            //create custom type
-             
-            
-            //Console.WriteLine($"New custom type has been created with Id: {createdType.Id}");
-        }
-
-        public TypeDraft CreateTypeDraft()
-        {
-            var typeDraft = new TypeDraft
-            {
-                Key = "allowed-to-place-orders",
-                Name = new LocalizedString {{"de", "allowed-to-place-orders"},{"en", "allowed-to-place-orders"}},
-                ResourceTypeIds = new List<IResourceTypeId> {IResourceTypeId.Customer},
-                FieldDefinitions = new List<IFieldDefinition>
-                {
-                    this.CreateTypeFieldDefinition()
-                }
-            };
-            return typeDraft;
-        }
-
-        private FieldDefinition CreateTypeFieldDefinition()
-        {
-            var fieldDefinition = new FieldDefinition
-            {
-                Name = "allowed-to-place-orders",
-                Required = false,
-                Label = new LocalizedString {{"de", "Allowed to place orders"},{"en", "Allowed to place orders"}},
-                Type = new CustomFieldBooleanType()
-            };
-            return fieldDefinition;
+            // Console.WriteLine($"New custom type has been created with Id: {createdType.Id}");
         }
     }
 }
