@@ -26,7 +26,7 @@ namespace Training.Services
         /// </summary>
         /// <param name="productSelectionKey"></param>
         /// <returns></returns>
-        public async Task<IProductSelection> getProductSelectionByKey(string productSelectionKey){
+        public async Task<IProductSelection> GetProductSelectionByKey(string productSelectionKey){
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .ProductSelections()
                 .WithKey(productSelectionKey)
@@ -40,7 +40,7 @@ namespace Training.Services
         /// <param name="productSelectionKey"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        public async Task<IProductSelection> createProductSelection(string productSelectionKey, LocalizedString name){
+        public async Task<IProductSelection> CreateProductSelection(string productSelectionKey, LocalizedString name){
             throw new NotImplementedException();
         }   
 
@@ -50,7 +50,7 @@ namespace Training.Services
         /// <param name="productSelectionKey"></param>
         /// <param name="productKey"></param>
         /// <returns></returns>
-        public async Task<IProductSelection> addProductToProductSelection(string productSelectionKey, string productKey){
+        public async Task<IProductSelection> AddProductToProductSelection(string productSelectionKey, string productKey){
             throw new NotImplementedException();
         }
 
@@ -60,7 +60,7 @@ namespace Training.Services
         /// <param name="productSelectionKey"></param>
         /// <param name="store"></param>
         /// <returns></returns>
-        public async Task<IStore>  addProductSelectionToStore(string productSelectionKey, IStore store){
+        public async Task<IStore>  AddProductSelectionToStore(string productSelectionKey, IStore store){
             throw new NotImplementedException();
         }        
     }
