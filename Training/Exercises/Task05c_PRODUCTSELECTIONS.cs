@@ -18,12 +18,14 @@ namespace Training
         private const string _storekey = "";
         private const string _productSelectionKey = "";
         private readonly ProductSelectionService _productSelectionService;
+        private readonly StoreService _storeService;
 
 
         public Task05C(IClient client)
         {
             this._client = client;
             this._productSelectionService = new ProductSelectionService(_client,Settings.ProjectKey);
+            this._storeService = new StoreService(_client,Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()
@@ -47,6 +49,23 @@ namespace Training
             // TODO: set product selection for the store
                 
             // System.Console.WriteLine($"Updated store {store.Key} with selection {updatedStore.ProductSelections?.Count}");
+
+            /*
+            var productSelectionProducts = await _productSelectionService.GetProductSelectionProductByKey(_productSelectionKey);
+            System.Console.WriteLine($"Products in the product selection: {productSelectionProducts.Results.Count}");
+            foreach (var product in productSelectionProducts.Results)
+            {
+                System.Console.WriteLine(product.Product.Obj.Key);
+            }
+
+            var productsInStore = await _storeService.GetProductsInStore(_storekey);
+            System.Console.WriteLine($"Products in the store through product selections: {productsInStore.Results.Count}");
+            foreach (var product in productsInStore.Results)
+            {
+                System.Console.WriteLine($"{product.Product.Id} through {product.ProductSelection.Id}");
+            }
+            */
+
         }
     }
 }

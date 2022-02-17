@@ -2,10 +2,12 @@ using System;
 using System.Threading.Tasks;
 using commercetools.Api.Models.Carts;
 using commercetools.Api.Models.Customers;
+using commercetools.Api.Models.ProductSelections;
 using commercetools.Api.Models.Stores;
 using commercetools.Base.Client;
 using commercetools.Sdk.Api.Extensions;
 using Training.Extensions;
+using System.Collections.Generic;
 
 namespace Training.Services
 {
@@ -52,6 +54,28 @@ namespace Training.Services
             };
             throw new NotImplementedException();
         }
-        
+
+        /// <summary>
+        /// Sets product selection for a store
+        /// </summary>
+        /// <param name="productSelectionKey"></param>
+        /// <param name="store"></param>
+        /// <returns></returns>
+        public async Task<IStore>  AddProductSelectionToStore(string productSelectionKey, IStore store){
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Gets product selection assignments for a store
+        /// </summary>
+        /// <param name="storeKey"></param>
+        /// <returns></returns>
+        public async Task<IProductsInStorePagedQueryResponse>  GetProductsInStore(string storeKey){
+            return await _berlinStoreClient.WithApi().WithProjectKey(Settings.ProjectKey)
+                .InStoreKeyWithStoreKeyValue(storeKey)
+                .ProductSelectionAssignments()
+                .Get()
+                .ExecuteAsync();
+        }
     }
 }

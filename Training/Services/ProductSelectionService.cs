@@ -55,13 +55,19 @@ namespace Training.Services
         }
 
         /// <summary>
-        /// Sets product selection for a store
+        /// Gets products in a product selection
         /// </summary>
         /// <param name="productSelectionKey"></param>
-        /// <param name="store"></param>
         /// <returns></returns>
-        public async Task<IStore>  AddProductSelectionToStore(string productSelectionKey, IStore store){
-            throw new NotImplementedException();
-        }        
+        public async Task<IProductSelectionProductPagedQueryResponse> GetProductSelectionProductByKey(string productSelectionKey){
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .ProductSelections()
+                .WithKey(productSelectionKey)
+                .Products()
+                .Get()
+                .WithExpand("product")
+                .ExecuteAsync();
+        }
+
     }
 }
