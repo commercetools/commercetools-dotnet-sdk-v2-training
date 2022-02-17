@@ -24,7 +24,7 @@ namespace Training.Services
         /// <param name="destination"></param>
         /// <param name="messages"></param>
         /// <returns></returns>
-        public async Task<ISubscription> createSubscription(string key, 
+        public async Task<ISubscription> CreateSubscription(string key, 
             IDestination destination, 
             List<IMessageSubscription> messages)
         {

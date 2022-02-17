@@ -20,33 +20,33 @@ namespace Training.Services
             _projectKey = projectKey;
         }
 
-        public async Task<IProductSelection> createProductSelection(string key, LocalizedString name){
+        public async Task<IProductSelection> CreateProductSelection(string productSelectionKey, LocalizedString name){
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .ProductSelections()
                 .Post(
                     new ProductSelectionDraft{
-                        Key = key,
+                        Key = productSelectionKey,
                         Name = name
                     }
                 )
                 .ExecuteAsync();
         }
 
-        public async Task<IProductSelection> getProductSelectionByKey(string key){
+        public async Task<IProductSelection> GetProductSelectionByKey(string productSelectionKey){
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .ProductSelections()
-                .WithKey(key)
+                .WithKey(productSelectionKey)
                 .Get()
                 .ExecuteAsync();
         }
             
             
 
-        public async Task<IProductSelection> addProductToProductSelection(string key, string productKey){
-            IProductSelection productSelection = await getProductSelectionByKey(key);
+        public async Task<IProductSelection> AddProductToProductSelection(string productSelectionKey, string productKey){
+            IProductSelection productSelection = await GetProductSelectionByKey(productSelectionKey);
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .ProductSelections()
-                .WithKey(key)
+                .WithKey(productSelectionKey)
                 .Post( 
                     new ProductSelectionUpdate{
                         Version = productSelection.Version,
@@ -60,27 +60,15 @@ namespace Training.Services
                 .ExecuteAsync();
         }
 
-            
-        public async Task<IStore>  addProductSelectionToStore(string key,IStore store){
+        public async Task<IProductSelectionProductPagedQueryResponse> GetProductSelectionProductByKey(string productSelectionKey){
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .Stores()
-                .WithId(store.Id)
-                .Post(
-                    new StoreUpdate{
-                        Version = store.Version,
-                        Actions = new List<IStoreUpdateAction>{
-                            new StoreSetProductSelectionsAction{
-                                ProductSelections = new List<IProductSelectionSettingDraft> {
-                                    new ProductSelectionSettingDraft{
-                                        ProductSelection = new ProductSelectionResourceIdentifier{Key = key},
-                                        Active = true
-                                    }
-                                }
-                            }
-                        }
-                    }
-                )
+                .ProductSelections()
+                .WithKey(productSelectionKey)
+                .Products()
+                .Get()
+                .WithExpand("product")
                 .ExecuteAsync();
-        }        
+        }
+
     }
 }

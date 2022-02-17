@@ -24,7 +24,7 @@ namespace Training.Services
         /// <param name="destination"></param>
         /// <param name="triggers"></param>
         /// <returns></returns>
-        public async Task<IExtension> createExtension(string key,IExtensionDestination destination, 
+        public async Task<IExtension> CreateExtension(string key,IExtensionDestination destination, 
             List<IExtensionTrigger> triggers)
         {
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)

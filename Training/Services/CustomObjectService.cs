@@ -28,7 +28,7 @@ namespace Training.Services
         /// <param name="key"></param>
         /// <param name="jsonFile"></param>
         /// <returns></returns>
-        public async Task<ICustomObject> createCustomObject(string container, string key, string jsonFile)
+        public async Task<ICustomObject> CreateCustomObject(string container, string key, string jsonFile)
         {
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .CustomObjects()

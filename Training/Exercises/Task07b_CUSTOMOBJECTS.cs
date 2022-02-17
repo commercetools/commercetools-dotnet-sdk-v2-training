@@ -26,7 +26,7 @@ namespace Training
             var jsonFile = "Resources/compatibility-info.json";
             
             //Creates a new custom object 
-            var customObject = await _customObjectsService.createCustomObject("compatibility-info", "tulip-seed-product",jsonFile);
+            var customObject = await _customObjectsService.CreateCustomObject("compatibility-info", "tulip-seed-product",jsonFile);
 
             Console.WriteLine($"custom object created with Id {customObject.Id} with version {customObject.Version}");
         }

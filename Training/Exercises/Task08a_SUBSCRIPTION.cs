@@ -33,7 +33,7 @@ namespace Training
             };
            
             //create a subscription
-            var subscription = await _subscriptionService.createSubscription(
+            var subscription = await _subscriptionService.CreateSubscription(
                 "subscriptionOrderConfirmationEmails",
                 destination,
                 new List<IMessageSubscription>
