@@ -64,7 +64,7 @@ namespace Training.Services
         }
 
         /// <summary>
-        /// Create a new cart for a customer in a store with default shipping address
+        /// Sets product selection for a store
         /// </summary>
         /// <param name="productSelectionKey"></param>
         /// <param name="store"></param>
@@ -90,7 +90,12 @@ namespace Training.Services
                 )
                 .ExecuteAsync();
         }
-
+        
+        /// <summary>
+        /// Gets product selection assignments for a store
+        /// </summary>
+        /// <param name="storeKey"></param>
+        /// <returns></returns>
         public async Task<IProductsInStorePagedQueryResponse>  GetProductsInStore(string storeKey){
             return await _berlinStoreClient.WithApi().WithProjectKey(Settings.ProjectKey)
                 .InStoreKeyWithStoreKeyValue(storeKey)
