@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using commercetools.Base.Client;
+using System.Text.Json;
 using commercetools.ImportApi.Models.Importcontainers;
 using Training.Services;
 
@@ -33,11 +34,11 @@ namespace Training
                 
             // TODO: GET import summary for the container
             //    var importSummary = await _importService.GetImportContainerSummary(containerKey);
-            //    Console.WriteLine(JsonConvert.SerializeObject(importSummary,Formatting.Indented));
+            //    Console.WriteLine(JsonSerializer.Serialize(importSummary,new JsonSerializerOptions(){WriteIndented = true}));
 
             // TODO: GET operation status updates
             //    var operations = await _importService.GetImportOperationsByImportContainer(containerKey,true);
-            //    Console.WriteLine(JsonConvert.SerializeObject(operations,Formatting.Indented));
+            //    Console.WriteLine(JsonSerializer.Serialize(importSummary,new JsonSerializerOptions(){WriteIndented = true}));
 
             // TODO: CHECK operation status by id
             //     var opertaionId = "";
