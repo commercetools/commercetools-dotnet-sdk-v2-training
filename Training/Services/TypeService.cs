@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using commercetools.Api.Models.Common;
-using commercetools.Api.Models.GraphQl;
-using commercetools.Api.Models.Products;
-using commercetools.Api.Models.Types;
+using commercetools.Sdk.Api.Models.Common;
+using commercetools.Sdk.Api.Models.GraphQl;
+using commercetools.Sdk.Api.Models.Products;
+using commercetools.Sdk.Api.Models.Types;
 using commercetools.Base.Client;
 using commercetools.Sdk.Api.Extensions;
 

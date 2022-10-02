@@ -1,6 +1,6 @@
 using System.Linq;
-using commercetools.Api.Models.Common;
-using commercetools.Api.Models.Customers;
+using commercetools.Sdk.Api.Models.Common;
+using commercetools.Sdk.Api.Models.Customers;
 
 namespace Training.Extensions
 {

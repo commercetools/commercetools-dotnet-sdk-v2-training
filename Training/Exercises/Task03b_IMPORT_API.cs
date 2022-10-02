@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using commercetools.Base.Client;
 using System.Text.Json;
-using commercetools.ImportApi.Models.Importcontainers;
+using commercetools.Sdk.ImportApi.Models.Importcontainers;
 using Training.Services;
 
 namespace Training

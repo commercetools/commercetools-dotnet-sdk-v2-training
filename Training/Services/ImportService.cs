@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using commercetools.Base.Client;
-using commercetools.ImportApi.Models.Common;
-using commercetools.ImportApi.Models.Importcontainers;
-using commercetools.ImportApi.Models.Importoperations;
-using commercetools.ImportApi.Models.Importrequests;
-using commercetools.ImportApi.Models.Importsummaries;
-using commercetools.ImportApi.Models.Productdrafts;
-using commercetools.ImportApi.Models.Productvariants;
+using commercetools.Sdk.ImportApi.Models.Common;
+using commercetools.Sdk.ImportApi.Models.Importcontainers;
+using commercetools.Sdk.ImportApi.Models.Importoperations;
+using commercetools.Sdk.ImportApi.Models.Importrequests;
+using commercetools.Sdk.ImportApi.Models.Importsummaries;
+using commercetools.Sdk.ImportApi.Models.Productdrafts;
+using commercetools.Sdk.ImportApi.Models.Productvariants;
 using commercetools.Sdk.ImportApi.Extensions;
 
 namespace Training.Services

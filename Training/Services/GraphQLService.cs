@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using commercetools.Api.Models.GraphQl;
-using commercetools.Api.Models.Products;
+using commercetools.Sdk.Api.Models.GraphQl;
+using commercetools.Sdk.Api.Models.Products;
 using commercetools.Base.Client;
 using commercetools.Sdk.Api.Extensions;
 

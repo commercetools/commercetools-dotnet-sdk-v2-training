@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using commercetools.Api.Models.Carts;
-using commercetools.Api.Models.Customers;
-using commercetools.Api.Models.ProductSelections;
-using commercetools.Api.Models.Stores;
+using commercetools.Sdk.Api.Models.Carts;
+using commercetools.Sdk.Api.Models.Customers;
+using commercetools.Sdk.Api.Models.ProductSelections;
+using commercetools.Sdk.Api.Models.Stores;
 using commercetools.Base.Client;
 using commercetools.Sdk.Api.Extensions;
 using Training.Extensions;

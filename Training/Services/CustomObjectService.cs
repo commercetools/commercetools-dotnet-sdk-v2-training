@@ -5,7 +5,7 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
 using System.Threading.Tasks;
-using commercetools.Api.Models.CustomObjects;
+using commercetools.Sdk.Api.Models.CustomObjects;
 using commercetools.Base.Client;
 using commercetools.Sdk.Api.Extensions;
 

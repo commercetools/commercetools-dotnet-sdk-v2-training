@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using commercetools.Api.Models.Channels;
-using commercetools.Api.Models.Orders;
-using commercetools.Api.Models.States;
-using commercetools.Api.Models.Subscriptions;
+using commercetools.Sdk.Api.Models.Channels;
+using commercetools.Sdk.Api.Models.Orders;
+using commercetools.Sdk.Api.Models.States;
+using commercetools.Sdk.Api.Models.Subscriptions;
 using commercetools.Base.Client;
 using commercetools.Sdk.Api.Extensions;
 

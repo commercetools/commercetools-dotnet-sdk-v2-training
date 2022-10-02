@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using commercetools.Api.Models.Carts;
-using commercetools.Api.Models.Common;
-using commercetools.Api.Models.Payments;
+using commercetools.Sdk.Api.Models.Carts;
+using commercetools.Sdk.Api.Models.Common;
+using commercetools.Sdk.Api.Models.Payments;
 using commercetools.Base.Client;
 using commercetools.Sdk.Api.Extensions;
 

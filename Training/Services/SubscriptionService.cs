@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using commercetools.Api.Models.Subscriptions;
+using commercetools.Sdk.Api.Models.Subscriptions;
 using commercetools.Base.Client;
 using commercetools.Sdk.Api.Extensions;
 
