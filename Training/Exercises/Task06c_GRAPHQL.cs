@@ -8,6 +8,7 @@ using commercetools.Base.Client;
 using commercetools.Base.Serialization;
 using Training.GraphQL;
 using Training.Services;
+using commercetools.Sdk.Api.Extensions;
 
 namespace Training
 {
@@ -17,12 +18,10 @@ namespace Training
     public class Task06C : IExercise
     {
         private readonly IClient _client;
-        private readonly GraphQLService _graphQLService;
 
         public Task06C(IEnumerable<IClient> clients)
         {
             _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
-            _graphQLService = new GraphQLService(_client, Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()
@@ -31,8 +30,12 @@ namespace Training
             {
                 Query = "query {customers{count,results{email}}}"
             };
+
             // TODO: graphQL Request
-            GraphQLResponse response = null;
+            IGraphQLResponse response = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Graphql()
+                .Post(graphRequest)
+                .ExecuteAsync();
 
             //Map Response to the typed result and show it
             var typedResult = ((JsonElement) response.Data).ToObject<GraphResultData>(_client.SerializerService);

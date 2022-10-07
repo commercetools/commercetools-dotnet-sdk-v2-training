@@ -6,6 +6,7 @@ using commercetools.Sdk.Api.Models.Common;
 using commercetools.Sdk.Api.Models.Types;
 using commercetools.Base.Client;
 using Training.Services;
+using commercetools.Sdk.Api.Extensions;
 
 namespace Training
 {
@@ -15,19 +16,50 @@ namespace Training
     public class Task07A : IExercise
     {
         private readonly IClient _client;
-        private readonly TypeService _typeService;
 
         public Task07A(IEnumerable<IClient> clients)
         {
             _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
-            _typeService = new TypeService(_client, Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()
         {
+            // TODO: DEFINE fields
+
+
             // TODO: CREATE custom type with one field 'allowed-to-place-orders'
-            
-            // Console.WriteLine($"New custom type has been created with Id: {createdType.Id}");
+
+
+             //Console.WriteLine($"New custom type has been created with Id: {type.Id}");
+        }
+
+
+
+        /// <summary>
+        /// Creates a new custom type
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="name"></param>
+        /// <param name="resourceTypeIds"></param>
+        /// <param name="fields"></param>
+        /// <returns></returns>
+        private async Task<IType> CreateCustomType(string key,
+            LocalizedString name,
+            List<IResourceTypeId> resourceTypeIds,
+            List<IFieldDefinition> fields)
+        {
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Types()
+                .Post(
+                    new TypeDraft
+                    {
+                        Key = key,
+                        Name = name,
+                        ResourceTypeIds = resourceTypeIds,
+                        FieldDefinitions = fields
+                    }
+                )
+                .ExecuteAsync();
         }
     }
 }
