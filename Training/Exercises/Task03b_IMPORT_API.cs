@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using commercetools.Base.Client;
-using commercetools.ImportApi.Models.Importcontainers;
+using commercetools.Sdk.ImportApi.Models.Importcontainers;
 using Newtonsoft.Json;
 using Training.Services;
 
@@ -13,7 +13,7 @@ namespace Training
     {
         private readonly IClient _importClient;
         private readonly ImportService _importService;
-        private const string containerKey = "mg-import-container";
+        private const string containerKey = "nd-import-container";
         public Task03B(IEnumerable<IClient> clients)
         {
             _importClient = clients.FirstOrDefault(c => c.Name.Equals("ImportApiClient"));

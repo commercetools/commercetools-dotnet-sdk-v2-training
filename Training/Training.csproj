@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="commercetools.Sdk.Api" Version="2.5.0" />
-      <PackageReference Include="commercetools.Sdk.ImportApi" Version="2.5.0" />
+      <PackageReference Include="commercetools.Sdk.Api" Version="5.1.1" />
+      <PackageReference Include="commercetools.Sdk.ImportApi" Version="5.1.1" />
       <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="5.0.0-preview.2.20160.3" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0-preview.2.20160.3" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0-preview.2.20160.3" />

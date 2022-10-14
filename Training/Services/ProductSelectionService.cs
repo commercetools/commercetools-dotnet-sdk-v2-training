@@ -1,8 +1,7 @@
 using System.Threading.Tasks;
-using commercetools.Api.Models.Common;
-using commercetools.Api.Models.Products;
-using commercetools.Api.Models.ProductSelections;
-using commercetools.Api.Models.Stores;
+using commercetools.Sdk.Api.Models.Common;
+using commercetools.Sdk.Api.Models.Products;
+using commercetools.Sdk.Api.Models.ProductSelections;
 using commercetools.Base.Client;
 using commercetools.Sdk.Api.Extensions;
 using System.Collections.Generic;

@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using commercetools.Api.Models.Products;
 using commercetools.Base.Client;
-using Training.Services;
+using commercetools.Sdk.Api.Extensions;
+using commercetools.Sdk.Api.Models.Products;
 
 namespace Training
 {
@@ -15,32 +15,44 @@ namespace Training
     public class Task06A : IExercise
     {
         private readonly IClient _client;
-        private readonly SearchService _searchService;
 
         private const string _productTypeKey = "PhonePT";
-        
+
 
         public Task06A(IEnumerable<IClient> clients)
         {
             _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
-            _searchService = new SearchService(_client, Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()
         {
             // GET productType
-            var productType = await _searchService.GetProductTypeByKey(_productTypeKey);
+            var productType = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .ProductTypes()
+                .WithKey(_productTypeKey)
+                .Get()
+                .ExecuteAsync();
 
             var filterQuery = $"productType.id:\"{productType.Id}\"";
             var facet = "variants.attributes.phonecolor as color";
 
-            // GET product projections paged search response and facets
-            IProductProjectionPagedSearchResponse response = await _searchService.GetSearchResults(filterQuery, facet);
+            // TODO: GET product projections paged search response with facets
+            IProductProjectionPagedSearchResponse response = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .ProductProjections()
+                .Search()
+                .Get()
+                .WithStaged(true)
+                .WithFilterQuery(filterQuery)
+                .WithFacet(facet)
+                .WithWithTotal(false)
+                .ExecuteAsync();
             
+            //Show Search Results
             Console.WriteLine($"No. of products: {response.Count}");
             Console.WriteLine("products in search result: ");
             response.Results.ForEach(p => Console.WriteLine(p.Name["en"]));
-
+            
+            //Show Facets
             ShowFacetResults(response);
         }
 

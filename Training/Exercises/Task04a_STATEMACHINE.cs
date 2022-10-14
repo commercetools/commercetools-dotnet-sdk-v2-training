@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using commercetools.Api.Models.Common;
-using commercetools.Api.Models.States;
+using commercetools.Sdk.Api.Models.Common;
+using commercetools.Sdk.Api.Models.States;
 using commercetools.Base.Client;
 using Training.Services;
 

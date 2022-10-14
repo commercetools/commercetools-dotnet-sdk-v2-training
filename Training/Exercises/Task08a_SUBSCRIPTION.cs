@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using commercetools.Api.Models.Subscriptions;
+using commercetools.Sdk.Api.Models.Subscriptions;
 using commercetools.Base.Client;
-using Training.Services;
+using commercetools.Sdk.Api.Extensions;
 
 namespace Training
 {
@@ -14,12 +14,10 @@ namespace Training
     public class Task08A : IExercise
     {
         private readonly IClient _client;
-        SubscriptionService _subscriptionService;
-        
+
         public Task08A(IEnumerable<IClient> clients)
         {
             _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
-            _subscriptionService = new SubscriptionService(_client, Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()
@@ -29,23 +27,48 @@ namespace Training
             {
                 Type="GoogleCloudPubSub",
                 ProjectId = "ct-support",
-                Topic = "training-subscription-sample"
+                Topic = "topic-example"
             };
-           
-            //create a subscription
-            var subscription = await _subscriptionService.CreateSubscription(
-                "subscriptionOrderConfirmationEmails",
+
+
+            // TODO: CREATE the subscription
+            var subscription = await CreateSubscription(
+                "nd-order-sub",
                 destination,
                 new List<IMessageSubscription>
                 {
                     new MessageSubscription
                     {
-                        ResourceTypeId = "order",
+                        ResourceTypeId ="order",
                         Types = new List<string> { "OrderCreated" }
                     }
-                });
-           
+                }
+            );
             Console.WriteLine($"a new subscription created with Id {subscription.Id}");
+        }
+
+        /// <summary>
+        /// creates a subscription
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="destination"></param>
+        /// <param name="messages"></param>
+        /// <returns></returns>
+        private async Task<ISubscription> CreateSubscription(string key,
+            IDestination destination,
+            List<IMessageSubscription> messages)
+        {
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Subscriptions()
+                .Post(
+                    new SubscriptionDraft
+                    {
+                        Key = key,
+                        Destination = destination,
+                        Messages = messages
+                    }
+                )
+                .ExecuteAsync();
         }
     }
 }

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using commercetools.Api.Models.CustomerGroups;
-using commercetools.Api.Models.Customers;
+using commercetools.Sdk.Api.Models.CustomerGroups;
+using commercetools.Sdk.Api.Models.Customers;
 using commercetools.Base.Client;
 using commercetools.Sdk.Api.Extensions;
 

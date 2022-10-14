@@ -2,50 +2,73 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using commercetools.Api.Models.Extensions;
+using commercetools.Sdk.Api.Models.Extensions;
 using commercetools.Base.Client;
-using Training.Services;
+using commercetools.Sdk.Api.Extensions;
 
 namespace Training
 {
     /// <summary>
+    /// Host your extension code in GCP/AWS
     /// Create API Extension on Order Create
     /// </summary>
     public class Task07C : IExercise
     {
         private readonly IClient _client;
-        private readonly ExtensionService _extensionService;
-        
+
         public Task07C(IEnumerable<IClient> clients)
         {
             _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
-            _extensionService = new ExtensionService(_client, Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()
         {
-            // extension trigger
-            var trigger = new ExtensionTrigger
+            // TODO: create an Extension trigger (on Order Create)
+            var triggers = new List<IExtensionTrigger>
             {
-                ResourceTypeId = IExtensionResourceTypeId.Order,
-                Actions = new List<IExtensionAction> { IExtensionAction.Create }
+                new ExtensionTrigger
+                {
+                    ResourceTypeId = IExtensionResourceTypeId.Order,
+                    Actions = new List<IExtensionAction>{ IExtensionAction.Create}
+                }
             };
 
-            // extension destination
-            var destination = new ExtensionHttpDestination()
+            //create destination
+            var destination = new HttpDestination()
             {
                 Type = "HTTP",
                 Url = "https://europe-west3-ct-support.cloudfunctions.net/training-extensions-sample"
             };
-            
-            //create the extension
-            var extension = await _extensionService.CreateExtension(
-                "order-checker",
-                destination,
-                new List<IExtensionTrigger> {trigger}
-            );
-            
+
+            // TODO: CREATE the extension
+            var extension = await CreateExtension("nd-order-extension", destination, triggers);
             Console.WriteLine($"extension created with Id {extension.Id}");
+        }
+
+
+
+
+        /// <summary>
+        /// creates a new extension
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="destination"></param>
+        /// <param name="triggers"></param>
+        /// <returns></returns>
+        private async Task<IExtension> CreateExtension(string key, IExtensionDestination destination,
+            List<IExtensionTrigger> triggers)
+        {
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Extensions()
+                .Post(
+                    new ExtensionDraft
+                    {
+                        Destination = destination,
+                        Key = key,
+                        Triggers = triggers
+                    }
+                )
+                .ExecuteAsync();
         }
     }
 }

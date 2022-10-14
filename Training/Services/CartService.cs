@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using commercetools.Api.Models.Carts;
-using commercetools.Api.Models.Channels;
-using commercetools.Api.Models.Customers;
-using commercetools.Api.Models.Payments;
-using commercetools.Api.Models.ShippingMethods;
+using commercetools.Sdk.Api.Models.Carts;
+using commercetools.Sdk.Api.Models.Channels;
+using commercetools.Sdk.Api.Models.Customers;
+using commercetools.Sdk.Api.Models.Payments;
+using commercetools.Sdk.Api.Models.ShippingMethods;
 using commercetools.Base.Client;
 using commercetools.Sdk.Api.Extensions;
 using Training.Extensions;

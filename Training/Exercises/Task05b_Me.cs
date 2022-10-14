@@ -21,7 +21,7 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            var email = "michele_george@example.com";
+            var email = "nagesh_dixit@example.com";
             var password = "password";
     
             var configuration = serviceProvider.GetService<IConfiguration>();

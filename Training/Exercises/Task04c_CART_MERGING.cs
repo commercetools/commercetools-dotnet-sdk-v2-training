@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using commercetools.Api.Models.Carts;
-using commercetools.Api.Models.Customers;
+using commercetools.Sdk.Api.Models.Carts;
+using commercetools.Sdk.Api.Models.Customers;
 using commercetools.Base.Client;
 using commercetools.Sdk.Api.Extensions;
 using Training.Services;
@@ -17,7 +17,7 @@ namespace Training
     {
         private readonly IClient _client;
         private const string _channelKey = "berlin-supply-channel";
-        private const string _customerKey = "customer-michele-george";
+        private const string _customerKey = "customer-nagesh-dixit";
         private const string _customerPassword = "password";
         private readonly CustomerService _customerService;
         private readonly CartService _cartService;
@@ -54,7 +54,7 @@ namespace Training
            cart = await _cartService.AddProductToCartBySkusAndChannel(cart, channel, "tulip-seed-package", "tulip-seed-sack");
 
            // Create Anonymous cart
-           var anonymousCart = await _cartService.CreateAnonymousCart("mg123456789");
+           var anonymousCart = await _cartService.CreateAnonymousCart("nd123456789");
            Console.WriteLine($"anonymous cart created with Id {anonymousCart.Id}");
            
            //Add Product to the Anonymous cart

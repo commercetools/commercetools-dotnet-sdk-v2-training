@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using commercetools.Base.Client;
-using Training.Services;
+using commercetools.Sdk.Api.Extensions;
+using commercetools.Sdk.Api.Models.Products;
 
 namespace Training
 {
@@ -14,28 +15,39 @@ namespace Training
     public class Task06B : IExercise
     {
         private readonly IClient _client;
-        private readonly SearchService _searchService;
-        
+
         public Task06B(IEnumerable<IClient> clients)
         {
             _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
-            _searchService = new SearchService(_client, Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()
         {
             string lastId = null ;int pageSize = 2;int currentPage = 1; bool lastPage = false;
+            IProductPagedQueryResponse response;
 
             while (!lastPage)
             {
                 var where = lastId != null ? $"id>\"{lastId}\"" : null;
                 
-                var response = await _searchService.GetPagedResults(where,pageSize);
+                // TODO: GET paged response sorted on id
+                response = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                    .Products()
+                    .Get()
+                    .WithSort("id asc")
+                    .WithWhere(where)
+                    .WithLimit(pageSize)
+                    .ExecuteAsync();
 
                 Console.WriteLine($"Show Results of Page {currentPage}");
                 foreach (var product in response.Results)
                 {
-                    Console.WriteLine($"{product.MasterData.Current.Name["en"]}");
+                    if (product.MasterData.Current.Name.ContainsKey("en")){
+                        Console.WriteLine($"{product.MasterData.Current.Name["en"]}");
+                    }
+                    else {
+                        Console.WriteLine($"{product.MasterData.Current.Name["de"]}");
+                    }
                 }
                 Console.WriteLine("///////////////////////");
                 currentPage++;

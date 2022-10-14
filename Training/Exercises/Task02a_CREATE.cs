@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using commercetools.Api.Models.Common;
-using commercetools.Api.Models.Customers;
+using commercetools.Sdk.Api.Models.Common;
+using commercetools.Sdk.Api.Models.Customers;
 using commercetools.Base.Client;
 using Training.Services;
 
@@ -18,7 +18,7 @@ namespace Training
     {
         private readonly IClient _client;
         private readonly CustomerService _customerService;
-        private const string _customerKey = "customer-michele-george";
+        private const string _customerKey = "customer-nagesh-dixit";
 
         public Task02A(IEnumerable<IClient> clients)
         {
@@ -41,6 +41,7 @@ namespace Training
                 Addresses = new List<IBaseAddress>{
                         new AddressDraft {
                             Country = "DE",
+                            Key = _customerKey +"-home"
                     }
                 },
                 DefaultShippingAddress = 0,

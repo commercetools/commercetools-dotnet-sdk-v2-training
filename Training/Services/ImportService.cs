@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using commercetools.Base.Client;
-using commercetools.ImportApi.Models.Common;
-using commercetools.ImportApi.Models.Importcontainers;
-using commercetools.ImportApi.Models.Importoperations;
-using commercetools.ImportApi.Models.Importrequests;
-using commercetools.ImportApi.Models.Importsummaries;
-using commercetools.ImportApi.Models.Productdrafts;
-using commercetools.ImportApi.Models.Productvariants;
+using commercetools.Sdk.ImportApi.Models.Common;
+using commercetools.Sdk.ImportApi.Models.Importcontainers;
+using commercetools.Sdk.ImportApi.Models.Importoperations;
+using commercetools.Sdk.ImportApi.Models.Importrequests;
+using commercetools.Sdk.ImportApi.Models.Importsummaries;
+using commercetools.Sdk.ImportApi.Models.Productdrafts;
+using commercetools.Sdk.ImportApi.Models.Productvariants;
 using commercetools.Sdk.ImportApi.Extensions;
 
 namespace Training.Services
@@ -17,7 +17,7 @@ namespace Training.Services
         private readonly IClient _importClient;
         private readonly CSVHelper _csvHelper;
         private readonly string _projectKey;
-        private const string PREFIX = "MG";
+        private const string PREFIX = "ND";
 
         public ImportService(IClient client, string projectKey)
         {
@@ -164,6 +164,6 @@ namespace Training.Services
         public string CurrencyCode { get; set; }
         public string ImageUrl { get; set; }
         public string Color { get; set; }
-        public double Weight { get; set; }
+        public decimal Weight { get; set; }
     }
 }

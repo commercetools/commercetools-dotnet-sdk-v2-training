@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using commercetools.Api.Models.Orders;
-using commercetools.Api.Models.States;
+using commercetools.Sdk.Api.Models.Orders;
+using commercetools.Sdk.Api.Models.States;
 using commercetools.Base.Client;
 using commercetools.Sdk.Api.Extensions;
 
@@ -18,7 +18,7 @@ namespace Training
     {
         private readonly IClient _client;
         private const string _channelKey = "berlin-supply-channel";
-        private const string _customerKey = "customer-michele-george";
+        private const string _customerKey = "customer-nagesh-dixit";
         private const string _discountCode = "BOGO";
         private const string _stateOrderedPackedKey = "OrderPacked";
         private const string _productSku = "tulip-seed-sack";
