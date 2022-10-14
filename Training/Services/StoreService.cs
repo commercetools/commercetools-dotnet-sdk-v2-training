@@ -33,14 +33,33 @@ namespace Training.Services
         }
 
         /// <summary>
+        /// Get customers in a store
+        /// </summary>
+        /// <param name="storeKey"></param>
+        /// <param name="storeKey"></param>
+        /// <returns></returns>
+        public async Task<ICustomer> GetCustomerInStoreByKey(string customerKey, string storeKey)
+        {
+            return await _berlinStoreClient.WithApi().WithProjectKey(_projectKey)
+                .InStoreKeyWithStoreKeyValue(storeKey)
+                .Customers()
+                .WithKey(customerKey)
+                .Get()
+                .ExecuteAsync();
+        }
+
+        /// <summary>
         /// Create a new cart for a customer in a store with default shipping address
         /// </summary>
         /// <param name="customer"></param>
         /// <param name="storeKey"></param>
         /// <returns></returns>
-        public async Task<ICart> CreateInStoreCart(ICustomer customer, string storeKey)
+        public async Task<ICart> CreateInStoreCart(string customerKey, string storeKey)
         {
+            var customer = await GetCustomerInStoreByKey(customerKey,storeKey);
+
             var defaultShippingAddress = customer.GetDefaultShippingAddress();
+            
             var cartDraft = new CartDraft
             {
                 CustomerId = customer.Id,

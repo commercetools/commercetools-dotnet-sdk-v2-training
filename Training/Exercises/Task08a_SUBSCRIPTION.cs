@@ -28,7 +28,7 @@ namespace Training
             {
                 Type="GoogleCloudPubSub",
                 ProjectId = "ct-support",
-                Topic = "sub-1006"
+                Topic = "topic-example"
             };
 
 

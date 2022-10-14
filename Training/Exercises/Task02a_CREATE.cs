@@ -39,6 +39,7 @@ namespace Training
                 Addresses = new List<IBaseAddress>{
                         new AddressDraft {
                             Country = "DE",
+                            Key = _customerKey +"-home"
                     }
                 },
                 DefaultShippingAddress = 0,

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using commercetools.Base.Client;
-using System.Text.Json;
 using System.IO;
 using commercetools.Sdk.Api.Extensions;
 using commercetools.Sdk.Api.Models.CustomObjects;
@@ -24,11 +23,22 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            var jsonFile = "Resources/compatibility-info.json";
+            var compatibilityInfo = new CompatibilityInfo
+            {
+                IncompatibleSKUs = new List<string> { "tulip6125" },
+                LeafletID = "leaflet_1234",
+                Instructions = new ExtraInfo
+                {
+                    Title = "Flower Handling",
+                    Distance = "2 meter",
+                    Watering = "heavy"
+                }
+            };
 
+            
             // TODO: CREATE a new custom object     
             
-            //Console.WriteLine($"custom object created with Id {customObject.Id} with version {customObject.Version}");
+            // Console.WriteLine($"custom object created with Id {customObject.Id} with version {customObject.Version}");
         }
 
 
@@ -38,9 +48,9 @@ namespace Training
         /// </summary>
         /// <param name="container"></param>
         /// <param name="key"></param>
-        /// <param name="jsonFile"></param>
+        /// <param name="compatibilityInfo"></param>
         /// <returns></returns>
-        private async Task<ICustomObject> CreateCustomObject(string container, string key, string jsonFile)
+        public async Task<ICustomObject> CreateCustomObject(string container, string key, CompatibilityInfo compatibilityInfo)
         {
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .CustomObjects()
@@ -49,26 +59,24 @@ namespace Training
                     {
                         Container = container,
                         Key = key,
-                        Value = JsonSerializer.Deserialize<CompatibilityInfo>(File.ReadAllText(jsonFile))
+                        Value = compatibilityInfo
                     }
-                    )
+                )
                 .ExecuteAsync();
         }
     }
+    public class ExtraInfo
+    {
+        public string Title { get; set; }
+        public string Distance { get; set; }
+        public string Watering { get; set; }
+    }
 
-    
+    public class CompatibilityInfo
+    {
+        public List<string> IncompatibleSKUs { get; set; }
+        public string LeafletID { get; set; }
+        public ExtraInfo Instructions { get; set; }
+    }
 
-public class ExtraInfo
-{
-    private string Title { get; set; }
-    private string Distance { get; set; }
-    private string Watering { get; set; }
-}
-
-public class CompatibilityInfo
-{
-    private List<string> IncompatibleSKUs { get; set; }
-    private string LeafletID { get; set; }
-    private ExtraInfo Instructions { get; set; }
-}
 }

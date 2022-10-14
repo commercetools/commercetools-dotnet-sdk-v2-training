@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using commercetools.Sdk.Api.Models.Products;
 using commercetools.Base.Client;
-using Training.Services;
 
 namespace Training
 {
@@ -15,12 +14,10 @@ namespace Training
     public class Task06B : IExercise
     {
         private readonly IClient _client;
-        private readonly SearchService _searchService;
 
         public Task06B(IEnumerable<IClient> clients)
         {
             _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
-            _searchService = new SearchService(_client, Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()
@@ -31,6 +28,7 @@ namespace Training
             while (!lastPage)
             {
                 var where = lastId != null ? $"id>\"{lastId}\"" : null;
+                
                 // TODO: GET paged response sorted on id
                 response = null;
 

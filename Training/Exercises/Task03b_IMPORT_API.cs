@@ -34,11 +34,11 @@ namespace Training
                 
             // TODO: GET import summary for the container
             //    var importSummary = await _importService.GetImportContainerSummary(containerKey);
-            //    Console.WriteLine(JsonSerializer.Serialize(importSummary,new JsonSerializerOptions(){WriteIndented = true}));
+            //    Console.WriteLine(JsonConvert.SerializeObject(importSummary,Formatting.Indented));
 
             // TODO: GET operation status updates
             //    var operations = await _importService.GetImportOperationsByImportContainer(containerKey,true);
-            //    Console.WriteLine(JsonSerializer.Serialize(importSummary,new JsonSerializerOptions(){WriteIndented = true}));
+            //    Console.WriteLine(JsonConvert.SerializeObject(operations,Formatting.Indented));
 
             // TODO: CHECK operation status by id
             //     var opertaionId = "";
@@ -48,3 +48,14 @@ namespace Training
         }
     }
 }
+
+            // Project-Sync Tool
+            // https://github.com/commercetools/commercetools-project-sync#run
+            //docker run \
+            // -e SOURCE_PROJECT_KEY = xxx \
+            // -e SOURCE_CLIENT_ID = xxx \
+            // -e SOURCE_CLIENT_SECRET = xxx \
+            // -e TARGET_PROJECT_KEY = xxx \
+            // -e TARGET_CLIENT_ID = xxx \
+            // -e TARGET_CLIENT_SECRET = xxx \
+            // commercetools/commercetools-project-sync:5.2.2 - s all

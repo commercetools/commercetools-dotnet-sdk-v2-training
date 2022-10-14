@@ -7,7 +7,6 @@ using commercetools.Sdk.Api.Models.GraphQl;
 using commercetools.Base.Client;
 using commercetools.Base.Serialization;
 using Training.GraphQL;
-using Training.Services;
 using commercetools.Sdk.Api.Extensions;
 
 namespace Training

@@ -30,9 +30,8 @@ namespace Training
             var customers = await _storeService.GetCustomersInStore(_storeKey);
             Console.WriteLine($"Store customers (including global): {customers.Total}");
 
-            // var customer = await _customerService.GetCustomerByKey(_customerKey);
-            // var storeCart = await _storeService.CreateInStoreCart(customer,_storeKey);
-            // System.Console.WriteLine($"Cart {storeCart.Id} created in store {_storeKey} for customer {_customerKey}");
+            var storeCart = await _storeService.CreateInStoreCart(_customerKey, _storeKey);
+            System.Console.WriteLine($"Cart {storeCart.Id} created in store {_storeKey} for customer {_customerKey}");
         }
     }
 }

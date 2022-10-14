@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using commercetools.Sdk.Api.Models.Products;
 using commercetools.Base.Client;
-using Training.Services;
+using commercetools.Sdk.Api.Extensions;
 
 namespace Training
 {
@@ -15,7 +15,6 @@ namespace Training
     public class Task06A : IExercise
     {
         private readonly IClient _client;
-        private readonly SearchService _searchService;
 
         private const string _productTypeKey = "PhonePT";
 
@@ -23,18 +22,21 @@ namespace Training
         public Task06A(IEnumerable<IClient> clients)
         {
             _client = clients.FirstOrDefault(c => c.Name.Equals("Client"));
-            _searchService = new SearchService(_client, Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()
         {
             // GET productType
-            var productType = await _searchService.GetProductTypeByKey(_productTypeKey);
+            var productType = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .ProductTypes()
+                .WithKey(_productTypeKey)
+                .Get()
+                .ExecuteAsync();
 
-            // var filterQuery = $"productType.id:\"{productType.Id}\"";
-            // var facet = "variants.attributes.phonecolor as color";
+            var filterQuery = $"productType.id:\"{productType.Id}\"";
+            var facet = "variants.attributes.phonecolor as color";
 
-            // TODO: GET product projections paged search response and facets
+            // TODO: GET product projections paged search response with facets
             IProductProjectionPagedSearchResponse response = null;
             
             //Show Search Results

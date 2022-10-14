@@ -138,6 +138,6 @@ namespace Training.Services
         public string CurrencyCode { get; set; }
         public string ImageUrl { get; set; }
         public string Color { get; set; }
-        public double Weight { get; set; }
+        public decimal Weight { get; set; }
     }
 }
