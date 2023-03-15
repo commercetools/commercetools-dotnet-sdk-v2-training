@@ -39,7 +39,7 @@ namespace Training
                 {
                     new MessageSubscription
                     {
-                        ResourceTypeId ="order",
+                        ResourceTypeId = IMessageSubscriptionResourceTypeId.Order,
                         Types = new List<string> { "OrderCreated" }
                     }
                 }

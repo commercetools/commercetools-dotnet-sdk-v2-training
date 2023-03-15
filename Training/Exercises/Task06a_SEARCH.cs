@@ -50,8 +50,8 @@ namespace Training
             //Show Search Results
             Console.WriteLine($"No. of products: {response.Count}");
             Console.WriteLine("products in search result: ");
-            response.Results.ForEach(p => Console.WriteLine(p.Name["en"]));
-            
+            foreach (ProductProjection result in response.Results) Console.WriteLine(result.Name["en"]);
+
             //Show Facets
             ShowFacetResults(response);
         }

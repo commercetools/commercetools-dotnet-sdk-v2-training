@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using commercetools.Base.Client;
 using commercetools.Sdk.ImportApi.Models.Importcontainers;
+using commercetools.Sdk.ImportApi.Models.Importoperations;
 using Newtonsoft.Json;
 using Training.Services;
 
@@ -32,7 +33,7 @@ namespace Training
 
             var importResponse = await _importService.ImportProducts(containerKey, csvFile);
             Console.WriteLine($"Import ProductsDraft operation has been created, operation status count: {importResponse.OperationStatus.Count}");
-            importResponse.OperationStatus.ForEach(o => Console.WriteLine(o.OperationId)); 
+            foreach(ImportOperationStatus operationStatus in importResponse.OperationStatus) Console.WriteLine(operationStatus.OperationId);
            
             var importSummary = await _importService.GetImportContainerSummary(containerKey);
             Console.WriteLine(JsonConvert.SerializeObject(importSummary,Formatting.Indented));
