@@ -27,11 +27,12 @@ namespace Training
 
 
             //create destination
-            var destination = new HttpDestination()
+            var destination = new GoogleCloudFunctionDestination()
             {
-                Type = "HTTP",
+                Type = "GoogleCloudFunction",
                 Url = "https://europe-west3-ct-support.cloudfunctions.net/training-extensions-sample"
             };
+            
 
             // TODO: CREATE the extension
             
