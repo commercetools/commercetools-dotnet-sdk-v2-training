@@ -25,13 +25,14 @@ namespace Training
             var csvFile = "Resources/products.csv";
 
             // TODO: CREATE importContainer
-                
+
             // Console.WriteLine($"ImportContainer created with key: {importContainer.Key}");
 
             //  TODO: IMPORT products    
             //    Console.WriteLine($"Import ProductsDraft operation has been created, operation status count: {importResponse.OperationStatus.Count}");
-            //    importResponse.OperationStatus.ForEach(o => Console.WriteLine(o.OperationId));
-                
+
+            //foreach (ImportOperationStatus operationStatus in importResponse.OperationStatus) Console.WriteLine(operationStatus.OperationId);
+
             // TODO: GET import summary for the container
             //    var importSummary = await _importService.GetImportContainerSummary(containerKey);
             //    Console.WriteLine(JsonConvert.SerializeObject(importSummary,Formatting.Indented));

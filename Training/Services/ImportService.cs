@@ -10,6 +10,7 @@ using commercetools.Sdk.ImportApi.Models.Importsummaries;
 using commercetools.Sdk.ImportApi.Models.Productdrafts;
 using commercetools.Sdk.ImportApi.Models.Productvariants;
 using commercetools.Sdk.ImportApi.Extensions;
+using System.Linq;
 
 namespace Training.Services
 {
@@ -86,15 +87,12 @@ namespace Training.Services
         private List<IProductDraftImport> GetProductDraftImportList(string fileName)
         {
             var listOfCsvProducts = ParseCsvFile(fileName);
-            var listOfProductDraftImport = new List<IProductDraftImport>();
-            foreach (var product in listOfCsvProducts)
-            {
-                var draftImport = new ProductDraftImport
+            var listOfProductDraftImport = listOfCsvProducts.Select(product => new ProductDraftImport
                 {
                     Key = PREFIX + "-" + product.ProductName,
-                    Name = new LocalizedString {{"en", product.ProductName} , {"de", product.ProductName}},
-                    ProductType = new ProductTypeKeyReference {Key = product.ProductType},
-                    Slug = new LocalizedString {{"en", PREFIX + "-" + product.ProductName}, {"de", PREFIX + "-" + product.ProductName}},
+                    Name = new LocalizedString { { "en", product.ProductName }, { "de", product.ProductName } },
+                    ProductType = new ProductTypeKeyReference { Key = product.ProductType },
+                    Slug = new LocalizedString { { "en", PREFIX + "-" + product.ProductName }, { "de", PREFIX + "-" + product.ProductName } },
                     MasterVariant = new ProductVariantDraftImport
                     {
                         Sku = PREFIX + "-" + product.InventoryId,
@@ -109,11 +107,10 @@ namespace Training.Services
                             new NumberAttribute { Name = "phoneweight", Value = product.Weight }
                         }
                     }
-                };
-                listOfProductDraftImport.Add(draftImport);
-            }
+                
+                });
 
-            return listOfProductDraftImport;
+            return listOfProductDraftImport.ToList<IProductDraftImport>();
         }
 
         private List<CSVProduct> ParseCsvFile(string file)
