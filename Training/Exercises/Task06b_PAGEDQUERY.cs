@@ -29,7 +29,7 @@ namespace Training
             {
                 var where = lastId != null ? $"id>\"{lastId}\"" : null;
                 
-                // TODO: GET paged response sorted on id
+                // GET paged response sorted on id
                 response = null;
 
                 Console.WriteLine($"Show Results of Page {currentPage}");

@@ -36,7 +36,11 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<IImportContainer> CreateImportContainer(ImportContainerDraft importContainerDraft)
         {
-            throw new NotImplementedException();
+            return await _importClient.WithImportApi()
+                .WithProjectKeyValue(_projectKey)
+                .ImportContainers()
+                .Post(importContainerDraft)
+                .ExecuteAsync();
         }
 
         /// <summary>
@@ -46,7 +50,13 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<IImportSummary> GetImportContainerSummary(string importContainerKey)
         {
-            throw new NotImplementedException();
+            return await _importClient.WithImportApi()
+                .WithProjectKeyValue(_projectKey)
+                .ImportContainers()
+                .WithImportContainerKeyValue(importContainerKey)
+                .ImportSummaries()
+                .Get()
+                .ExecuteAsync();
         }
 
         /// <summary>
@@ -58,7 +68,13 @@ namespace Training.Services
         public async Task<IImportOperationPagedResponse> GetImportOperationsByImportContainer(string importContainerKey, 
             bool debug)
         {
-            throw new NotImplementedException();
+            return await _importClient.WithImportApi()
+                .WithProjectKeyValue(_projectKey)
+                .ImportContainers()
+                .WithImportContainerKeyValue(importContainerKey)
+                .ImportOperations()
+                .Get()
+                .ExecuteAsync();
         }
 
         /// <summary>
@@ -79,7 +95,17 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<IImportResponse> ImportProducts(string importContainerKey, string csvFile)
         {
-            throw new NotImplementedException();
+            return await _importClient.WithImportApi()
+                .WithProjectKeyValue(_projectKey)
+                .ProductDrafts()
+                .ImportContainers()
+                .WithImportContainerKeyValue(importContainerKey)
+                .Post(
+                    new ProductDraftImportRequest {
+                        Resources = GetProductDraftImportList(csvFile)
+                    }
+                )
+                .ExecuteAsync();
         }
 
         #region Helpers

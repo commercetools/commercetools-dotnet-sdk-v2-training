@@ -21,7 +21,7 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            var email = "michele_george@example.com";
+            var email = "nagesh@example.com";
             var password = "password";
     
             var configuration = serviceProvider.GetService<IConfiguration>();
@@ -43,22 +43,30 @@ namespace Training
                 httpClientFactory,
                 serializerService,
                 passwordTokenProvider);
-    
-            // // TODO: USE meClient to get my Customer Profile
+
+            // // USE meClient to get my Customer Profile
+            var myProfile = await meClient.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Me()
+                .Get()
+                .ExecuteAsync();
+
+            Console.WriteLine($"My Profile, firstName:{myProfile.FirstName}, lastName:{myProfile.LastName}");
+
             
-            //Console.WriteLine($"My Profile, firstName:{myProfile.FirstName}, lastName:{myProfile.LastName}");
-            
-            /*
-            // // TODO: USE meClient to get my Orders
-            
+            // // USE meClient to get my Orders
+            var myOrders = await meClient.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Me()
+                .Orders()
+                .Get()
+                .ExecuteAsync();
             
             Console.WriteLine($"Orders count: {myOrders.Count}");
             foreach (var order in myOrders.Results)
             {
                 Console.WriteLine($"{order.Id}");
             }
-            */
             
+
         }
     }
 }

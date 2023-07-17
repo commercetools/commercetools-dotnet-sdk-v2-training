@@ -13,8 +13,8 @@ namespace Training
     public class Task02B : IExercise
     {
         private readonly IClient _client;
-        private const string _customerKey = "";
-        private const string _customerGroupKey = "";
+        private const string _customerKey = "nd-customer";
+        private const string _customerGroupKey = "vip-customers";
 
         private readonly CustomerService _customerService;
 
@@ -27,9 +27,13 @@ namespace Training
         public async Task ExecuteAsync()
         {
 
-            // TODO: SET customerGroup for the customer
-            
-            //Console.WriteLine($"customer {updatedCustomer.Id} in customer group {updatedCustomer.CustomerGroup.Id}");
+            // SET customerGroup for the customer
+            var customer = await _customerService.AssignCustomerToCustomerGroup(
+                    _customerKey,
+                    _customerGroupKey
+                );
+
+            Console.WriteLine($"customer {customer.Id} in customer group {customer.CustomerGroup.Id}");
         }
     }
 }

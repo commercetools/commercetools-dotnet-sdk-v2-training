@@ -13,23 +13,41 @@ namespace Training.Services
 {
     public class StoreService
     {
-        private readonly IClient _berlinStoreClient;
+        private readonly IClient _client;
         private readonly string _projectKey;
         
         public StoreService(IClient client, string projectKey)
         {
-            _berlinStoreClient = client;
+            _client = client;
             _projectKey = projectKey;
         }
 
         /// <summary>
+        /// Get store by key
+        /// </summary>
+        /// <param name="storeKey"></param>
+        /// <returns>IStore</returns>
+        public async Task<IStore> GetStoreByKey(string storeKey)
+        {
+            return await _client.WithApi().WithProjectKey(_projectKey)
+                .Stores()
+                .WithKey(storeKey)
+                .Get()
+                .ExecuteAsync();
+        }
+
+        /// <summary>
         /// Get customers in a store
         /// </summary>
         /// <param name="storeKey"></param>
-        /// <returns></returns>
+        /// <returns>ICustomerPagedQueryResponse</returns>
         public async Task<ICustomerPagedQueryResponse> GetCustomersInStore(string storeKey)
         {
-            throw new NotImplementedException();
+            return await _client.WithApi().WithProjectKey(_projectKey)
+                .InStoreKeyWithStoreKeyValue(storeKey)
+                .Customers()
+                .Get()
+                .ExecuteAsync();
         }
 
         /// <summary>
@@ -37,10 +55,10 @@ namespace Training.Services
         /// </summary>
         /// <param name="storeKey"></param>
         /// <param name="storeKey"></param>
-        /// <returns></returns>
+        /// <returns>ICustomer</returns>
         public async Task<ICustomer> GetCustomerInStoreByKey(string customerKey, string storeKey)
         {
-            return await _berlinStoreClient.WithApi().WithProjectKey(_projectKey)
+            return await _client.WithApi().WithProjectKey(_projectKey)
                 .InStoreKeyWithStoreKeyValue(storeKey)
                 .Customers()
                 .WithKey(customerKey)
@@ -53,7 +71,7 @@ namespace Training.Services
         /// </summary>
         /// <param name="customer"></param>
         /// <param name="storeKey"></param>
-        /// <returns></returns>
+        /// <returns>ICart</returns>
         public async Task<ICart> CreateInStoreCart(string customerKey, string storeKey)
         {
             var customer = await GetCustomerInStoreByKey(customerKey,storeKey);
@@ -69,9 +87,13 @@ namespace Training.Services
                 ShippingAddress = defaultShippingAddress,
                 DeleteDaysAfterLastModification = 90,
                 InventoryMode = IInventoryMode.ReserveOnOrder,
-                // Store = new StoreResourceIdentifier { Key = storeKey}
+                //Store = new StoreResourceIdentifier { Key = storeKey}
             };
-            throw new NotImplementedException();
+            return await _client.WithApi().WithProjectKey(_projectKey)
+                .InStoreKeyWithStoreKeyValue(storeKey)
+                .Carts()
+                .Post(cartDraft)
+                .ExecuteAsync();
         }
 
         /// <summary>
@@ -79,9 +101,29 @@ namespace Training.Services
         /// </summary>
         /// <param name="productSelectionKey"></param>
         /// <param name="store"></param>
-        /// <returns></returns>
-        public async Task<IStore>  AddProductSelectionToStore(string productSelectionKey, IStore store){
-            throw new NotImplementedException();
+        /// <returns>IStore</returns>
+        public async Task<IStore>  AddProductSelectionToStore(string storeKey, string productSelectionKey){
+
+            var store = await GetStoreByKey(storeKey);
+
+            return await _client.WithApi().WithProjectKey(_projectKey)
+                .Stores()
+                .WithId(store.Id)
+                .Post(
+                    new StoreUpdate
+                    {
+                        Version = store.Version,
+                        Actions = new List<IStoreUpdateAction> {
+                            new StoreAddProductSelectionAction{
+                                ProductSelection = new ProductSelectionResourceIdentifier{
+                                    Key = productSelectionKey
+                                },
+                                Active = true
+                            }
+                        }
+                    }
+                )
+                .ExecuteAsync();
         }
 
         /// <summary>
@@ -90,7 +132,7 @@ namespace Training.Services
         /// <param name="storeKey"></param>
         /// <returns></returns>
         public async Task<IProductsInStorePagedQueryResponse>  GetProductsInStore(string storeKey){
-            return await _berlinStoreClient.WithApi().WithProjectKey(Settings.ProjectKey)
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .InStoreKeyWithStoreKeyValue(storeKey)
                 .ProductSelectionAssignments()
                 .Get()

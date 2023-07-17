@@ -30,7 +30,7 @@ namespace Training
                 Query = "query {customers{count,results{email}}}"
             };
 
-            // TODO: graphQL Request
+            // graphQL Request
             IGraphQLResponse response = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .Graphql()
                 .Post(graphRequest)

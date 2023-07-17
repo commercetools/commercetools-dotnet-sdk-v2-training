@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using commercetools.Sdk.Api.Models.States;
 using commercetools.Base.Client;
 using commercetools.Sdk.Api.Extensions;
+using System.Linq;
 
 namespace Training.Services
 {
@@ -40,7 +41,10 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<IState> CreateState(IStateDraft stateDraft)
         {
-            throw new NotImplementedException();
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .States()
+                .Post(stateDraft)
+                .ExecuteAsync();
         }
 
         /// <summary>
@@ -49,9 +53,31 @@ namespace Training.Services
         /// <param name="stateKey"></param>
         /// <param name="transitionStateKeys"></param>
         /// <returns></returns>
-        public async Task<IState> AddTransition(string stateKey, List<string> transitionStateKeys)
+        public async Task<IState> AddTransition(string stateKey,
+            List<string> transitionStateKeys)
         {
-            throw new NotImplementedException();
+            var state = await GetStateByKey(stateKey);
+
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .States()
+                .WithId(state.Id)
+                .Post(
+                    new StateUpdate
+                    {
+                        Version = state.Version,
+                        Actions = new List<IStateUpdateAction> {
+                            new StateSetTransitionsAction{
+                                Transitions = transitionStateKeys.Select(
+                                    transitionStateKey => new StateResourceIdentifier
+                                    {
+                                        Key = transitionStateKey
+                                    }
+                                    ).ToList<IStateResourceIdentifier>()
+                            }
+                        }
+                    }
+                )
+                .ExecuteAsync();
         }
         
     }

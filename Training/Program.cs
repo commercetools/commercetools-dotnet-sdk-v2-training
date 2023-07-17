@@ -36,14 +36,14 @@ namespace Training
         private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
              services.UseCommercetoolsApi(configuration, "Client");
-            // services.UseCommercetoolsImportApi(configuration, "ImportApiClient");
-            // services.UseCommercetoolsApi(configuration, new List<string>{"Client", "BerlinStoreClient"}, CreateDefaultTokenProvider);
-            
+            //services.UseCommercetoolsImportApi(configuration, "ImportApiClient");
+             //services.UseCommercetoolsApi(configuration, new List<string>{"Client", "StoreClient"}, CreateDefaultTokenProvider);
+
             var clientConfiguration = configuration.GetSection("Client").Get<ClientConfiguration>();
             Settings.SetCurrentProjectKey(clientConfiguration.ProjectKey);
             
             //For Me endpoint exercise
-            //services.AddSingleton(configuration);
+            services.AddSingleton(configuration);
         }
         
         public static ITokenProvider CreateDefaultTokenProvider(string clientName, IConfiguration configuration, IServiceProvider serviceProvider)

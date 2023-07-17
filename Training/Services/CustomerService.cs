@@ -25,7 +25,11 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<ICustomer> GetCustomerByKey(string customerKey)
         {
-            throw new NotImplementedException();
+            return await _client.WithApi().WithProjectKey(_projectKey)
+                .Customers()
+                .WithKey(customerKey)
+                .Get()
+                .ExecuteAsync();
         }
 
         /// <summary>
@@ -35,7 +39,11 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<ICustomer> CreateCustomer(ICustomerDraft customerDraft)
         {
-            throw new NotImplementedException();
+            var customerSignInResult = await _client.WithApi().WithProjectKey(_projectKey)
+                .Customers()
+                .Post(customerDraft)
+                .ExecuteAsync();
+            return customerSignInResult.Customer;
         }
 
         /// <summary>
@@ -45,7 +53,17 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<ICustomerToken> CreateCustomerToken(ICustomer customer)
         {
-            throw new NotImplementedException();
+            return await _client.WithApi().WithProjectKey(_projectKey)
+                .Customers()
+                .EmailToken()
+                .Post(
+                    new CustomerCreateEmailToken
+                    {
+                        Id = customer.Id,
+                        TtlMinutes = 60 * 24
+                    }
+                )
+                .ExecuteAsync();
         }
 
         /// <summary>
@@ -55,7 +73,16 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<ICustomer> ConfirmCustomerEmail(ICustomerToken customerToken)
         {
-            throw new NotImplementedException();
+            return await _client.WithApi().WithProjectKey(_projectKey)
+                .Customers()
+                .EmailConfirm()
+                .Post(
+                    new CustomerEmailVerify
+                    {
+                        TokenValue = customerToken.Value
+                    }
+                )
+                .ExecuteAsync();
         }
 
         /// <summary>
@@ -80,7 +107,27 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<ICustomer> AssignCustomerToCustomerGroup(string customerKey, string customerGroupKey)
         {
-            throw new NotImplementedException();
+            var customer = await GetCustomerByKey(customerKey);
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Customers()
+                .WithKey(customerKey)
+                .Post(
+                    new CustomerUpdate
+                    {
+                        Actions = new List<ICustomerUpdateAction> {
+                            new CustomerSetCustomerGroupAction{
+                                CustomerGroup = new CustomerGroupResourceIdentifier{
+                                    Key = customerGroupKey
+                                }
+                            },
+                            new CustomerSetMiddleNameAction{
+                                MiddleName = "P"
+                            }
+                        },
+                        Version = customer.Version
+                    }
+                )
+                .ExecuteAsync();
         }
         
     }

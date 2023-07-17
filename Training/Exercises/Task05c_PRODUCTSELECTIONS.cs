@@ -15,8 +15,8 @@ namespace Training
     public class Task05C : IExercise
     {
         private readonly IClient _client;
-        private const string _storekey = "";
-        private const string _productSelectionKey = "";
+        private const string _storeKey = "berlin-store";
+        private const string _productSelectionKey = "nd-berlin-product-list";
         private readonly ProductSelectionService _productSelectionService;
         private readonly StoreService _storeService;
 
@@ -31,24 +31,27 @@ namespace Training
         public async Task ExecuteAsync()
         {
 
-            // TODO: CREATE a product selection
-            
+            // CREATE a product selection
+            //var productSelection = await _productSelectionService.CreateProductSelection(
+            //        _productSelectionKey,
+            //        new LocalizedString{ { "en"," ND Berlin Selection"},{ "de","ND Berlin Selection"} }
+            //    );
             // System.Console.WriteLine($"Product selection: {productSelection.Id} with {productSelection.ProductCount} products");
 
-            // TODO: ADD a product to the product selection
+            // ADD a product to the product selection
+            //var productSelection = await _productSelectionService.AddProductToProductSelection(
+            //        _productSelectionKey,
+            //        "tulip-seed-product"
+            //    );
+            // System.Console.WriteLine($"Berlin Product selection: {productSelection.Id} with {productSelection.ProductCount} products");
 
-            // System.Console.WriteLine($"Berlin Product selection: {updatedProductSelection.Id} with {updatedProductSelection.ProductCount} products");
-
-            // TODO: GET store by key
-            var store = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .Stores()
-                .WithKey(_storekey)
-                .Get()
-                .ExecuteAsync();
             
-            // TODO: set product selection for the store
-                
-            // System.Console.WriteLine($"Updated store {store.Key} with selection {updatedStore.ProductSelections?.Count}");
+            // set product selection for the store
+            var store = await _storeService.AddProductSelectionToStore(
+                    _storeKey,
+                    _productSelectionKey
+                );    
+             System.Console.WriteLine($"Updated store with selection {store.ProductSelections?.Count}");
 
             /*
             var productSelectionProducts = await _productSelectionService.GetProductSelectionProductByKey(_productSelectionKey);

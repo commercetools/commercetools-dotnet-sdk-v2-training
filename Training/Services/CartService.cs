@@ -10,6 +10,7 @@ using commercetools.Sdk.Api.Models.ShippingMethods;
 using commercetools.Base.Client;
 using commercetools.Sdk.Api.Extensions;
 using Training.Extensions;
+using commercetools.Sdk.Api.Models.Me;
 
 namespace Training.Services
 {
@@ -59,7 +60,21 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<ICart> CreateCart(ICustomer customer)
         {
-            throw new NotImplementedException();
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Carts()
+                .Post(
+                    new CartDraft
+                    {
+                        Currency = "EUR",
+                        InventoryMode = IInventoryMode.ReserveOnOrder,
+                        CustomerId = customer.Id,
+                        CustomerEmail = customer.Email,
+                        ShippingAddress = customer.GetDefaultShippingAddress(),
+                        Country = customer.GetDefaultShippingAddress().Country,
+                        DeleteDaysAfterLastModification = 10
+                    }
+                )
+                .ExecuteAsync();
         }
 
         /// <summary>
@@ -91,10 +106,29 @@ namespace Training.Services
         /// <param name="channel"></param>
         /// <param name="skus"></param>
         /// <returns></returns>
-        public async Task<ICart> AddProductsToCartBySkusAndChannel(ICart cart, IChannel channel,
+        public async Task<ICart> AddProductsToCartBySkusAndChannel(ICart cart, string channelKey,
             params string[] skus)
         {
-            throw new NotImplementedException();
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Carts()
+                .WithId(cart.Id)
+                .Post(
+                    new CartUpdate
+                    {
+                        Version = cart.Version,
+                        Actions = skus.Select(sku =>
+                            new CartAddLineItemAction
+                            {
+                                Sku = sku,
+                                SupplyChannel = new ChannelResourceIdentifier
+                                {
+                                    Key = channelKey
+                                }
+                            }
+                        ).ToList<ICartUpdateAction>()
+                    }
+                )
+                .ExecuteAsync();
         }
 
         /// <summary>
@@ -105,7 +139,21 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<ICart> AddDiscountToCart(ICart cart, string code)
         {
-            throw new NotImplementedException();
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Carts()
+                .WithId(cart.Id)
+                .Post(
+                    new CartUpdate
+                    {
+                        Version = cart.Version,
+                        Actions = new List<ICartUpdateAction> {
+                            new CartAddDiscountCodeAction{
+                                Code = code
+                            }
+                        }
+                    }
+                )
+                .ExecuteAsync();
         }
 
         //Recalculate a cart
@@ -126,7 +174,31 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<ICart> SetShipping(ICart cart)
         {
-            throw new NotImplementedException();
+            var shippingMethods = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                    .ShippingMethods()
+                    .MatchingCart()
+                    .Get()
+                    .WithCartId(cart.Id)
+                    .ExecuteAsync();
+            var shippingMethod = shippingMethods.Results.First();
+
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Carts()
+                .WithId(cart.Id)
+                .Post(
+                    new CartUpdate
+                    {
+                        Version = cart.Version,
+                        Actions = new List<ICartUpdateAction> {
+                            new CartSetShippingMethodAction{
+                                ShippingMethod = new ShippingMethodResourceIdentifier{
+                                    Id = shippingMethod.Id
+                                }
+                            }
+                        }
+                    }
+                )
+                .ExecuteAsync();
         }
 
         /// <summary>
@@ -137,7 +209,23 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<ICart> AddPaymentToCart(ICart cart, IPayment payment)
         {
-            throw new NotImplementedException();
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Carts()
+                .WithId(cart.Id)
+                .Post(
+                    new CartUpdate
+                    {
+                        Version = cart.Version,
+                        Actions = new List<ICartUpdateAction> {
+                            new CartAddPaymentAction{
+                                Payment = new PaymentResourceIdentifier{
+                                    Id = payment.Id
+                                }
+                            }
+                        }
+                    }
+                )
+                .ExecuteAsync();
         }
         
     }

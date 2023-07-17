@@ -41,7 +41,13 @@ namespace Training.Services
         /// <param name="name"></param>
         /// <returns></returns>
         public async Task<IProductSelection> CreateProductSelection(string productSelectionKey, LocalizedString name){
-            throw new NotImplementedException();
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .ProductSelections()
+                .Post(new ProductSelectionDraft {
+                    Key = productSelectionKey,
+                    Name = name
+                })
+                .ExecuteAsync();
         }   
 
         /// <summary>
@@ -51,7 +57,25 @@ namespace Training.Services
         /// <param name="productKey"></param>
         /// <returns></returns>
         public async Task<IProductSelection> AddProductToProductSelection(string productSelectionKey, string productKey){
-            throw new NotImplementedException();
+
+            var productSelection = await GetProductSelectionByKey(productSelectionKey);
+
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .ProductSelections()
+                .WithKey(productSelectionKey)
+                .Post(
+                    new ProductSelectionUpdate
+                    {
+                        Version = productSelection.Version,
+                        Actions = new List<IProductSelectionUpdateAction> {
+                            new ProductSelectionAddProductAction{
+                                Product = new ProductResourceIdentifier{
+                                    Key = productKey
+                                }
+                            }
+                        }
+                    }
+                ).ExecuteAsync();
         }
 
         /// <summary>

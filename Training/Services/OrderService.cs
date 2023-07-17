@@ -41,7 +41,20 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<IOrder> CreateOrder(ICart cart)
         {
-            throw new NotImplementedException();
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Orders()
+                .Post(
+                    new OrderFromCartDraft
+                    {
+                        Cart = new CartResourceIdentifier
+                        {
+                            Id = cart.Id
+                        },
+                        Version = cart.Version,
+                        OrderNumber = "ND00" + Settings.RandomString()
+                    }
+                )
+                .ExecuteAsync();
         }
 
 
@@ -53,7 +66,23 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<IOrder> ChangeOrderState(IOrder order, IOrderState state)
         {
-            throw new NotImplementedException();
+            var orderUpdate = new OrderUpdate
+            {
+                Version = order.Version,
+                Actions = new List<IOrderUpdateAction>
+                {
+                    new OrderChangeOrderStateAction
+                    {
+                        OrderState = state
+                    }
+                }
+            };
+
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Orders()
+                .WithOrderNumber(order.OrderNumber)
+                .Post(orderUpdate)
+                .ExecuteAsync();
         }
         /// <summary>
         /// Change Order Workflow State
@@ -61,9 +90,27 @@ namespace Training.Services
         /// <param name="order"></param>
         /// <param name="state"></param>
         /// <returns></returns>
-        public async Task<IOrder> ChangeWorkflowState(IOrder order, IStateResourceIdentifier state)
+        public async Task<IOrder> ChangeWorkflowState(IOrder order, string stateKey)
         {
-            throw new NotImplementedException();
+            var orderUpdate = new OrderUpdate
+            {
+                Version = order.Version,
+                Actions = new List<IOrderUpdateAction>
+                {
+                    new OrderTransitionStateAction {
+                        State = new StateResourceIdentifier
+                        {
+                            Key = stateKey
+                        }
+                    }
+                }
+            };
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Orders()
+                .WithOrderNumber(order.OrderNumber)
+                .Post(orderUpdate)
+                .WithExpand("state")
+                .ExecuteAsync();
         }
         
     }

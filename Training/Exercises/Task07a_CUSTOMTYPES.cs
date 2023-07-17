@@ -23,13 +23,35 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            // TODO: DEFINE fields
+            // DEFINE fields
+            var fields = new List<IFieldDefinition> {
+                new FieldDefinition{
+                    Name = "allowed",
+                    Label = new LocalizedString {
+                        {"en", "Allowed to place Orders:" }
+                    },
+                    Required = true,
+                    Type = new CustomFieldBooleanType()
+                },
+                new FieldDefinition {
+                    Name = "reason_for_block",
+                    Label = new LocalizedString {
+                        {"en"," Reason for Blocking: " }
+                    },
+                    Type = new CustomFieldStringType(),
+                    Required = true
+                }
+            };
 
+            // CREATE custom type with one field 'allowed-to-place-orders'
+            var customType = await CreateCustomType(
+                "nd-custom-type",
+                new LocalizedString { { "en", "ND Customer Block Option" } },
+                new List<IResourceTypeId> { IResourceTypeId.Customer },
+                fields
+                );
 
-            // TODO: CREATE custom type with one field 'allowed-to-place-orders'
-
-
-             //Console.WriteLine($"New custom type has been created with Id: {type.Id}");
+             Console.WriteLine($"New custom type has been created with Id: {customType.Id}");
         }
 
 

@@ -25,7 +25,7 @@ namespace Training
         {
             var compatibilityInfo = new CompatibilityInfo
             {
-                IncompatibleSKUs = new List<string> { "tulip6125" },
+                IncompatibleSKUs = new List<string> { "celery-seed-product" },
                 LeafletID = "leaflet_1234",
                 Instructions = new ExtraInfo
                 {
@@ -35,10 +35,10 @@ namespace Training
                 }
             };
 
-            
-            // TODO: CREATE a new custom object     
-            
-            // Console.WriteLine($"custom object created with Id {customObject.Id} with version {customObject.Version}");
+
+            // CREATE a new custom object     
+            var customObject = await CreateCustomObject("compat-container", "nd-tulip-seed-comaptibility", compatibilityInfo);
+             Console.WriteLine($"custom object created with Id {customObject.Id} with version {customObject.Version}");
         }
 
 

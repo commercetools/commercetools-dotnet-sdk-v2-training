@@ -19,11 +19,11 @@ namespace Training
     public class Task04B : IExercise
     {
         private readonly IClient _client;
-        private const string _channelKey = "";
-        private const string _customerKey = "";
-        private const string _discountCode = "";
-        private const string _stateOrderedPackedKey = "";
-        private const string _productSku = "";
+        private const string _channelKey = "berlin-store-channel";
+        private const string _customerKey = "nd-customer";
+        private const string _discountCode = "BOGOOFFER";
+        private const string _stateOrderedPackedKey = "ndOrderPacked";
+        private const string _productSku = "tulip-seed-box";
 
         private readonly CustomerService _customerService;
         private readonly CartService _cartService;
@@ -43,40 +43,58 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            // TODO: GET customer
+            // GET customer
+            var customer = await _customerService.GetCustomerByKey(_customerKey);
 
-            // TODO: CREATE a cart for the customer
+            // CREATE a cart for the customer
+            var cart = await _cartService.CreateCart(customer);
+            //var cart = await _cartService.GetCartById("5ee8505e-9325-4e45-9296-3211ae93713e");
 
-            // Console.WriteLine($"Cart {cart.Id} for customer: {cart.CustomerId}");
-            
-            // TODO: GET a channel if your inventory mode will not be NONE
+            Console.WriteLine($"Cart {cart.Id} for customer: {cart.CustomerId}");
 
-            // TODO: ADD items to the cart
-            
-            // TODO: ADD discount coupon code to the cart
-            
-            // TODO: RECALCULATE the cart
+            // GET a channel if your inventory mode will not be NONE
 
-            // TODO: ADD default shipping to the cart
-            
-            // TODO: CREATE a payment 
-            
+            // ADD items to the cart
+            cart = await _cartService.AddProductsToCartBySkusAndChannel(
+                cart,
+                _channelKey,
+                _productSku
+                );
+
+            // ADD discount coupon code to the cart
+            //cart = await _cartService.AddDiscountToCart(cart, _discountCode);
+
+            // RECALCULATE the cart
+
+            // ADD default shipping to the cart
+            cart = await _cartService.SetShipping(cart);
+
+            // CREATE a payment 
+            //var payment = await _paymentService.CreatePayment(cart,
+            //    "Adyen",
+            //    "Credit",
+            //    "ADYEN_002"
+            //    );
             // Console.WriteLine($"Payment Created with Id: {payment.Id}");
 
-            // TODO: ADD transaction to the payment
-            
-            // TODO: ADD payment to the cart
-            
-            // TODO: CREATE order
-            // Console.WriteLine($"Order Created with order number: {order.OrderNumber}");
-            
-            // TODO: UPDATE order state to Confirmed
-            // Console.WriteLine($"Order state changed to: {order.OrderState.Value}");
-            
-            // TODO: GET custom workflow state for Order
-            // TODO: UPDATE order custom workflow state
-            
-            // Console.WriteLine($"Order Workflow State changed to: {order.State?.Obj?.Name["en"]}");
+            //// ADD transaction to the payment
+            //payment = await _paymentService.AddTransactionToPayment(
+            //    cart,
+            //    payment,
+            //    "res002");
+            //// ADD payment to the cart
+            //cart = await _cartService.AddPaymentToCart(cart, payment);
+
+            // CREATE order
+            var order = await _orderService.CreateOrder(cart);
+
+            Console.WriteLine($"Order Created with order number: {order.Id}");
+
+            order = await _orderService.ChangeOrderState(order, IOrderState.Confirmed);
+            Console.WriteLine($"Order state changed to: {order.OrderState.Value}");
+
+            order = await _orderService.ChangeWorkflowState(order, _stateOrderedPackedKey);
+            Console.WriteLine($"Order Workflow State changed to: {order.State?.Obj?.Name["en"]}");
         }
 
     }

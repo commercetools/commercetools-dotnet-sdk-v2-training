@@ -25,29 +25,38 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            // TODO: CREATE OrderPacked stateDraft, state
+            // CREATE OrderPacked stateDraft, state
             var stateOrderPackedDraft = new StateDraft
             {
-                Key = "OrderPacked",
+                Key = "ndOrderPacked",
                 Initial = true,
-                Name = new LocalizedString {{"en", "Order Packed"}},
+                Name = new LocalizedString {{"en", "ND Order Packed"}},
                 Type = IStateTypeEnum.OrderState
             };
-            
-            
-            // TODO: CREATE OrderShipped stateDraft, state
+            var stateOrderPacked = await _stateMachineService.CreateState(
+                stateOrderPackedDraft);
+
+            // CREATE OrderShipped stateDraft, state
             var stateOrderShippedDraft = new StateDraft
             {
-                Key = "OrderShipped",
+                Key = "ndOrderShipped",
                 Initial = false,
-                Name = new LocalizedString {{"en", "Order Shipped"}},
+                Name = new LocalizedString {{"en", "ND Order Shipped"}},
                 Type = IStateTypeEnum.OrderState
             };
-            
-            
-            // TODO: UPDATE packedState to transit to stateShipped
-            
-            //Console.WriteLine($"stateOrderShipped Id : {stateOrderShipped.Id}, stateOrderPacked transition to:  {updatedStateOrderPacked.Transitions[0].Id}");
+            var stateOrderShipped = await _stateMachineService.CreateState(
+                stateOrderShippedDraft);
+
+            // UPDATE packedState to transit to stateShipped
+            stateOrderPacked = await _stateMachineService.AddTransition(
+                    stateOrderPacked.Key,
+                    new List<string> { stateOrderShipped.Key }
+                );
+            stateOrderShipped = await _stateMachineService.AddTransition(
+                    stateOrderShipped.Key,
+                    new List<string>()
+                );
+            Console.WriteLine($"stateOrderShipped Id : {stateOrderShipped.Id}, stateOrderPacked transition to:  {stateOrderPacked.Transitions[0].Id}");
         }
     }
 }

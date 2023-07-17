@@ -28,13 +28,20 @@ namespace Training
             {
                 Type="GoogleCloudPubSub",
                 ProjectId = "ct-support",
-                Topic = "topic-example"
+                Topic = "example-topic"
             };
 
 
-            // TODO: CREATE the subscription
-
-            //Console.WriteLine($"a new subscription created with Id {subscription.Id}");
+            // CREATE the subscription
+            var subscription = await CreateSubscription("nd-order-created", destination,
+                    new List<IMessageSubscription> {
+                        new MessageSubscription{
+                            ResourceTypeId = IMessageSubscriptionResourceTypeId.Order,
+                            Types = new List<string>{"OrderCreated"}
+                        }
+                    }
+                );
+            Console.WriteLine($"a new subscription created with Id {subscription.Id}");
         }
 
         /// <summary>
