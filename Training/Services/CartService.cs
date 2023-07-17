@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,7 +9,6 @@ using commercetools.Sdk.Api.Models.ShippingMethods;
 using commercetools.Base.Client;
 using commercetools.Sdk.Api.Extensions;
 using Training.Extensions;
-using commercetools.Sdk.Api.Models.Me;
 
 namespace Training.Services
 {
@@ -123,6 +121,10 @@ namespace Training.Services
                                 SupplyChannel = new ChannelResourceIdentifier
                                 {
                                     Key = channelKey
+                                },
+                                DistributionChannel = new ChannelResourceIdentifier
+                                {
+                                    Key = channelKey
                                 }
                             }
                         ).ToList<ICartUpdateAction>()
@@ -164,7 +166,19 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<ICart> Recalculate(ICart cart)
         {
-            throw new NotImplementedException();
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Carts()
+                .WithId(cart.Id)
+                .Post(
+                    new CartUpdate
+                    {
+                        Version = cart.Version,
+                        Actions = new List<ICartUpdateAction> {
+                            new CartRecalculateAction()
+                        }
+                    }
+                )
+                .ExecuteAsync();
         }
 
         /// <summary>

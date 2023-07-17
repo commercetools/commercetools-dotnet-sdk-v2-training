@@ -19,7 +19,7 @@ namespace Training.Services
         private readonly IClient _importClient;
         private readonly CSVHelper _csvHelper;
         private readonly string _projectKey;
-        private const string PREFIX = "MG";
+        private const string PREFIX = "ND";
 
         public ImportService(IClient client, string projectKey)
         {
@@ -84,7 +84,12 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<IImportOperation> CheckImportOperationStatus(string operationId)
         {
-            throw new NotImplementedException();
+            return await _importClient.WithImportApi()
+                .WithProjectKeyValue(_projectKey)
+                .ImportOperations()
+                .WithIdValue(operationId)
+                .Get()
+                .ExecuteAsync();
         }
 
         /// <summary>
