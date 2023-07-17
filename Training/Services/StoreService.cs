@@ -80,7 +80,7 @@ namespace Training.Services
         /// <param name="productSelectionKey"></param>
         /// <param name="store"></param>
         /// <returns></returns>
-        public async Task<IStore>  AddProductSelectionToStore(string productSelectionKey, IStore store){
+        public async Task<IStore>  AddProductSelectionToStore(string storeKey, string productSelectionKey){
             throw new NotImplementedException();
         }
 

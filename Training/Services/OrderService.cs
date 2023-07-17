@@ -61,7 +61,7 @@ namespace Training.Services
         /// <param name="order"></param>
         /// <param name="state"></param>
         /// <returns></returns>
-        public async Task<IOrder> ChangeWorkflowState(IOrder order, IStateResourceIdentifier state)
+        public async Task<IOrder> ChangeWorkflowState(IOrder order, string stateKey)
         {
             throw new NotImplementedException();
         }

@@ -30,7 +30,7 @@ namespace Training
             var destination = new GoogleCloudFunctionDestination()
             {
                 Type = "GoogleCloudFunction",
-                Url = "https://europe-west3-ct-support.cloudfunctions.net/training-extensions-sample"
+                Url = ""
             };
             
 

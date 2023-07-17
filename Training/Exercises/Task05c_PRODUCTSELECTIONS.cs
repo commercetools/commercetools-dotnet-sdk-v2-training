@@ -39,32 +39,29 @@ namespace Training
 
             // System.Console.WriteLine($"Berlin Product selection: {updatedProductSelection.Id} with {updatedProductSelection.ProductCount} products");
 
-            // TODO: GET store by key
-            var store = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .Stores()
-                .WithKey(_storekey)
-                .Get()
-                .ExecuteAsync();
-            
             // TODO: set product selection for the store
                 
             // System.Console.WriteLine($"Updated store {store.Key} with selection {updatedStore.ProductSelections?.Count}");
 
-            /*
+            /**
             var productSelectionProducts = await _productSelectionService.GetProductSelectionProductByKey(_productSelectionKey);
+
             System.Console.WriteLine($"Products in the product selection: {productSelectionProducts.Results.Count}");
+
             foreach (var product in productSelectionProducts.Results)
             {
                 System.Console.WriteLine(product.Product.Obj.Key);
             }
 
             var productsInStore = await _storeService.GetProductsInStore(_storekey);
+
             System.Console.WriteLine($"Products in the store through product selections: {productsInStore.Results.Count}");
+
             foreach (var product in productsInStore.Results)
             {
                 System.Console.WriteLine($"{product.Product.Id} through {product.ProductSelection.Id}");
             }
-            */
+            **/
 
         }
     }

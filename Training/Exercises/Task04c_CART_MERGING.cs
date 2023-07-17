@@ -31,19 +31,8 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            //Fetch a channel if your inventory mode will not be NONE
-            //Get Channel By Key (not supported yet)
-            var channelResult = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .Channels()
-                .Get()
-                .WithWhere($"key=\"{_channelKey}\"")
-                .ExecuteAsync();
-            //check the result
-            var channel = channelResult.Results.FirstOrDefault();
-
            // Get the customer
            var customer = await _customerService.GetCustomerByKey(_customerKey);
-
            
            //Create Cart for this customer
 
@@ -51,14 +40,14 @@ namespace Training
            Console.WriteLine($"cart for customer created with Id {cart.Id}");
            
            //Add Product to cart
-           cart = await _cartService.AddProductsToCartBySkusAndChannel(cart, channel, "tulip-seed-package", "tulip-seed-sack");
+           cart = await _cartService.AddProductsToCartBySkusAndChannel(cart, _channelKey, "tulip-seed-package", "tulip-seed-sack");
 
            // Create Anonymous cart
            var anonymousCart = await _cartService.CreateAnonymousCart("mg123456789");
            Console.WriteLine($"anonymous cart created with Id {anonymousCart.Id}");
            
            //Add Product to the Anonymous cart
-           anonymousCart = await _cartService.AddProductsToCartBySkusAndChannel(anonymousCart, channel, "tulip-seed-package", "tulip-seed-package");
+           anonymousCart = await _cartService.AddProductsToCartBySkusAndChannel(anonymousCart, _channelKey, "tulip-seed-package", "tulip-seed-package");
            
            // TODO: Decide on a merging strategy
            var result = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
@@ -78,6 +67,7 @@ namespace Training
            var currentCustomerCart = result?.Cart as Cart;
            if (currentCustomerCart != null)
            {
+               Console.WriteLine($"Final Cart Id:{currentCustomerCart.Id}");
                foreach (var lineItem in currentCustomerCart.LineItems)
                {
                    Console.WriteLine($"SKU: {lineItem.Variant.Sku}, Quantity: {lineItem.Quantity}");

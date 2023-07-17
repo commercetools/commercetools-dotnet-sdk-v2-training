@@ -37,7 +37,7 @@ namespace Training
         {
              services.UseCommercetoolsApi(configuration, "Client");
             // services.UseCommercetoolsImportApi(configuration, "ImportApiClient");
-            // services.UseCommercetoolsApi(configuration, new List<string>{"Client", "BerlinStoreClient"}, CreateDefaultTokenProvider);
+            // services.UseCommercetoolsApi(configuration, new List<string>{"Client", "StoreClient"}, CreateDefaultTokenProvider);
             
             var clientConfiguration = configuration.GetSection("Client").Get<ClientConfiguration>();
             Settings.SetCurrentProjectKey(clientConfiguration.ProjectKey);

@@ -12,7 +12,7 @@ namespace Training
     public class Task05A : IExercise
     {
 
-        private readonly IClient _berlinStoreClient;
+        private readonly IClient _storeClient;
         private readonly StoreService _storeService;
         private readonly CustomerService _customerService;
         private const string _storeKey = "";
@@ -20,9 +20,9 @@ namespace Training
 
         public Task05A(IEnumerable<IClient> clients)
         {
-            this._berlinStoreClient = clients.FirstOrDefault(c => c.Name.Equals("BerlinStoreClient"));
-            _storeService = new StoreService(_berlinStoreClient,Settings.ProjectKey);
-            _customerService = new CustomerService(_berlinStoreClient,Settings.ProjectKey);
+            this._storeClient = clients.FirstOrDefault(c => c.Name.Equals("StoreClient"));
+            _storeService = new StoreService(_storeClient,Settings.ProjectKey);
+            _customerService = new CustomerService(_storeClient,Settings.ProjectKey);
         }
 
         public async Task ExecuteAsync()

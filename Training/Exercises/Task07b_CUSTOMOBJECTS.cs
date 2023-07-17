@@ -25,7 +25,7 @@ namespace Training
         {
             var compatibilityInfo = new CompatibilityInfo
             {
-                IncompatibleSKUs = new List<string> { "tulip6125" },
+                IncompatibleSKUs = new List<string> { "tulip-seed-product" },
                 LeafletID = "leaflet_1234",
                 Instructions = new ExtraInfo
                 {

@@ -91,7 +91,7 @@ namespace Training.Services
         /// <param name="channel"></param>
         /// <param name="skus"></param>
         /// <returns></returns>
-        public async Task<ICart> AddProductsToCartBySkusAndChannel(ICart cart, IChannel channel,
+        public async Task<ICart> AddProductsToCartBySkusAndChannel(ICart cart, string channelKey,
             params string[] skus)
         {
             throw new NotImplementedException();
