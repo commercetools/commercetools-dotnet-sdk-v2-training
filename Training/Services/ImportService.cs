@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using commercetools.Base.Client;
@@ -9,6 +10,7 @@ using commercetools.Sdk.ImportApi.Models.Importsummaries;
 using commercetools.Sdk.ImportApi.Models.Productdrafts;
 using commercetools.Sdk.ImportApi.Models.Productvariants;
 using commercetools.Sdk.ImportApi.Extensions;
+using System.Linq;
 
 namespace Training.Services
 {
@@ -26,6 +28,7 @@ namespace Training.Services
             _csvHelper = new CSVHelper();
         }
 
+        
         /// <summary>
         /// Creates an ImportContainer
         /// </summary>
@@ -33,7 +36,8 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<IImportContainer> CreateImportContainer(ImportContainerDraft importContainerDraft)
         {
-            return await _importClient.WithImportApi().WithProjectKeyValue(Settings.ProjectKey)
+            return await _importClient.WithImportApi()
+                .WithProjectKeyValue(_projectKey)
                 .ImportContainers()
                 .Post(importContainerDraft)
                 .ExecuteAsync();
@@ -46,7 +50,8 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<IImportSummary> GetImportContainerSummary(string importContainerKey)
         {
-            return await _importClient.WithImportApi().WithProjectKeyValue(_projectKey)
+            return await _importClient.WithImportApi()
+                .WithProjectKeyValue(_projectKey)
                 .ImportContainers()
                 .WithImportContainerKeyValue(importContainerKey)
                 .ImportSummaries()
@@ -63,12 +68,12 @@ namespace Training.Services
         public async Task<IImportOperationPagedResponse> GetImportOperationsByImportContainer(string importContainerKey, 
             bool debug)
         {
-            return await _importClient.WithImportApi().WithProjectKeyValue(_projectKey)
+            return await _importClient.WithImportApi()
+                .WithProjectKeyValue(_projectKey)
                 .ImportContainers()
                 .WithImportContainerKeyValue(importContainerKey)
-                .ImportOperations()    
+                .ImportOperations()
                 .Get()
-                .WithDebug(debug)
                 .ExecuteAsync();
         }
 
@@ -79,9 +84,10 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<IImportOperation> CheckImportOperationStatus(string operationId)
         {
-            return await _importClient.WithImportApi().WithProjectKeyValue(_projectKey)
+            return await _importClient.WithImportApi()
+                .WithProjectKeyValue(_projectKey)
                 .ImportOperations()
-                .WithIdValue(operationId)             
+                .WithIdValue(operationId)
                 .Get()
                 .ExecuteAsync();
         }
@@ -94,17 +100,16 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<IImportResponse> ImportProducts(string importContainerKey, string csvFile)
         {
-            var productDraftImportList = GetProductDraftImportList(csvFile);
-            var productDraftImportRequest = new ProductDraftImportRequest()
-            {
-                Type = IImportResourceType.ProductDraft,
-                Resources = productDraftImportList
-            };
-            return await _importClient.WithImportApi().WithProjectKeyValue(_projectKey)
+            return await _importClient.WithImportApi()
+                .WithProjectKeyValue(_projectKey)
                 .ProductDrafts()
                 .ImportContainers()
                 .WithImportContainerKeyValue(importContainerKey)
-                .Post(productDraftImportRequest)
+                .Post(
+                    new ProductDraftImportRequest {
+                        Resources = GetProductDraftImportList(csvFile)
+                    }
+                )
                 .ExecuteAsync();
         }
 
@@ -113,15 +118,12 @@ namespace Training.Services
         private List<IProductDraftImport> GetProductDraftImportList(string fileName)
         {
             var listOfCsvProducts = ParseCsvFile(fileName);
-            var listOfProductDraftImport = new List<IProductDraftImport>();
-            foreach (var product in listOfCsvProducts)
-            {
-                var draftImport = new ProductDraftImport
+            var listOfProductDraftImport = listOfCsvProducts.Select(product => new ProductDraftImport
                 {
                     Key = PREFIX + "-" + product.ProductName,
-                    Name = new LocalizedString {{"en", product.ProductName} , {"de", product.ProductName}},
-                    ProductType = new ProductTypeKeyReference {Key = product.ProductType},
-                    Slug = new LocalizedString {{"en", PREFIX + "-" + product.ProductName}, {"de", PREFIX + "-" + product.ProductName}},
+                    Name = new LocalizedString { { "en", product.ProductName }, { "de", product.ProductName } },
+                    ProductType = new ProductTypeKeyReference { Key = product.ProductType },
+                    Slug = new LocalizedString { { "en", PREFIX + "-" + product.ProductName }, { "de", PREFIX + "-" + product.ProductName } },
                     MasterVariant = new ProductVariantDraftImport
                     {
                         Sku = PREFIX + "-" + product.InventoryId,
@@ -136,11 +138,10 @@ namespace Training.Services
                             new NumberAttribute { Name = "phoneweight", Value = product.Weight }
                         }
                     }
-                };
-                listOfProductDraftImport.Add(draftImport);
-            }
+                
+                });
 
-            return listOfProductDraftImport;
+            return listOfProductDraftImport.ToList<IProductDraftImport>();
         }
 
         private List<CSVProduct> ParseCsvFile(string file)
@@ -150,6 +151,7 @@ namespace Training.Services
         }
 
         #endregion
+        
     }
 
     public class CSVProduct

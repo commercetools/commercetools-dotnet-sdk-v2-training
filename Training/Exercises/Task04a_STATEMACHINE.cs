@@ -25,37 +25,38 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            // create OrderPacked stateDraft, state
+            // CREATE OrderPacked stateDraft, state
             var stateOrderPackedDraft = new StateDraft
             {
-                Key = "OrderPacked",
+                Key = "ndOrderPacked",
                 Initial = true,
-                Name = new LocalizedString {{"en", "MG Order Packed"}},
+                Name = new LocalizedString {{"en", "ND Order Packed"}},
                 Type = IStateTypeEnum.OrderState
             };
-            var stateOrderPacked = await _stateMachineService.CreateState(stateOrderPackedDraft);
-            Console.WriteLine($"New state created: {stateOrderPacked.Id}");
-            
-            // create OrderShipped stateDraft, state
+            var stateOrderPacked = await _stateMachineService.CreateState(
+                stateOrderPackedDraft);
+
+            // CREATE OrderShipped stateDraft, state
             var stateOrderShippedDraft = new StateDraft
             {
-                Key = "OrderShipped",
+                Key = "ndOrderShipped",
                 Initial = false,
-                Name = new LocalizedString {{"en", "MG Order Shipped"}},
+                Name = new LocalizedString {{"en", "ND Order Shipped"}},
                 Type = IStateTypeEnum.OrderState
             };
-            var stateOrderShipped = await _stateMachineService.CreateState(stateOrderShippedDraft);
-            Console.WriteLine($"New state created: {stateOrderShipped.Id}");
-            
-            // update statePacked to transit to stateShipped
+            var stateOrderShipped = await _stateMachineService.CreateState(
+                stateOrderShippedDraft);
 
-            var updatedStateOrderPacked = await _stateMachineService.AddTransition(stateOrderPackedDraft.Key,new List<string>{stateOrderShippedDraft.Key});
-            Console.WriteLine($"stateOrderPacked Id : {updatedStateOrderPacked.Id}, transition set to:  {updatedStateOrderPacked.Transitions[0].Id}");
-            
-            // update stateShipped to be the last state
-            
-            var updatedStateOrderShipped = await _stateMachineService.AddTransition(stateOrderShippedDraft.Key,new List<string>());
-            Console.WriteLine($"stateOrderShipped Id : {updatedStateOrderShipped.Id}, transition set to:  {(updatedStateOrderShipped.Transitions.Any()?updatedStateOrderShipped.Transitions[0].Id:"none")}");
+            // UPDATE packedState to transit to stateShipped
+            stateOrderPacked = await _stateMachineService.AddTransition(
+                    stateOrderPacked.Key,
+                    new List<string> { stateOrderShipped.Key }
+                );
+            stateOrderShipped = await _stateMachineService.AddTransition(
+                    stateOrderShipped.Key,
+                    new List<string>()
+                );
+            Console.WriteLine($"stateOrderShipped Id : {stateOrderShipped.Id}, stateOrderPacked transition to:  {stateOrderPacked.Transitions[0].Id}");
         }
     }
 }

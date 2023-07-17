@@ -23,13 +23,13 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            // TODO: create an Extension trigger (on Order Create)
-            var triggers = new List<IExtensionTrigger>
-            {
-                new ExtensionTrigger
-                {
+            // create an Extension trigger (on Order Create)
+            var triggers = new List<IExtensionTrigger> {
+                new ExtensionTrigger{
                     ResourceTypeId = IExtensionResourceTypeId.Order,
-                    Actions = new List<IExtensionAction>{ IExtensionAction.Create}
+                    Actions = new List<IExtensionAction>{
+                        IExtensionAction.Create
+                    }
                 }
             };
 
@@ -37,11 +37,17 @@ namespace Training
             var destination = new GoogleCloudFunctionDestination()
             {
                 Type = "GoogleCloudFunction",
-                Url = "https://europe-west3-ct-support.cloudfunctions.net/training-extensions-sample"
+                Url = "https://europe-west1-ct-support.cloudfunctions.net/training-extensions-sample"
             };
 
-            // TODO: CREATE the extension
-            var extension = await CreateExtension("nd-order-extension", destination, triggers);
+
+            // CREATE the extension
+
+            var extension = await CreateExtension(
+                    "nd-extension",
+                    destination,
+                    triggers
+                );
             Console.WriteLine($"extension created with Id {extension.Id}");
         }
 

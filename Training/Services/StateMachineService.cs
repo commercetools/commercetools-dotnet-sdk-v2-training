@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using commercetools.Sdk.Api.Models.States;
 using commercetools.Base.Client;
 using commercetools.Sdk.Api.Extensions;
+using System.Linq;
 
 namespace Training.Services
 {
@@ -18,20 +20,6 @@ namespace Training.Services
         }
 
         /// <summary>
-        /// Creates a workflow state
-        /// </summary>
-        /// <param name="stateDraft"></param>
-        /// <returns></returns>
-        public async Task<IState> CreateState(IStateDraft stateDraft)
-        {
-            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .States()
-                .Post(stateDraft)
-                .ExecuteAsync();
-        }
-
-
-        /// <summary>
         /// GET a state by key
         /// </summary>
         /// <param name="stateKey"></param>
@@ -45,36 +33,51 @@ namespace Training.Services
                 .ExecuteAsync();
         }
 
+
+        /// <summary>
+        /// Creates a workflow state
+        /// </summary>
+        /// <param name="stateDraft"></param>
+        /// <returns></returns>
+        public async Task<IState> CreateState(IStateDraft stateDraft)
+        {
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .States()
+                .Post(stateDraft)
+                .ExecuteAsync();
+        }
+
         /// <summary>
         /// POST a set transition update for the state
         /// </summary>
         /// <param name="stateKey"></param>
         /// <param name="transitionStateKeys"></param>
         /// <returns></returns>
-        public async Task<IState> AddTransition(string stateKey, List<string> transitionStateKeys)
+        public async Task<IState> AddTransition(string stateKey,
+            List<string> transitionStateKeys)
         {
-            IState state = await GetStateByKey(stateKey);
-            var transitionStateIdentifiers = new List<IStateResourceIdentifier>(); 
-            foreach (var transitionStateKey in transitionStateKeys)
-            {
-                transitionStateIdentifiers.Add(new StateResourceIdentifier{ Key = transitionStateKey } );
-            };
-            var stateUpdate = new StateUpdate
-            {
-                Version = state.Version,
-                Actions = new List<IStateUpdateAction>
-                {
-                    new StateSetTransitionsAction
-                    {
-                        Transitions = transitionStateIdentifiers
-                    }
-                }
-            };
+            var state = await GetStateByKey(stateKey);
+
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                    .States()
-                    .WithKey(state.Key)
-                    .Post(stateUpdate)
-                    .ExecuteAsync();
+                .States()
+                .WithId(state.Id)
+                .Post(
+                    new StateUpdate
+                    {
+                        Version = state.Version,
+                        Actions = new List<IStateUpdateAction> {
+                            new StateSetTransitionsAction{
+                                Transitions = transitionStateKeys.Select(
+                                    transitionStateKey => new StateResourceIdentifier
+                                    {
+                                        Key = transitionStateKey
+                                    }
+                                    ).ToList<IStateResourceIdentifier>()
+                            }
+                        }
+                    }
+                )
+                .ExecuteAsync();
         }
         
     }

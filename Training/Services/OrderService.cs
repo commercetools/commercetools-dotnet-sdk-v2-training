@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using commercetools.Sdk.Api.Models.Carts;
@@ -45,7 +46,10 @@ namespace Training.Services
                 .Post(
                     new OrderFromCartDraft
                     {
-                        Cart = new CartResourceIdentifier{Id = cart.Id},
+                        Cart = new CartResourceIdentifier
+                        {
+                            Id = cart.Id
+                        },
                         Version = cart.Version,
                         OrderNumber = "ND00" + Settings.RandomString()
                     }
@@ -67,7 +71,10 @@ namespace Training.Services
                 Version = order.Version,
                 Actions = new List<IOrderUpdateAction>
                 {
-                    new OrderChangeOrderStateAction {OrderState = state}
+                    new OrderChangeOrderStateAction
+                    {
+                        OrderState = state
+                    }
                 }
             };
 
@@ -83,14 +90,19 @@ namespace Training.Services
         /// <param name="order"></param>
         /// <param name="state"></param>
         /// <returns></returns>
-        public async Task<IOrder> ChangeWorkflowState(IOrder order, IStateResourceIdentifier state)
+        public async Task<IOrder> ChangeWorkflowState(IOrder order, string stateKey)
         {
             var orderUpdate = new OrderUpdate
             {
                 Version = order.Version,
                 Actions = new List<IOrderUpdateAction>
                 {
-                    new OrderTransitionStateAction() {State = state}
+                    new OrderTransitionStateAction {
+                        State = new StateResourceIdentifier
+                        {
+                            Key = stateKey
+                        }
+                    }
                 }
             };
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)

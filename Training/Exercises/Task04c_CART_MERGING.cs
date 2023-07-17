@@ -16,8 +16,8 @@ namespace Training
     public class Task04C : IExercise
     {
         private readonly IClient _client;
-        private const string _channelKey = "berlin-supply-channel";
-        private const string _customerKey = "customer-nagesh-dixit";
+        private const string _channelKey = "berlin-store-channel";
+        private const string _customerKey = "nd-customer";
         private const string _customerPassword = "password";
         private readonly CustomerService _customerService;
         private readonly CartService _cartService;
@@ -31,19 +31,9 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            //Fetch a channel if your inventory mode will not be NONE
-            //Get Channel By Key (not supported yet)
-            var channelResult = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .Channels()
-                .Get()
-                .WithWhere($"key=\"{_channelKey}\"")
-                .ExecuteAsync();
-            //check the result
-            var channel = channelResult.Results.FirstOrDefault();
-
-           // Get the customer
+            // Get the customer
            var customer = await _customerService.GetCustomerByKey(_customerKey);
-           
+
            
            //Create Cart for this customer
 
@@ -51,16 +41,16 @@ namespace Training
            Console.WriteLine($"cart for customer created with Id {cart.Id}");
            
            //Add Product to cart
-           cart = await _cartService.AddProductToCartBySkusAndChannel(cart, channel, "tulip-seed-package", "tulip-seed-sack");
+           cart = await _cartService.AddProductsToCartBySkusAndChannel(cart, _channelKey, "tulip-seed-package", "tulip-seed-sack");
 
            // Create Anonymous cart
            var anonymousCart = await _cartService.CreateAnonymousCart("nd123456789");
            Console.WriteLine($"anonymous cart created with Id {anonymousCart.Id}");
            
            //Add Product to the Anonymous cart
-           anonymousCart = await _cartService.AddProductToCartBySkusAndChannel(anonymousCart, channel, "tulip-seed-package", "tulip-seed-package");
+           anonymousCart = await _cartService.AddProductsToCartBySkusAndChannel(anonymousCart, _channelKey, "tulip-seed-package", "tulip-seed-package");
            
-           //Decide on a merging strategy
+           // Decide on a merging strategy
            var result = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                .Login()
                .Post(new CustomerSignin
@@ -68,16 +58,17 @@ namespace Training
                    AnonymousCart = new CartResourceIdentifier {
                        Id = anonymousCart.Id
                     },
-                   AnonymousCartSignInMode = IAnonymousCartSignInMode.UseAsNewActiveCustomerCart,
+                   AnonymousCartSignInMode = IAnonymousCartSignInMode.MergeWithExistingCustomerCart,
                    Email = customer.Email,
                    Password = _customerPassword
-                   
+
                }).ExecuteAsync();
            
            //LineItems of the anonymous cart will be copied to the customer’s active cart that has been modified most recently.
            var currentCustomerCart = result?.Cart as Cart;
            if (currentCustomerCart != null)
            {
+                Console.WriteLine($"Final Cart Id:{currentCustomerCart.Id}");
                foreach (var lineItem in currentCustomerCart.LineItems)
                {
                    Console.WriteLine($"SKU: {lineItem.Variant.Sku}, Quantity: {lineItem.Quantity}");

@@ -58,20 +58,20 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<ICart> CreateCart(ICustomer customer)
         {
-            var defaultShippingAddress = customer.GetDefaultShippingAddress();
-            var cartDraft = new CartDraft
-            {
-                CustomerId = customer.Id,
-                CustomerEmail = customer.Email,
-                Currency = "EUR",
-                Country = defaultShippingAddress.Country,
-                ShippingAddress = defaultShippingAddress,
-                DeleteDaysAfterLastModification = 90,
-                InventoryMode = IInventoryMode.ReserveOnOrder
-            };
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .Carts()
-                .Post(cartDraft)
+                .Post(
+                    new CartDraft
+                    {
+                        Currency = "EUR",
+                        InventoryMode = IInventoryMode.ReserveOnOrder,
+                        CustomerId = customer.Id,
+                        CustomerEmail = customer.Email,
+                        ShippingAddress = customer.GetDefaultShippingAddress(),
+                        Country = customer.GetDefaultShippingAddress().Country,
+                        DeleteDaysAfterLastModification = 10
+                    }
+                )
                 .ExecuteAsync();
         }
 
@@ -104,30 +104,32 @@ namespace Training.Services
         /// <param name="channel"></param>
         /// <param name="skus"></param>
         /// <returns></returns>
-        public async Task<ICart> AddProductToCartBySkusAndChannel(ICart cart, IChannel channel,
+        public async Task<ICart> AddProductsToCartBySkusAndChannel(ICart cart, string channelKey,
             params string[] skus)
         {
-            var lineItemsToAddActions = new List<ICartUpdateAction>();
-            foreach (var sku in skus)
-            {
-                lineItemsToAddActions.Add(new CartAddLineItemAction
-                {
-                    Sku = sku,
-                    Quantity = 1,
-                    SupplyChannel = new ChannelResourceIdentifier {Id = channel.Id}
-                });
-            }
-
-            var cartUpdate = new CartUpdate
-            {
-                Version = cart.Version,
-                Actions = lineItemsToAddActions
-            };
-
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .Carts()
                 .WithId(cart.Id)
-                .Post(cartUpdate)
+                .Post(
+                    new CartUpdate
+                    {
+                        Version = cart.Version,
+                        Actions = skus.Select(sku =>
+                            new CartAddLineItemAction
+                            {
+                                Sku = sku,
+                                SupplyChannel = new ChannelResourceIdentifier
+                                {
+                                    Key = channelKey
+                                },
+                                DistributionChannel = new ChannelResourceIdentifier
+                                {
+                                    Key = channelKey
+                                }
+                            }
+                        ).ToList<ICartUpdateAction>()
+                    }
+                )
                 .ExecuteAsync();
         }
 
@@ -139,20 +141,21 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<ICart> AddDiscountToCart(ICart cart, string code)
         {
-            var update = new CartUpdate
-            {
-                Version = cart.Version,
-                Actions = new List<ICartUpdateAction>
-                {
-                    new CartAddDiscountCodeAction {Code = code}
-                }
-            };
-            return await
-                _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                    .Carts()
-                    .WithId(cart.Id)
-                    .Post(update)
-                    .ExecuteAsync();
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Carts()
+                .WithId(cart.Id)
+                .Post(
+                    new CartUpdate
+                    {
+                        Version = cart.Version,
+                        Actions = new List<ICartUpdateAction> {
+                            new CartAddDiscountCodeAction{
+                                Code = code
+                            }
+                        }
+                    }
+                )
+                .ExecuteAsync();
         }
 
         //Recalculate a cart
@@ -163,20 +166,19 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<ICart> Recalculate(ICart cart)
         {
-            var update = new CartUpdate
-            {
-                Version = cart.Version,
-                Actions = new List<ICartUpdateAction>
-                {
-                    new CartRecalculateAction()
-                }
-            };
-            return await
-                _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                    .Carts()
-                    .WithId(cart.Id)
-                    .Post(update)
-                    .ExecuteAsync();
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Carts()
+                .WithId(cart.Id)
+                .Post(
+                    new CartUpdate
+                    {
+                        Version = cart.Version,
+                        Actions = new List<ICartUpdateAction> {
+                            new CartRecalculateAction()
+                        }
+                    }
+                )
+                .ExecuteAsync();
         }
 
         /// <summary>
@@ -186,35 +188,31 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<ICart> SetShipping(ICart cart)
         {
-            var shippingMethodsResult = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .ShippingMethods()
-                .MatchingCart()
-                .Get()
-                .WithCartId(cart.Id)
-                .ExecuteAsync();
+            var shippingMethods = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                    .ShippingMethods()
+                    .MatchingCart()
+                    .Get()
+                    .WithCartId(cart.Id)
+                    .ExecuteAsync();
+            var shippingMethod = shippingMethods.Results.First();
 
-            var shippingMethod = shippingMethodsResult.Results.FirstOrDefault();
-            var update = new CartUpdate
-            {
-                Version = cart.Version,
-                Actions = new List<ICartUpdateAction>
-                {
-                    new CartSetShippingMethodAction
+            return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+                .Carts()
+                .WithId(cart.Id)
+                .Post(
+                    new CartUpdate
                     {
-                        ShippingMethod = new ShippingMethodResourceIdentifier
-                        {
-                            Id = shippingMethod?.Id
+                        Version = cart.Version,
+                        Actions = new List<ICartUpdateAction> {
+                            new CartSetShippingMethodAction{
+                                ShippingMethod = new ShippingMethodResourceIdentifier{
+                                    Id = shippingMethod.Id
+                                }
+                            }
                         }
                     }
-                }
-            };
-
-            return await
-                _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                    .Carts()
-                    .WithId(cart.Id)
-                    .Post(update)
-                    .ExecuteAsync();
+                )
+                .ExecuteAsync();
         }
 
         /// <summary>
@@ -225,22 +223,22 @@ namespace Training.Services
         /// <returns></returns>
         public async Task<ICart> AddPaymentToCart(ICart cart, IPayment payment)
         {
-            var cartUpdate = new CartUpdate
-            {
-                Version = cart.Version,
-                Actions = new List<ICartUpdateAction>
-                {
-                    new CartAddPaymentAction
-                    {
-                        Payment = new PaymentResourceIdentifier {Id = payment.Id}
-                    }
-                }
-            };
-
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .Carts()
                 .WithId(cart.Id)
-                .Post(cartUpdate)
+                .Post(
+                    new CartUpdate
+                    {
+                        Version = cart.Version,
+                        Actions = new List<ICartUpdateAction> {
+                            new CartAddPaymentAction{
+                                Payment = new PaymentResourceIdentifier{
+                                    Id = payment.Id
+                                }
+                            }
+                        }
+                    }
+                )
                 .ExecuteAsync();
         }
         

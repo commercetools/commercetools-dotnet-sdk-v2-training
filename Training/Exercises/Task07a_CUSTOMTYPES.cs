@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using commercetools.Sdk.Api.Models.Common;
+using commercetools.Sdk.Api.Models.Types;
 using commercetools.Base.Client;
 using commercetools.Sdk.Api.Extensions;
-using commercetools.Sdk.Api.Models.Types;
-using commercetools.Sdk.Api.Models.Common;
 
 namespace Training
 {
@@ -23,33 +23,35 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            // TODO: DEFINE fields
-            var fields = new List<IFieldDefinition>
-                {
-                    new FieldDefinition
-                    {
-                        Name = "allowed-to-place-orders",
-                        Required = false,
-                        Label = new LocalizedString {{"de", "Allowed to place orders"},{"en", "Allowed to place orders"}},
-                        Type = new CustomFieldBooleanType()
+            // DEFINE fields
+            var fields = new List<IFieldDefinition> {
+                new FieldDefinition{
+                    Name = "allowed",
+                    Label = new LocalizedString {
+                        {"en", "Allowed to place Orders:" }
                     },
-                    new FieldDefinition
-                    {
-                        Name = "comments",
-                        Required = false,
-                        Label = new LocalizedString {{"de", "Comments"},{"en", "Comments"}},
-                        Type = new CustomFieldStringType()
-                    }
-                };
+                    Required = true,
+                    Type = new CustomFieldBooleanType()
+                },
+                new FieldDefinition {
+                    Name = "reason_for_block",
+                    Label = new LocalizedString {
+                        {"en"," Reason for Blocking: " }
+                    },
+                    Type = new CustomFieldStringType(),
+                    Required = true
+                }
+            };
 
-            // TODO: CREATE custom type with one field 'allowed-to-place-orders'
-            var type = await CreateCustomType("nd-custom-type",
-                new LocalizedString {{"de", "nd customer extension"},{"en", "nd customer extension"}},
-                new List<IResourceTypeId> {IResourceTypeId.Customer},
+            // CREATE custom type with one field 'allowed-to-place-orders'
+            var customType = await CreateCustomType(
+                "nd-custom-type",
+                new LocalizedString { { "en", "ND Customer Block Option" } },
+                new List<IResourceTypeId> { IResourceTypeId.Customer },
                 fields
-            );
+                );
 
-             Console.WriteLine($"New custom type has been created with Id: {type.Id}");
+             Console.WriteLine($"New custom type has been created with Id: {customType.Id}");
         }
 
 

@@ -2,9 +2,11 @@ using System.Threading.Tasks;
 using commercetools.Sdk.Api.Models.Common;
 using commercetools.Sdk.Api.Models.Products;
 using commercetools.Sdk.Api.Models.ProductSelections;
+using commercetools.Sdk.Api.Models.Stores;
 using commercetools.Base.Client;
 using commercetools.Sdk.Api.Extensions;
 using System.Collections.Generic;
+using System;
 
 namespace Training.Services
 {
@@ -41,15 +43,13 @@ namespace Training.Services
         public async Task<IProductSelection> CreateProductSelection(string productSelectionKey, LocalizedString name){
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .ProductSelections()
-                .Post(
-                    new ProductSelectionDraft{
-                        Key = productSelectionKey,
-                        Name = name
-                    }
-                )
+                .Post(new ProductSelectionDraft {
+                    Key = productSelectionKey,
+                    Name = name
+                })
                 .ExecuteAsync();
-        }            
-            
+        }   
+
         /// <summary>
         /// Adds product to product selection
         /// </summary>
@@ -57,21 +57,25 @@ namespace Training.Services
         /// <param name="productKey"></param>
         /// <returns></returns>
         public async Task<IProductSelection> AddProductToProductSelection(string productSelectionKey, string productKey){
-            IProductSelection productSelection = await GetProductSelectionByKey(productSelectionKey);
+
+            var productSelection = await GetProductSelectionByKey(productSelectionKey);
+
             return await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .ProductSelections()
                 .WithKey(productSelectionKey)
-                .Post( 
-                    new ProductSelectionUpdate{
+                .Post(
+                    new ProductSelectionUpdate
+                    {
                         Version = productSelection.Version,
-                        Actions = new List<IProductSelectionUpdateAction>{
+                        Actions = new List<IProductSelectionUpdateAction> {
                             new ProductSelectionAddProductAction{
-                                Product = new ProductResourceIdentifier{Key = "tulip-seed-product"}
+                                Product = new ProductResourceIdentifier{
+                                    Key = productKey
+                                }
                             }
                         }
                     }
-                )
-                .ExecuteAsync();
+                ).ExecuteAsync();
         }
 
         /// <summary>

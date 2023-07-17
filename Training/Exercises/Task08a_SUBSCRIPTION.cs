@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using commercetools.Sdk.Api.Models.Subscriptions;
 using commercetools.Base.Client;
+using commercetools.Sdk.Api.Models.Types;
 using commercetools.Sdk.Api.Extensions;
 
 namespace Training
@@ -27,23 +28,19 @@ namespace Training
             {
                 Type="GoogleCloudPubSub",
                 ProjectId = "ct-support",
-                Topic = "topic-example"
+                Topic = "example-topic"
             };
 
 
-            // TODO: CREATE the subscription
-            var subscription = await CreateSubscription(
-                "nd-order-sub",
-                destination,
-                new List<IMessageSubscription>
-                {
-                    new MessageSubscription
-                    {
-                        ResourceTypeId = IMessageSubscriptionResourceTypeId.Order,
-                        Types = new List<string> { "OrderCreated" }
+            // CREATE the subscription
+            var subscription = await CreateSubscription("nd-order-created", destination,
+                    new List<IMessageSubscription> {
+                        new MessageSubscription{
+                            ResourceTypeId = IMessageSubscriptionResourceTypeId.Order,
+                            Types = new List<string>{"OrderCreated"}
+                        }
                     }
-                }
-            );
+                );
             Console.WriteLine($"a new subscription created with Id {subscription.Id}");
         }
 

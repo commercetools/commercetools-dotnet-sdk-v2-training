@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using commercetools.Sdk.Api.Models.Products;
 using commercetools.Base.Client;
 using commercetools.Sdk.Api.Extensions;
-using commercetools.Sdk.Api.Models.Products;
+using commercetools.Sdk.Api.Models.Orders;
 
 namespace Training
 {
@@ -36,22 +37,24 @@ namespace Training
             var filterQuery = $"productType.id:\"{productType.Id}\"";
             var facet = "variants.attributes.phonecolor as color";
 
-            // TODO: GET product projections paged search response with facets
-            IProductProjectionPagedSearchResponse response = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
+            // GET product projections paged search response with facets
+            IProductProjectionPagedSearchResponse response =  await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .ProductProjections()
                 .Search()
                 .Get()
                 .WithStaged(true)
                 .WithFilterQuery(filterQuery)
-                .WithFacet(facet)
                 .WithWithTotal(false)
+                .WithFacet(facet)
+                .WithLimit(30)
+                .WithSort("id asc")
                 .ExecuteAsync();
             
             //Show Search Results
             Console.WriteLine($"No. of products: {response.Count}");
             Console.WriteLine("products in search result: ");
-            foreach (ProductProjection result in response.Results) Console.WriteLine(result.Name["en"]);
-
+            foreach(ProductProjection result in response.Results) Console.WriteLine(result.Name["en"]);
+            
             //Show Facets
             ShowFacetResults(response);
         }

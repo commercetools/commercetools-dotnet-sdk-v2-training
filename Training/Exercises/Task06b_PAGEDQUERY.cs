@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using commercetools.Base.Client;
-using commercetools.Sdk.Api.Extensions;
 using commercetools.Sdk.Api.Models.Products;
+using commercetools.Base.Client;
 
 namespace Training
 {
@@ -30,14 +29,8 @@ namespace Training
             {
                 var where = lastId != null ? $"id>\"{lastId}\"" : null;
                 
-                // TODO: GET paged response sorted on id
-                response = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                    .Products()
-                    .Get()
-                    .WithSort("id asc")
-                    .WithWhere(where)
-                    .WithLimit(pageSize)
-                    .ExecuteAsync();
+                // GET paged response sorted on id
+                response = null;
 
                 Console.WriteLine($"Show Results of Page {currentPage}");
                 foreach (var product in response.Results)

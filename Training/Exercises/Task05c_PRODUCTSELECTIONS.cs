@@ -15,8 +15,8 @@ namespace Training
     public class Task05C : IExercise
     {
         private readonly IClient _client;
-        private const string _storekey = "berlin-store";
-        private const string _productSelectionKey = "berlin-product-selection";
+        private const string _storeKey = "berlin-store";
+        private const string _productSelectionKey = "nd-berlin-product-list";
         private readonly ProductSelectionService _productSelectionService;
         private readonly StoreService _storeService;
 
@@ -31,28 +31,29 @@ namespace Training
         public async Task ExecuteAsync()
         {
 
-            var productSelection = await _productSelectionService.CreateProductSelection(_productSelectionKey,new LocalizedString {{"en","Berlin Store Selection"},{"de","Berlin Store Selection"}});
+            // CREATE a product selection
+            //var productSelection = await _productSelectionService.CreateProductSelection(
+            //        _productSelectionKey,
+            //        new LocalizedString{ { "en"," ND Berlin Selection"},{ "de","ND Berlin Selection"} }
+            //    );
+            // System.Console.WriteLine($"Product selection: {productSelection.Id} with {productSelection.ProductCount} products");
+
+            // ADD a product to the product selection
+            //var productSelection = await _productSelectionService.AddProductToProductSelection(
+            //        _productSelectionKey,
+            //        "tulip-seed-product"
+            //    );
+            // System.Console.WriteLine($"Berlin Product selection: {productSelection.Id} with {productSelection.ProductCount} products");
+
             
-            System.Console.WriteLine($"Product selection created: {productSelection.Id}"); 
-            
-            var berlinProductSelection = await _productSelectionService.GetProductSelectionByKey(_productSelectionKey);
+            // set product selection for the store
+            var store = await _storeService.AddProductSelectionToStore(
+                    _storeKey,
+                    _productSelectionKey
+                );    
+             System.Console.WriteLine($"Updated store with selection {store.ProductSelections?.Count}");
 
-            System.Console.WriteLine($"Berlin Product selection: {berlinProductSelection.Id} with {berlinProductSelection.ProductCount} products");
-
-            var updatedProductSelection = await _productSelectionService.AddProductToProductSelection(_productSelectionKey,"tulip-seed-product");
-
-            System.Console.WriteLine($"Berlin Product selection: {updatedProductSelection.Id} with {updatedProductSelection.ProductCount} products");
-
-            var berlinStore = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
-                .Stores()
-                .WithKey(_storekey)
-                .Get()
-                .ExecuteAsync();
-            
-            var updatedStore = await _storeService.AddProductSelectionsToStore(_productSelectionKey,berlinStore);
-                
-            System.Console.WriteLine($"Updated store {berlinStore.Key} with selection {updatedStore.ProductSelections?.Count}");
-
+            /*
             var productSelectionProducts = await _productSelectionService.GetProductSelectionProductByKey(_productSelectionKey);
             System.Console.WriteLine($"Products in the product selection: {productSelectionProducts.Results.Count}");
             foreach (var product in productSelectionProducts.Results)
@@ -65,7 +66,8 @@ namespace Training
             foreach (var product in productsInStore.Results)
             {
                 System.Console.WriteLine($"{product.Product.Id} through {product.ProductSelection.Id}");
-            } 
+            }
+            */
 
         }
     }

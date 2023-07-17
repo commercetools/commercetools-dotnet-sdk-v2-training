@@ -8,15 +8,13 @@ using Training.Services;
 namespace Training
 {
      /// <summary>
-    /// GET a customer
-    /// GET a customer group
     /// ASSIGN the customer to the customer group
     /// </summary>
     public class Task02B : IExercise
     {
         private readonly IClient _client;
-        private const string _customerKey = "customer-nagesh-dixit";
-        private const string _customerGroupKey = "indoor-customer-group";
+        private const string _customerKey = "nd-customer";
+        private const string _customerGroupKey = "vip-customers";
 
         private readonly CustomerService _customerService;
 
@@ -28,11 +26,14 @@ namespace Training
 
         public async Task ExecuteAsync()
         {
-            
-            // set customerGroup for the customer
-            var updatedCustomer = await _customerService.AssignCustomerToCustomerGroup(_customerKey,_customerGroupKey);
 
-            Console.WriteLine($"customer {updatedCustomer.Id} in customer group {updatedCustomer.CustomerGroup.Id}");
+            // SET customerGroup for the customer
+            var customer = await _customerService.AssignCustomerToCustomerGroup(
+                    _customerKey,
+                    _customerGroupKey
+                );
+
+            Console.WriteLine($"customer {customer.Id} in customer group {customer.CustomerGroup.Id}");
         }
     }
 }

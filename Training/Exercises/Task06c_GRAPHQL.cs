@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using commercetools.Sdk.Api.Models.GraphQl;
 using commercetools.Base.Client;
 using commercetools.Base.Serialization;
 using Training.GraphQL;
 using commercetools.Sdk.Api.Extensions;
-using commercetools.Sdk.Api.Models.GraphQl;
 
 namespace Training
 {
@@ -30,7 +30,7 @@ namespace Training
                 Query = "query {customers{count,results{email}}}"
             };
 
-            // TODO: graphQL Request
+            // graphQL Request
             IGraphQLResponse response = await _client.WithApi().WithProjectKey(Settings.ProjectKey)
                 .Graphql()
                 .Post(graphRequest)
