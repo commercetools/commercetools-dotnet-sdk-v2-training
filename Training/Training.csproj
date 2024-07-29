@@ -2,13 +2,13 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <LangVersion>9</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="commercetools.Sdk.Api" Version="11.1.0" />
-      <PackageReference Include="commercetools.Sdk.ImportApi" Version="11.1.0" />
+      <PackageReference Include="commercetools.Sdk.Api" Version="11.9.0" />
+      <PackageReference Include="commercetools.Sdk.ImportApi" Version="11.9.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
@@ -16,6 +16,10 @@
 
     <ItemGroup>
         <Content Include="Resources\products.csv">
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="appsettings.test.json">
             <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
